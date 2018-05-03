@@ -33,12 +33,8 @@
 
 	</head>
 	<body>
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TM4GWS3"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
 		<header>
-			@include('layouts.web.partials.nav')
+			{{-- @include('layouts.web.partials.nav') --}}
 		</header>
 		
 	    {{-- Loader --}}
