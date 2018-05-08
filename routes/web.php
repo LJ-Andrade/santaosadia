@@ -24,6 +24,8 @@ Route::get('campaign_p_v_2017', function(){ return view('web.web.campaign_p_v_20
 Route::get('especial-fiestas', function(){ return view('web.web.especial-fiestas'); });
 
 
+ Route::get('descargar-pdf/{filename}', ['as' => 'descargar-catalogo', 'uses' => 'WebController@getDownload']);
+
 
 Route::get('contacto', function(){ return view('web.web.contacto'); });
 

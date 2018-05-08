@@ -22,6 +22,14 @@ class WebController extends Controller
     {
         
         return view('web.web.index');
+	}
+	
+	public function getDownload($data){
+		
+		$filename = $data;
+        $file = public_path()."/web/pdf/".$filename;
+        $headers = array('Content-Type: application/pdf',);
+        return \Response::download($file, $data, $headers);
     }
 
 	public function portfolio(Request $request)
