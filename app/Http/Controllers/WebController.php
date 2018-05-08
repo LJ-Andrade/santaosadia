@@ -20,8 +20,8 @@ class WebController extends Controller
 
 	public function home()
     {
-        $categories = Category::all();
-        return view('web')->with('categories', $categories);
+        
+        return view('web.web.index');
     }
 
 	public function portfolio(Request $request)

@@ -11,7 +11,7 @@
 		{{--  This Is the SIDEMENU  --}}
 		{{--  <!-- Off-Canvas Toggle (#shop-categories)--><a class="offcanvas-toggle cats-toggle" href="#shop-categories" data-toggle="offcanvas"></a>
 		<!-- Off-Canvas Toggle (#mobile-menu)--><a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>  --}}
-		<!-- Site Logo--><a class="site-logo" href="{{ url('/') }}"><img src="{{ asset('store-ui/images/logo.png') }}" alt="Logo"></a>
+		<!-- Site Logo--><a class="site-logo" href="{{ url('/') }}"><img style="width: 110px" src="{{ asset('web/img/so-logo_new.jpg') }}" alt="Logo"></a>
 		</div>
 	</div>
 	<!-- Main Navigation-->

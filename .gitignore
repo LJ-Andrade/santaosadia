@@ -4,7 +4,7 @@
 /public/images/users
 /public/webimages/catalogo
 /public/webimages/portfolio
-/public/webimages/customerssudo
+/public/webimages/customers
 /storage/*.key
 /vendor
 /.idea

@@ -1,0 +1,33 @@
+.puntosback {
+  width: 975px;
+}
+
+.puntostits {
+  margin-bottom: 15px
+}
+
+.puntos {
+  padding-left: 10px;
+  background-image: url(../img/fondo-puntos-venta.jpg);
+  background-repeat: repeat;
+  border-radius: 10px;
+  height: 400px;
+  background-position: center center;
+}
+
+.lookbooktit {
+	font-family:'Quicksand', sans-serif;
+	font-size:50px;
+	color:#F4587A;
+	text-align: center;
+}
+
+.spacergral {
+	background-color:#F4587A;
+	width:975px;
+	height:2px;
+}
+
+.spacervideo {
+	width: 963px
+}

@@ -15,26 +15,29 @@ use App\CatalogFav;
 use App\Customer;
 use App\Shipping;
 use App\Payment;
-use MP;
 use App\GeoProv;
-// Prov
 use App\Cart;
 use App\CartDetail;
+use PDF;
+use MP;
+use App\Traits\CartTrait;
 
 
 class StoreController extends Controller
 {
     
-    public $customer = '2';
+    //public $customer = '2';
+    use CartTrait;
     
     public function __construct()
     {
-        //$this->middleware('auth:customer');
-        // $customer = auth()->guard('customer')->user();     
+        // $this->middleware('auth:customer');
+        //$customer = auth()->guard('customer')->user();     
     }
     
     public function index(Request $request)
     {   
+        
         if($request->category)
         {
             $articles = CatalogArticle::orderBy('id', 'DESC')->active()->where('category_id', $request->category)->paginate(15);
@@ -45,17 +48,17 @@ class StoreController extends Controller
             $articles = CatalogArticle::orderBy('id', 'DESCC')->active()->paginate(15);
         }
 
-        $user       = auth()->guard('customer')->user();
+        $user = auth()->guard('customer')->user();
 
         // Get only categories with active products
         $categories = CatalogCategory::with(['articles' => function($query) { 
             $query->where('status','=', '1'); }])->get();
 
-        $tags       = CatalogTag::orderBy('id', 'ASC')->select('name', 'id')->get();
+        $tags = CatalogTag::orderBy('id', 'ASC')->select('name', 'id')->get();
         $atributes1 = CatalogAtribute1::orderBy('id', 'ASC')->select('name', 'id')->get();
-            
+        
         $activeCart = $this->getActiveCart();
-        $favs       = $this->getCustomerFavs();
+        $favs = $this->getCustomerFavs();
 
         return view('store.index')
             ->with('articles', $articles)
@@ -114,7 +117,7 @@ class StoreController extends Controller
 
         return view('store.checkout-checkdata')
             ->with('activeCart', $activeCart)
-            ->with('geoprovs', $geoprovs);;
+            ->with('geoprovs', $geoprovs);
     }
     
     public function checkoutCustomerData(Request $request)
@@ -236,6 +239,28 @@ class StoreController extends Controller
         }    
     }
 
+    public function finishCheckOut($cartid){
+        $cart = Cart::find($cartid);
+        $cart->status = 'Process';
+        $cart->save();
+        return view('store.checkout-finish')
+            ->with('cart', $cart);
+    }
+
+    public function downloadInvoice($cartid)
+    {
+        $order = Cart::find($cartid);
+        if($order->customer->id == auth()->guard('customer')->user()->id){
+            $cartData = $this->calcCartTotalPrice($order);
+            $pdf = PDF::loadView('store.checkout-invoice', compact('order', 'cartData'))->setPaper('a4', 'portrait');
+            $filename = 'Comprobante-Pedido-N-'.$order->id;
+            return $pdf->stream($filename.'.pdf');
+        } else {
+            return back()->with('message','No...');
+        }
+
+    }
+
     public function mpConnect(Request $request)
     {
         $cartid = $request->cartId;
@@ -307,9 +332,15 @@ class StoreController extends Controller
             $cartTotal += $item->article->price;
         }
 
+        $paymentCost = calcValuePercentNeg($cartTotal, $cart->payment->percent);
+        $shippingCost = $cart->shipping->price;
+        $cartTotal += $paymentCost + $shippingCost;
+
         return view('store.customer-cart')
             ->with('cartTotal', $cartTotal)
             ->with('cart', $cart)
+            ->with('shippingCost', $shippingCost)
+            ->with('paymentCost', $paymentCost)
             ->with('activeCart', $activeCart);
     }
     
@@ -342,8 +373,7 @@ class StoreController extends Controller
             }
         }
     
-        return array("activeCart" => $activeCart,
-                     "cartTotal" => $cartTotal);
+        return array("activeCart" => $activeCart, "cartTotal" => $cartTotal);
     }
 
     public function updatePassword(Request $request)
@@ -401,8 +431,7 @@ class StoreController extends Controller
             $articleFavs = null;
         }
         
-        return array("articleFavs" => $articleFavs,
-                      "favs" => $favs);
+        return array("articleFavs" => $articleFavs, "favs" => $favs);
     }
 
     public function addArticleToFavs(Request $request)

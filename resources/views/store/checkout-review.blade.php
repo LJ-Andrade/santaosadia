@@ -99,7 +99,10 @@
 					@if($activeCart['activeCart']->payment != null)
 						<h5>Método de pago:</h5>
 						<ul class="list-unstyled">
-							<li><b>{{ $activeCart['activeCart']->payment->name }}:</b> % {{ $activeCart['activeCart']->payment->percent }}</li>
+							<li><b>{{ $activeCart['activeCart']->payment->name }}</b> 
+							@if($activeCart['activeCart']->payment->percent != '0.00')
+							(Recargo % {{ $activeCart['activeCart']->payment->percent }})</li>
+							@endif
 							<li><span class="text-muted"></span></li>
 						</ul>
 					@else
@@ -130,8 +133,8 @@
 						</button>
 					</div>
 					@else
-					<div class="column"><button type="submit" class="btn btn-primary">
-						<span class="hidden-xs-down">Continuar&nbsp;</span><i class="icon-arrow-right"></i></button>
+					<div class="column">
+						<a href="{{ route('store.finishCheckOut', $activeCart['activeCart']->id) }}" class="btn btn-primary hidden-xs-down">Finalizar <i class="icon-arrow-right"></i></a>	
 					</div>
 					@endif
 				@endif

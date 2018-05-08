@@ -1,0 +1,386 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin:0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+html {
+	font-family: Arial, Helvetica, sans-serif;
+}
+body {
+	width: 980px;
+	background-color: #FFF;
+	padding: 20px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+.locales li {
+	margin-top: 10px;
+	font-size: 13px;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+#container{
+	min-height: 100%;
+	width: 980px;
+	height: 0px;
+}
+#spacer {
+	clear: both;
+}
+#logo {
+	text-indent: -9999px;
+	float: left;
+}
+#header {
+	height: 30px;
+	width: 980px;
+}
+#sologo {
+	width: 190px;
+	float: left;
+}
+#cuerpo {
+	height: 643px;
+	width: 980px;
+}
+
+
+#home-foto {
+	text-indent: -9999px;
+}
+.nosotros {
+	width: 125px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/quienes_btn.gif);
+}
+.campana {
+	width: 65px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/campana_btn.gif);
+}
+.lookbook {
+	width: 80px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/lookbook_btn.gif);
+}
+.venta {
+	width: 130px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/venta_btn.gif);
+}
+.novedades {
+	width: 85px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/novedades_btn.gif);
+}
+#social_ul {
+	list-style-type: none;
+	padding: 0px;
+	overflow: hidden;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+#social_ul li  {
+	float: left;
+	margin-left: 5px;
+}
+#social_ul a {
+	display: block;
+	text-indent: -10000px;
+}
+#img-historia {
+	width: 980px;
+	float: left;
+}
+#img-historia img{
+	margin-left: 10px;
+	margin-top: 5px;
+}
+.fb {
+	margin-top: 15px;
+	height: 30px;
+	width: 32px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/fb_btn.gif);
+}
+.tw {
+	margin-top: 15px;
+	height: 30px;
+	width: 32px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/tw_btn.gif);
+}
+.msj {
+	margin-top: 8px;
+	height: 50px;
+	width: 58px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/msj_btn.gif);
+}
+.cat {
+	margin-top: 8px;
+	height: 50px;
+	width: 58px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-image: url(../img/cat_btn.gif);
+}
+#social_ul a:hover{
+	background-position: center bottom; /* -- ACA VA EL ROLLOVER -- */
+}
+#nosotros-titulo {
+	background-image: url(../img/nosotros-tit.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 372px;
+	height: 47px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#venta-titulo {
+	background-image: url(../img/venta-tit.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 706px;
+	height: 47px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#lookbook-titulo {
+	background-image: url(../img/lookbook-tit.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 706px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-o-i-2015 {
+	background-image: url(../img/campana-tit-o-i-2015.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-p-v-2014 {
+	background-image: url(../img/campana-tit-p-v-2014.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-o-i-2014 {
+	background-image: url(../img/campana-tit-ot-in-2014.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-o-i-2013 {
+	background-image: url(../img/campana-tit-ot-in-2013.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-p-v-2013 {
+	background-image:url(../img/campana-tit-pr-ve-2013.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-p-v-2012 {
+	background-image:url(../img/campana-tit-pr-ve-2012.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#campana-titulo-o-i-2012 {
+	background-image:url(../img/campana-tit-ot-in-2012.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#mensaje-titulo {
+	background-image: url(../img/mensaje-tit.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 850px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#novedades-titulo {
+	background-image: url(../img/novedades-tit.gif);
+	text-indent: -9999px;
+	background-repeat: no-repeat;
+	width: 1150px;
+	height: 55px;
+	margin-top: 30px;
+	margin-left: 5px;
+}
+#historia {
+	width: 630px;
+	margin-top: 60px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #666;
+	margin-left: 30px;
+	margin-right:20px;
+	float:left;
+}
+#puntos_venta{
+	margin-left: 0px;
+}
+#novedades{
+	width: 980px;
+	height:600px;
+}
+#lookbook{
+	width: 980px;
+	height:655px;
+	margin-left: 50px;
+}
+.links {
+	text-indent: -9999px;
+}
+.locales_tit {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	color: #F06294;
+	font-style: italic;
+}
+.novedades_tit {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	color: #F06294;
+	font-style: italic;
+}
+.novedades_ul {
+	text-decoration: none;
+}
+.novedades_ul li a {
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: bolder;
+	color: #CA2861;
+}
+
+.locales{
+	margin-top: 25px;
+	float: left;
+	margin-right: 5px;
+	margin-left: 20px;
+	color: #666;
+	width: 290px;
+}
+#concepto h4 {
+	font-size: 13px;
+	color: #666;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#concepto ul {
+	text-decoration: blink;
+}
+.novedades_ul {
+	margin-top: 30px;
+	font-style: italic;
+	float: left;
+	margin-right: 30px;
+	margin-left: 40px;
+	width: 460px;
+}
+.novedades_ul h4 a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #666666;
+	font-weight: bold;
+	text-decoration: none;
+	margin-top: 10px;
+}
+.novedades_ul li p {
+	margin-top: 10px;
+	font-size: 13px;
+	color: #999;
+	font-weight: bold;
+}
+
+.novedades_ul li img {
+	float: left;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+.novedades_ul h4 {
+	font-weight: bold;
+	font-size: 14px;
+	color: #333;
+}
