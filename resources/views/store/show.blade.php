@@ -97,16 +97,16 @@
 						<div class="share-links"><a class="social-button shape-circle sb-facebook" href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="socicon-facebook"></i></a><a class="social-button shape-circle sb-twitter" href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="socicon-twitter"></i></a><a class="social-button shape-circle sb-instagram" href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="socicon-instagram"></i></a><a class="social-button shape-circle sb-google-plus" href="#" data-toggle="tooltip" data-placement="top" title="Google +"><i class="socicon-googleplus"></i></a></div>
 					</div> 
 				</div>--}}
-				<a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>
-				<div class="pull-right">
 					<div class="sp-buttons mt-2 mb-2">
 						<button class="AddToFavs btn btn-outline-secondary btn-sm btn-wishlist
 							@if($isFav) addedToFavs @endif" data-id="{{ $article->id }}" data-toggle="tooltip" title="Agregar a Favoritos">
 							<i class="icon-heart"></i>
 						</button>
 						<button id="AddArticleToCart" type="button" class="btn btn-outline-primary btn-sm" data-articleid="{{ $article->id }}">Agregar</button>
+						<div class="pull-right">
+							<a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>
+						</div>
 					</div>
-				</div>
 				<div class="clearfix"></div>
 				<br>
 			</div>
