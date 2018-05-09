@@ -3,7 +3,7 @@
 @section('content')
 	<div class="container padding-bottom-3x mb-1 marg-top-25">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-5 col-xs-12">
 				<div class="product-gallery"><span class="product-badge text-danger">@if($article->offer > 0) DESCUENTO % {{ $article->offer }}!! @endif</span>
 					<div class="gallery-wrapper">
 					
@@ -26,10 +26,9 @@
 						@endforeach
 					</ul>
 				</div>
-				<a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-7 col-xs-12">
 				<div class="padding-top-2x mt-2 hidden-md-up"></div>
 				{{--  Reviews Not Implemented  --}}
 				{{--  <div class="rating-stars"><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star filled"></i>
@@ -49,6 +48,7 @@
 				@else
 					<span class="h2 d-block">$ {{ $article->price }}</span>
 				@endif
+				<div class="pt-1 mb-2"><span class="text-medium">Código:</span> #{{ $article->id }}</div>
 			
 				{{--  Article Description  --}}
 				<p>{{ strip_tags($article->description) }}</p>
@@ -82,15 +82,23 @@
 						</div>
 					</div>  --}}
 				</div>
-				<div class="pt-1 mb-2"><span class="text-medium">Código:</span> #{{ $article->id }}</div>
-				<div class="padding-bottom-1x mb-2"><span class="text-medium">Categoría:&nbsp;</span>
+				<div class="padding-bottom-1x mb-2">
+					<span class="text-medium">Textil:</span>
+					<a class="navi-link" href="#">{{ $article->color }}</a><br>
+					<span class="text-medium">Color:</span>
+					<a class="navi-link" href="#">{{ $article->textile }}</a><br>
+					<span class="text-medium">Categoría:&nbsp;</span>
 					<a class="navi-link" href="#">{{ $article->category->name }}</a>
 				</div>
 				<hr class="mb-3">
-				<div class="d-flex flex-wrap justify-content-between">
+				{{-- 
+				<div class="d-flex flex-wrap justify-content-between ">
 					<div class="entry-share mt-2 mb-2"><span class="text-muted">Compartir:</span>
 						<div class="share-links"><a class="social-button shape-circle sb-facebook" href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="socicon-facebook"></i></a><a class="social-button shape-circle sb-twitter" href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="socicon-twitter"></i></a><a class="social-button shape-circle sb-instagram" href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="socicon-instagram"></i></a><a class="social-button shape-circle sb-google-plus" href="#" data-toggle="tooltip" data-placement="top" title="Google +"><i class="socicon-googleplus"></i></a></div>
-					</div>
+					</div> 
+				</div>--}}
+				<a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>
+				<div class="pull-right">
 					<div class="sp-buttons mt-2 mb-2">
 						<button class="AddToFavs btn btn-outline-secondary btn-sm btn-wishlist
 							@if($isFav) addedToFavs @endif" data-id="{{ $article->id }}" data-toggle="tooltip" title="Agregar a Favoritos">
@@ -99,6 +107,8 @@
 						<button id="AddArticleToCart" type="button" class="btn btn-outline-primary btn-sm" data-articleid="{{ $article->id }}">Agregar</button>
 					</div>
 				</div>
+				<div class="clearfix"></div>
+				<br>
 			</div>
 		</div>
 	</div>

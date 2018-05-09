@@ -27,7 +27,8 @@ class User extends Authenticatable
               ->orWhere('username', 'LIKE', "%$name%")
               ->orWhere('email', 'LIKE', "%$name%");
     }
-
+    
+    
     public function scopeSearchRole($query, $role)
     {
         $query->where('role', $role);

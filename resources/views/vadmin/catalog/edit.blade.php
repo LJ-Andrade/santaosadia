@@ -14,12 +14,12 @@
 	@component('vadmin.components.header')
 		@slot('breadcrums')
 			<li class="breadcrumb-item"><a href="{{ url('vadmin')}}">Inicio</a></li>
-			<li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de Items</a></li>
-			<li class="breadcrumb-item active">Edición de Item</li>
+			<li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de artículos</a></li>
+			<li class="breadcrumb-item active">Edición de artículo</li>
 		@endslot
 		@slot('actions')
 			<div class="list-actions">
-				<h1>Edición de Artículo</h1>
+				<h1>Edición de artículo</h1>
 				{{-- Edit --}}
 				<a href="#" id="EditBtn" class="btn btnGreen Hidden"><i class="icon-pencil2"></i> Editar</a>
 			</div>

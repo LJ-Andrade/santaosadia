@@ -6,8 +6,8 @@
 	@component('vadmin.components.header')
 		@slot('breadcrums')
 		    <li class="breadcrumb-item"><a href="{{ url('vadmin')}}">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de Items</a></li>
-            <li class="breadcrumb-item active">Previsualización del Item <b></b></li>
+            <li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de artículos</a></li>
+            <li class="breadcrumb-item active">Previsualización del artículo<b></b></li>
 		@endslot
 		@slot('actions')
 		@endslot
@@ -22,8 +22,6 @@
 				<p class="text-muted">Código: #{!! $article->code !!} </p>
             @endslot
             @slot('content')
-				<b>Descripción:</b> <p>{!! $article->description !!}</p>
-				<hr class="softhr">
 				<div class="row">
 					<div class="col-md-3">
 						<h2><i class="icon-star-full"></i> Imágen Destacada</h2>
@@ -52,28 +50,44 @@
 					</div>
 				</div>
 				<hr class="softhr">
-				<b>Precio:</b> <span class="custom-badge btnBlue"> $ {!! $article->price !!}</span> <br>
-				<b>Descuento: </b> 
-					<span class="custom-badge btnRed">
-						@if($article->offer == null || $article->offer == '0')
-						Sin descuento						
-						@else %  {{ $article->offer }}
-						@endif
-					</span> 
-				<br>
-				<b> Precio c/ Desc.: </b> <span class="custom-badge btnGreen"> $ {{ $article->price - ($article->price * $article->offer) / 100 }}</span>
+				<div class="row">
+					<div class="col-md-3">
+						<b>Descripción:</b> <p>{!! $article->description !!}</p>
+					</div>
+				</div>
 				<hr class="softhr">
-				<b>Cualidades:</b>
-				@foreach($article->atribute1 as $atribute1)
-				<span class="custom-badge btnRed">{!! $atribute1->name !!}</span>
-				@endforeach <br>
-				<b>Propiedad: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span>
+				<div class="row">
+					<div class="col-md-3">
+						<b>Precio:</b> <span class="custom-badge btnBlue"> $ {!! $article->price !!}</span> <br>
+						<b>Descuento: </b> 
+						<span class="custom-badge btnRed">
+							@if($article->discount == null || $article->discount == '0')
+							Sin descuento						
+							@else %  {{ $article->discount }}
+							@endif
+						</span> <br>	
+						<b> Precio c/ Desc.: </b> <span class="custom-badge btnGreen"> $ {{ calcValuePercentNeg($article->price, $article->discount)}}</span>
+					</div>
+					<div class="col-md-3">
+						<b>Color: </b> <span class="custom-badge btnBlue">{{ $article->color }}</span> <br>	
+						<b>Textil: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span> <br>	
+						<b>Talles:</b>
+						@foreach($article->atribute1 as $atribute1)
+						<span class="custom-badge btnBlue">{!! $atribute1->name !!}</span>
+						@endforeach <br>
+						<b>Propiedad: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span>
+					</div>
+				</div>
 				<hr class="softhr">
-				<b>Categoría:</b> <span class="custom-badge btnBlue">{!! $article->category->name !!}</span> |
-				<b>Etiquetas:</b>
-				@foreach($article->tags as $tag)
-				<span class="custom-badge btnRed">{!! $tag->name !!}</span>
-				@endforeach
+				<div class="row">
+					<div class="col-md-12">
+						<b>Categoría:</b> <span class="custom-badge btnBlue">{!! $article->category->name !!}</span> |
+						<b>Etiquetas:</b>
+						@foreach($article->tags as $tag)
+						<span class="custom-badge btnRed">{!! $tag->name !!}</span>
+						@endforeach
+					</div>
+				</div>
 				<hr class="softhr">
 				
 				<b>Url - Dirección web amigable (Slug):</b> <span class="badge">{!! $article->slug !!}</span>

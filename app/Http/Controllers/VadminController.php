@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Contact;
 use App\Cart;
 use App\CatalogArticle;
-use App\Article;
+use App\Customer;
 use App\User;
 use App\GeoProv;
 use App\GeoLoc;
@@ -24,17 +24,19 @@ class VadminController extends Controller
     public function index(Request $request)
     {
         $catalogarticlesCount = CatalogArticle::count();
-        $portfolioArticlesCount = Article::count();
+        $customersCount = Customer::count();
         $activeCartsCount = Cart::where('status', 'Active')->count();
         $processCartsCount = Cart::where('status', 'Process')->count();
         $approvedCartsCount = Cart::where('status', 'Approved')->count();
         $finishedCartsCount = Cart::where('status', 'Finished')->count();
+        $activeCartsCount = '1';
         
         return view('vadmin.vadmin')
             ->with('catalogarticlesCount', $catalogarticlesCount)
-            ->with('portfolioArticlesCount', $portfolioArticlesCount)
+            ->with('customersCount', $customersCount)
             ->with('activeCartsCount', $activeCartsCount)
             ->with('processCartsCount', $processCartsCount)
+            ->with('approvedCartsCount', $approvedCartsCount)
             ->with('finishedCartsCount', $finishedCartsCount); 
     }
 

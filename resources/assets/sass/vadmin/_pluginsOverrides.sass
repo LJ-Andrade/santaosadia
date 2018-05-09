@@ -195,3 +195,38 @@ $phvFsize: 0.9rem
 // 					position: absolute
 // 					right: 0
 // 					top: 0
+
+//////////////////////////////////////
+//                                  //
+//              THEME               //
+//                                  //
+//////////////////////////////////////
+
+.main-menu.menu-dark
+	background: $dark-main
+.header-navbar.navbar-dark
+	background: $dark-main
+.main-menu.menu-dark .navigation
+	background: $dark-main
+
+.main-menu.menu-dark .navigation > li.active > a
+    background-color: $dark-detail1
+
+// Hover
+.main-menu.menu-dark .navigation > li.hover > a, .main-menu.menu-dark .navigation > li:hover > a, .main-menu.menu-dark .navigation > li.active > a
+    background-color: $dark-detail2
+	
+// Active Section
+.main-menu.menu-dark .navigation > li.open > a
+	background-color: $dark-detail3
+
+// Active Selected
+.main-menu.menu-dark .navigation > li.open > ul
+	background-color: $dark-detail4
+
+// Menu Icons
+body.vertical-layout.vertical-menu.menu-expanded .main-menu .navigation > li > a > i
+	color: $dark-detail5
+
+#main-menu-navigation .navigation-header
+	color: $dark-detail6

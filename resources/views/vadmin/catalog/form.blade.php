@@ -40,7 +40,7 @@
         </div>
     </div>
     {{--  Discount  --}}
-    <div class="col-md-2">
+    <div class="col-md-1">
         <div class="form-group">
             {!! Form::label('discount', '% Oferta') !!}
             {!! Form::number('discount', '0', ['class' => 'form-control', 'min' => '0', 'maxlength' => '30', 'step'=>'any']) !!}
@@ -49,16 +49,24 @@
     {{-- Slug --}}
     <div class="col-md-3">
         <div class="form-group">
-            {!! Form::label('atribute1', 'Cualidades') !!}
+            {!! Form::label('atribute1', 'Talles') !!}
             {!! Form::select('atribute1[]', $atribute1, null, ['class' => 'Select-Atribute form-control', 'multiple']) !!}
             <div class="slug2"></div>
         </div>
     </div>
     {{--  Textile  --}}
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
-            {!! Form::label('textile', 'Propiedades') !!}
-            {!! Form::text('textile', null, ['class' => 'form-control', 'placeholder' => 'Ingrese una propiedad', 
+            {!! Form::label('textile', 'Textil') !!}
+            {!! Form::text('textile', null, ['class' => 'form-control', 'placeholder' => 'Tipo de tela', 
+            'required' => '', 'maxlength' => '50']) !!}
+        </div>
+    </div>
+    {{--  Color  --}}
+    <div class="col-md-2">
+        <div class="form-group">
+            {!! Form::label('color', 'Color') !!}
+            {!! Form::text('color', null, ['class' => 'form-control', 'placeholder' => 'Ingrese una color', 
             'required' => '', 'maxlength' => '50']) !!}
         </div>
     </div>

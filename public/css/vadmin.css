@@ -1559,3 +1559,39 @@ form .form-actions {
 .dropdown-notification .close-this:hover {
   color: red;
 }
+
+.main-menu.menu-dark {
+  background: #292d3e;
+}
+
+.header-navbar.navbar-dark {
+  background: #292d3e;
+}
+
+.main-menu.menu-dark .navigation {
+  background: #292d3e;
+}
+
+.main-menu.menu-dark .navigation > li.active > a {
+  background-color: #343a54;
+}
+
+.main-menu.menu-dark .navigation > li.hover > a, .main-menu.menu-dark .navigation > li:hover > a, .main-menu.menu-dark .navigation > li.active > a {
+  background-color: #4e5579;
+}
+
+.main-menu.menu-dark .navigation > li.open > a {
+  background-color: #0f1118;
+}
+
+.main-menu.menu-dark .navigation > li.open > ul {
+  background-color: #08090d;
+}
+
+body.vertical-layout.vertical-menu.menu-expanded .main-menu .navigation > li > a > i {
+  color: #80cbc4;
+}
+
+#main-menu-navigation .navigation-header {
+  color: #7d597a;
+}

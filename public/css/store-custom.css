@@ -178,7 +178,22 @@ ul.pagination li a.active, ul.pagination li.active {
 }
 
 .product-gallery {
-  padding-top: 20px;
+  padding: 0;
+  border: 0;
+}
+
+.product-gallery .product-carousel .owl-stage-outer .owl-stage .owl-item img {
+  width: 100%;
+}
+
+.product-gallery .gallery-item {
+  z-index: 9999;
+  position: absolute;
+  top: 8px;
+  top-right: 9px;
+  margin-bottom: 0;
+  background: #fff;
+  border-radius: 50%;
 }
 
 .login-box {

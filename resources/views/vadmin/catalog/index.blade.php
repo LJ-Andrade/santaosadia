@@ -62,6 +62,7 @@
 						<th></th>
 						<th>Cód.</th>
 						<th>Título</th>
+						<th>Color</th>
 						<th>Stock</th>
 						<th>Precio</th>
 						<th>Oferta (%)</th>
@@ -87,6 +88,7 @@
 								</td>
 								<td class="w-50">#{{ $item->code }}</td>
 								<td class="show-link max-text"><a href="{{ url('vadmin/catalogo/'.$item->id) }}">{{ $item->name }}</a></td>
+								<td class="show-link max-text">{{ $item->color }}</td>
 								{{--  STOCK  --}}
 								<td class="Modificable-Stock-Input modificable-input">
 									@if($item->stock > $item->stockmin)

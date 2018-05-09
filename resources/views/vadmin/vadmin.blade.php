@@ -49,11 +49,11 @@
 							<div class="card-body dash-item1">
 								<div class="media">
 									<div class="p-2 text-xs-center green-back media-left media-middle">
-										<i class="icon-images2 font-large-2 white"></i>
+										<i class="icon-users2 font-large-2 white"></i>
 									</div>
 									<div class="p-2 media-body">
-										<h5>Entradas en el Portfolio</h5>
-										<h5 class="text-bold-400">{{ $portfolioArticlesCount }}</h5>
+										<h5>N° de Clientes</h5>
+										<h5 class="text-bold-400">{{ $customersCount }}</h5>
 									</div>
 								</div>
 							</div>
@@ -63,7 +63,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col-xl-4 col-md-6 col-sm-12">
+				<div class="col-xl-8 col-md-6 col-sm-12">
 					<div class="card" style="height: 500px;">
 						<div class="card-body">
 							<div class="card-block">
@@ -73,17 +73,30 @@
 							</div>
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item">
-									<span class="tag tag-default tag-pill bg-primary float-xs-right">{{ $activeCartsCount }}</span> Compras en proceso
+									@if($activeCartsCount == 1)
+									En este momento hay 1 carro de compras abierto
+									@elseif($activeCartsCount >= 2)
+									En este momento hay {{ $activeCartsCount }} carros de compras abiertos
+									@else
+									En este momento no hay carros de compras abiertos
+									@endif
+									{{-- <span class="tag tag-default tag-pill bg-warning float-xs-right">{{ $activeCartsCount }}</span> --}}
 								</li>
 								<li class="list-group-item">
-									<span class="tag tag-default tag-pill bg-info float-xs-right">{{ $processCartsCount }}</span> Pedidos en espera
+									<span class="tag tag-default tag-pill bg-danger float-xs-right">{{ $processCartsCount }}</span> Pedidos en espera
 								</li>
 								<li class="list-group-item">
-									<span class="tag tag-default tag-pill bg-warning float-xs-right">{{ $finishedCartsCount }}</span> Ventas finalizadas
+									<span class="tag tag-default tag-pill bg-info float-xs-right">{{ $approvedCartsCount }}</span> Pedidos aprobados
 								</li>
-								
+								<li class="list-group-item">
+									<span class="tag tag-default tag-pill bg-warning float-xs-right">{{ $finishedCartsCount }}</span> Pedidos finalizadas
+								</li>
 							</ul>
 						</div>
+						<br>
+						<div class="container">
+
+						</div>	
 					</div>
 				</div>
 			
