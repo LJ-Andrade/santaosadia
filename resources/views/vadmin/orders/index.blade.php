@@ -51,18 +51,24 @@
 						@slot('tableContent', '')
 					@else
 					@slot('tableTitles')
+						<th class="w-50"></th>
 						<th>N°</th>
 						<th>Cliente</th>
 						<th>Valor</th>
 						<th>Estado</th>
 						<th>Fecha</th>
-						<th></th>
-						<th class="w-50"></th>
 					@endslot
 
 					@slot('tableContent')
 						@foreach($items as $item)
 							<tr>
+								<td class="w-50">
+									<label class="custom-control custom-checkbox list-checkbox">
+										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
+										<span class="custom-control-indicator"></span>
+										<span class="custom-control-description"></span>
+									</label>
+								</td>
 								<td class="w-50">#{{ $item->id }}</td>
 								<td class="show-link max-text">
 									<a href="{{ url('vadmin/customers/'.$item->customer_id) }}">
@@ -101,13 +107,6 @@
 								</td>
 								<td class="w-200">{{ transDateT($item->created_at) }}</td>
 								<td class="w-50"><a href="{{ url('vadmin/carts/'.$item->id) }}" class="btn btnSm btnGreen"><i class="icon-eye6"></i></a></td>
-								<td class="w-50">
-									<label class="custom-control custom-checkbox list-checkbox">
-										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
-										<span class="custom-control-indicator"></span>
-										<span class="custom-control-description"></span>
-									</label>
-								</td>
 							</tr>						
 						@endforeach
 					@endif

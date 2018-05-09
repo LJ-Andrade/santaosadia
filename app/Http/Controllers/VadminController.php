@@ -29,7 +29,6 @@ class VadminController extends Controller
         $processCartsCount = Cart::where('status', 'Process')->count();
         $approvedCartsCount = Cart::where('status', 'Approved')->count();
         $finishedCartsCount = Cart::where('status', 'Finished')->count();
-        $activeCartsCount = '1';
         
         return view('vadmin.vadmin')
             ->with('catalogarticlesCount', $catalogarticlesCount)

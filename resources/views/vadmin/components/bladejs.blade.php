@@ -169,7 +169,7 @@
         // Change Thumbnail image and file input
         function readURL(input) {
 
-            var fileTypes = ['jpg', 'jpeg', 'png']; 
+            var fileTypes = ['jpg', 'jpeg', 'png', 'gif']; 
             if (input.files && input.files[0]) {
                 // Validate extensions
                 var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file

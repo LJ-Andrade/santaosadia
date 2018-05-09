@@ -158,33 +158,31 @@ class ArticlesController extends Controller
         $imgPath           = public_path("webimages/catalogo/"); 
         $extension         = '.jpg';
         
-        $number = '2';
-
         if($article->save()){
             $article->atribute1()->sync($request->atribute1);
             $article->tags()->sync($request->tags);
             
-            $thumbHeight = 360;
             $thumbWidth = 240;
-            $imgHeight = 750;
+            $thumbHeight = 360;
             $imgWidth = 500;
+            $imgHeight = 750;
 
             try {
                 if($thumbnail){
                     $thumb = \Image::make($thumbnail);
-                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($imgPath.$article->id.'-0'.$extension);
-                    $article->thumb    = $article->id.'-0'.$extension;
+                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($imgPath.$article->id.'-thumb'.$extension);
+                    $article->thumb = $article->id.'-thumb'.$extension;
                     $article->save();
 
                     $thumbToImg = \Image::make($thumbnail);
                     $image = new CatalogImage();
-                    $image->name = $article->id.'-1'.$extension;
+                    $image->name = $article->id.'-0'.$extension;
                     $thumbToImg->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$image->name);
                     $image->article()->associate($article);
                     $image->save();
                 }
-
-                if($images){
+                if($images != null){
+                    $number = '1';
                     foreach($images as $phisic_image)
                     {
                         $filename = $article->id.'-'.$number++;
@@ -263,12 +261,11 @@ class ArticlesController extends Controller
         $imgPath   = public_path("webimages/catalogo/"); 
         $extension = '.jpg';
 
-        $thumbHeight = 360;
         $thumbWidth = 240;
-        $imgHeight = 750;
+        $thumbHeight = 360;
         $imgWidth = 500;
+        $imgHeight = 750;
                
-        $article->thumb = $article->id.'-0'.$extension;
         if($article->save()){
             $article->atribute1()->sync($request->atribute1);
             $article->tags()->sync($request->tags);
@@ -281,19 +278,23 @@ class ArticlesController extends Controller
             } else {
                 $number = '1';
             }
-
-                    
+            
+            
             try {
                 if($thumbnail){
+                    
                     $thumb = \Image::make($thumbnail);
-                    $thumb->encode('jpg', 80)->fit(250, 250)->save($imgPath.$article->id.'-0'.$extension);
-                    $article->thumb    = $article->id.'-0'.$extension;
+                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($imgPath.$article->id.'-thumb'.$extension);
+                    $article->thumb = $article->id.'-thumb'.$extension;
                     $article->save();
 
                     $thumbToImg = \Image::make($thumbnail);
-                    $image       = new CatalogImage();
-                    $image->name = $article->id.'-1'.$extension;
-                    $thumbToImg->encode('jpg', 80)->fit(800, 800)->save($imgPath.$image->name);
+                    $prevImg = CatalogImage::where('name', $article->id.'-0'.$extension);
+                    $prevImg->delete();
+                    $image = new CatalogImage();
+                    $image->name = $article->id.'-0'.$extension;
+                    $thumbToImg->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$image->name);
+                    // Si se asocia se creará un doble registro en la db
                     $image->article()->associate($article);
                     $image->save();
                 }
@@ -304,7 +305,7 @@ class ArticlesController extends Controller
                     {
                         $filename = $article->id.'-'.$number++;
                         $img      = \Image::make($phisic_image);
-                        $img->encode('jpg', 80)->fit(800, 800)->save($imgPath.$filename.$extension);
+                        $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
                         
                         $image            = new CatalogImage();
                         $image->name      = $filename.$extension;
@@ -386,7 +387,6 @@ class ArticlesController extends Controller
         $path     = 'webimages/catalogo/';
 
         try {
-
             foreach ($ids as $id) {
                 // Check existence of related favs and delete
                 $relatedFavs = CatalogFav::where('article_id', $id)->get();
@@ -400,9 +400,10 @@ class ArticlesController extends Controller
                 $record->atribute1()->detach();
                 
                 $images = $record->images;
-                File::Delete(public_path( $path . $record->thumb));
+                File::Delete(public_path($path . $record->thumb));
                 foreach ($images as $image) {
-                    File::Delete(public_path( $path . $image->name));
+                    File::Delete(public_path($path . $image->name));
+                    $image->delete();
                 }
 
                 $delete = $record->delete();

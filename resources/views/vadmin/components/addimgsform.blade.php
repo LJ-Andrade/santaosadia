@@ -7,6 +7,5 @@
     <div class="Hidden">
         {!! Form::file('thumbnail', array('multiple'=>false, 'id' => 'ThumbnailUploader')) !!}
     </div>
-    
     <div class="ErrorImage"></div>
 </div>

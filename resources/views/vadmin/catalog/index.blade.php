@@ -9,12 +9,12 @@
 	@component('vadmin.components.header-list')
 		@slot('breadcrums')
 		    <li class="breadcrumb-item"><a href="{{ url('vadmin')}}">Inicio</a></li>
-            <li class="breadcrumb-item active">Listado de Items</li>
+            <li class="breadcrumb-item active">Listado de artículos</li>
 		@endslot
 		@slot('actions')
 			{{-- Actions --}}
 			<div class="list-actions">
-				<a href="{{ route('catalogo.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo Item</a>
+				<a href="{{ route('catalogo.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo artículo</a>
 				<button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button>
 				{{-- Edit --}}
 				<button class="EditBtn btn btnGreen Hidden"><i class="icon-pencil2"></i> Editar</button>
@@ -53,12 +53,11 @@
 					@endif
 				@endslot
 
-				@slot('title', 'Listado de Items')
+				@slot('title', 'Listado de artículos de la tienda')
+				@slot('tableTitles')
 					@if(!$articles->count() == '0')
-					@slot('tableTitles')
 						<th class="w-50">
-							@component('vadmin.components.checkAllCheckBox')
-							@endcomponent
+							
 						<th></th>
 						<th>Cód.</th>
 						<th>Título</th>
