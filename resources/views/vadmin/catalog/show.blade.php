@@ -23,24 +23,20 @@
             @endslot
             @slot('content')
 				<div class="row">
-					<div class="col-md-3">
-						<h2><i class="icon-star-full"></i> Imágen Destacada</h2>
-						@if($article->thumb != '')
-							<img class="Featured-Image-Container" src="{{ asset('webimages/catalogo/'.$article->thumb) }}">
-						@else
-							<img class="Featured-Image-Container" src="{{ asset('webimages/gen/catalog-gen.jpg') }}">
-						@endif
-					</div>
-					<div class="col-md-9">
+	
+					<div class="col-md-12">
 					@if(count($article->images) != 0 )
 					<div class="actual-images horizontal-list">
-						<h2>Imágenes Adicionales</h2>
+						<h2>Imágenes del artículo</h2>
 						<ul>
-							@foreach($article->images->reverse() as $image)
-							<li id="Img{{ $image->id }}">	
-								<img src="{{ asset('webimages/catalogo/'.$image->name) }}">
+							@foreach($article->images->sortByDesc('featured') as $image)
+							<li id="Img{{ $image->id }}" class="{{ $image->featured ? 'featured-img' : '' }}">	
+								<img src="{{ asset('webimages/catalogo/thumbs/'.$image->name) }}">
 								<div class="overlayItemCenter">
-									<i class="Delete-Product-Img icon-ios-trash-outline delete-img" data-imgid="{{ $image->id }}"></i>
+									<a> <i class="Delete-Product-Img icon-ios-trash-outline delete-img" data-imgid="{{ $image->id }}"></i></a>
+									@if(!$image->featured)
+									<a href="{{ url('vadmin/article/'.$article->id.'/images/setFeatured/'.$image->id) }}"><i class="icon-star feature-img"></i></a>
+									@endif
 								</div>
 							</li>
 							@endforeach

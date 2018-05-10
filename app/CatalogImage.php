@@ -8,10 +8,11 @@ class CatalogImage extends Model
 {
     protected $table = "catalog_images";
 
-    protected $fillable = ['name', 'article_id'];
+    protected $fillable = ['name', 'featured', 'thumb', 'article_id'];
 
 	public function article()
 	{
 	   	return $this->belongsTo('App\CatalogArticle');
 	}
+
 }

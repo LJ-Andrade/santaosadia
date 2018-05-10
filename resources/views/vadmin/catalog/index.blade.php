@@ -79,10 +79,9 @@
 									</label>
 								</td>
 								<td class="thumb">
-									@if($item->thumb != '' || $item->thumb != null)
-										<img class="CheckImg" src="{{ asset('webimages/catalogo/'. $item->thumb ) }}">
-									@else
-										<img class="CheckImg" src="{{ asset('webimages/gen/catalog-gen.jpg') }}">
+								{{-- {{dd($item->featuredImageName())}} --}}
+									@if($item->featuredImageName())
+										<img class="CheckImg" src="{{ asset('webimages/catalogo/thumbs/'. $item->featuredImageName()) }}">
 									@endif
 								</td>
 								<td class="w-50">#{{ $item->code }}</td>

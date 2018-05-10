@@ -19,6 +19,19 @@ class ImagesController extends Controller
 		return view('vadmin.images.index')->with('images', $images);
 	}
 	
+	public function setFeatured($id, $image)
+	{
+		CatalogImage::where('article_id', $id)->update([
+			'featured' => false
+		]);
+
+		$articleImage = CatalogImage::find($image);
+		$articleImage->featured = true;
+		$articleImage->save();
+
+		return back();
+	}
+	
 	public function destroy(Request $request)
 	{
 		$path = 'webimages/catalogo/';

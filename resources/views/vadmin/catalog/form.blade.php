@@ -95,14 +95,14 @@
     {{-- Status--}}
     <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="form-group">
-            {!! Form::label('status', 'Estado') !!}
-            {!! Form::select('status', ['1' => 'Activo','0' => 'Pausado'], null, ['class' => 'form-control']) !!}
+            {!! Form::label('status', 'Publicación') !!}
+            {!! Form::select('status', ['1' => 'Activa','0' => 'Pausada'], null, ['class' => 'form-control']) !!}
         </div>
     </div>	
 </div>
 {{-- Images--}}
 <div class="row">
-    <div class="col-md-3">
+    {{-- <div class="col-md-3">
         @component('vadmin.components.catalogthumbnail')
             @slot('thumbnail')
                 @if(isset($article) && $article->thumb != '')
@@ -112,9 +112,9 @@
                 @endif
             @endslot
         @endcomponent
-    </div>
+    </div> --}}
     @if(isset($article) && count($article->images) != 0 )
-        <div class="col-md-9 actual-images horizontal-list">
+        <div class="col-md-12 actual-images horizontal-list">
             <h2>Imágenes Publicadas</h2>
             <ul>
                 @foreach($article->images->reverse() as $image)
@@ -131,7 +131,7 @@
     <br>
         @include('vadmin.components.addimgsform')
     @else
-        <div class="col-md-9">
+        <div class="col-md-12">
             @include('vadmin.components.addimgsform')
         </div>
     </div> {{--  /Row  --}}

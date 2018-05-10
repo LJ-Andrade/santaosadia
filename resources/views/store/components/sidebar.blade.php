@@ -1,7 +1,7 @@
 <!-- Sidebar          -->
 <div class="col-xl-3 col-lg-4 pull-xl-9 pull-lg-8">
 	<aside class="sidebar">
-		<section class="widget">
+		{{-- <section class="widget">
 			<div class="shop-sorting">
 				<select class="form-control" id="sorting">
 				<option>Menor Precio</option>
@@ -9,11 +9,9 @@
 				<option>A - Z</option>
 				<option>Z - A</option>
 				</select>
-				{{--  
-				If Search
-				<span class="text-muted">Mostrando:&nbsp;</span><span>1 - 12 items</span>  --}}
+				<span class="text-muted">Mostrando:&nbsp;</span><span>1 - 12 items</span> 
 			</div>
-		</section>
+		</section> --}}
 		<!-- Widget Categories-->
 		<section class="widget widget-categories">
 			<h3 class="widget-title">Categorias</h3>
@@ -25,7 +23,7 @@
 		</section>
 
 		<!-- Widget Size Filter-->
-		{!! Form::open(['id' => 'SearchForm', 'method' => 'GET', 'route' => 'store', 'class' => 'form-inline', 'role' => 'search']) !!} 
+		{{-- {!! Form::open(['id' => 'SearchForm', 'method' => 'GET', 'route' => 'store', 'class' => 'form-inline', 'role' => 'search']) !!} 
 		<section class="widget">
 			<h3 class="widget-title">Atributos</h3>
 			<div class="row inline">
@@ -58,6 +56,6 @@
 			<br>
 			<button class="btn btn-outline-primary btn-sm" type="submit">Buscar</button>
 		</section>
-		{!! Form::close() !!}
+		{!! Form::close() !!} --}}
 	</aside>
 </div>

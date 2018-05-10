@@ -32,6 +32,8 @@ footer, header, hgroup, menu, nav, section {
 html {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+.galleria-errors { display: none }
 body {
 	width: 980px;
 	background-color: #FFF;

@@ -6,7 +6,6 @@
 			<div class="col-md-5 col-xs-12">
 				<div class="product-gallery"><span class="product-badge text-danger">@if($article->offer > 0) DESCUENTO % {{ $article->offer }}!! @endif</span>
 					<div class="gallery-wrapper">
-					
 						@foreach($article->images as $index => $image)
 						<div class="gallery-item {{ $index == 0 ? 'active' : '' }}"><a href="{{ asset('webimages/catalogo/'. $image->name) }}" data-hash="{{ $image->id }}" data-size="1000x1000"></a></div>
 						@endforeach

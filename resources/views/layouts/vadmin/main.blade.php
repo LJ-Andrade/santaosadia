@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 		<meta name="description" content="Gestion de contenido">
 		<meta name="keywords" content="">
-		<meta name="author" content="Studio Vimana">
+		<meta name="author" content="Vimana Studio">
 		<title>@yield('title')</title>
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<link rel="apple-touch-icon" sizes="60x60" href="{{ asset('images/logos/favicon.png') }}">
@@ -77,7 +77,7 @@
 				<div class="text">Desarrollado por <a href="https://vimana.studio">Vimana Studio</a></div>
 				<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
 				<img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>
-				<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"></a>
+				{{-- <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"></a> --}}
 			</div>
 		</div>
 		<!-- BEGIN VENDOR JS-->

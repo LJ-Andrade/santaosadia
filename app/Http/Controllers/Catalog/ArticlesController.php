@@ -129,8 +129,7 @@ class ArticlesController extends Controller
             'code'                 => 'unique:catalog_articles,code',
             'category_id'          => 'required',
             'slug'                 => 'required|alpha_dash|min:4|max:255|unique:catalog_articles,slug',
-            'image'                => 'image',
-
+            'image'                => 'image|mimes:jpeg,png,jpg,gif',
         ],[
             'name.required'        => 'Debe ingresar un nombre',
             'name.min'             => 'El título debe tener al menos 4 caracteress',
@@ -150,57 +149,54 @@ class ArticlesController extends Controller
             $request->discount = '0';
         }
         
-        $article           = new CatalogArticle($request->all());
-        $article->user_id  = \Auth::guard('user')->user()->id;
+        $article = new CatalogArticle($request->all());
+        $article->user_id = \Auth::guard('user')->user()->id;
         
-        $images            = $request->file('images');
-        $thumbnail         = $request->file('thumbnail');
-        $imgPath           = public_path("webimages/catalogo/"); 
-        $extension         = '.jpg';
+        $images = $request->file('images');
+        $thumbnail = $request->file('thumbnail');
+        $imgPath = public_path("webimages/catalogo/"); 
+        $thumbPath = public_path("webimages/catalogo/thumbs/");
+
+        // Creates directory if no exist
+        if (!file_exists($imgPath)) { $oldmask = umask(0); mkdir($imgPath, 0777); umask($oldmask); }
+        if (!file_exists($thumbPath)) { $oldmask = umask(0); mkdir($thumbPath, 0777); umask($oldmask); }
+
+        $extension = '.jpg';
         
-        if($article->save()){
+        $thumbWidth = 240;
+        $thumbHeight = 360;
+        $imgWidth = 500;
+        $imgHeight = 750;
+
+        if($article->save()) {
             $article->atribute1()->sync($request->atribute1);
             $article->tags()->sync($request->tags);
-            
-            $thumbWidth = 240;
-            $thumbHeight = 360;
-            $imgWidth = 500;
-            $imgHeight = 750;
-
-            try {
-                if($thumbnail){
-                    $thumb = \Image::make($thumbnail);
-                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($imgPath.$article->id.'-thumb'.$extension);
-                    $article->thumb = $article->id.'-thumb'.$extension;
-                    $article->save();
-
-                    $thumbToImg = \Image::make($thumbnail);
+            try {    
+                $number = '0';
+                
+                foreach($images as $phisic_image){
+                    $filename = $article->id.'-'.$number;
+                    $img = \Image::make($phisic_image);
+                    $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
+                    
                     $image = new CatalogImage();
-                    $image->name = $article->id.'-0'.$extension;
-                    $thumbToImg->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$image->name);
+                        if($number == '0'){ $image->featured = 1; }
+                    $image->name = $filename.$extension;
                     $image->article()->associate($article);
+                    
+                    $thumb = \Image::make($phisic_image);
+                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
+                    //$article->thumb = $article->id.'-thumb'.$extension;
+                    $image->thumb = $filename.$extension;
                     $image->save();
+                    $number++;
                 }
-                if($images != null){
-                    $number = '1';
-                    foreach($images as $phisic_image)
-                    {
-                        $filename = $article->id.'-'.$number++;
-                        $img = \Image::make($phisic_image);
-                        $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
-                        
-                        $image = new CatalogImage();
-                        $image->name = $filename.$extension;
-                        $image->article()->associate($article);
-                        $image->save();
-                    }
-                }
-
             } catch(\Exception $e) {
                 $article->delete();
                 return redirect()->route('catalogo.index')->with('message','Error al crear el artículo: '. $e);
             }
         }
+    
     
         return redirect()->route('catalogo.index')->with('message','Item creado');
     }
@@ -237,7 +233,7 @@ class ArticlesController extends Controller
             'code'                 => 'unique:catalog_articles,code,'.$article->id,
             'category_id'          => 'required',
             'slug'                 => 'required|alpha_dash|min:4|max:255|unique:catalog_articles,slug,'.$article->id,
-            'image'                => 'image',
+            'image'                => 'image|mimes:jpeg,png,jpg,gif',
 
         ],[
             'name.required'        => 'Debe ingresar un nombre',
@@ -256,10 +252,14 @@ class ArticlesController extends Controller
 
         $article->fill($request->all());
         
-        $images    = $request->file('images');
+        $images = $request->file('images');
         $thumbnail = $request->file('thumbnail');
-        $imgPath   = public_path("webimages/catalogo/"); 
+        $imgPath = public_path("webimages/catalogo/"); 
+        $thumbPath = public_path("webimages/catalogo/thumbs/");
         $extension = '.jpg';
+        // Creates directory if no exist
+        if (!file_exists($imgPath)) { $oldmask = umask(0); mkdir($imgPath, 0777); umask($oldmask); }
+        if (!file_exists($thumbPath)) { $oldmask = umask(0); mkdir($thumbPath, 0777); umask($oldmask); }
 
         $thumbWidth = 240;
         $thumbHeight = 360;
@@ -276,50 +276,32 @@ class ArticlesController extends Controller
                 $number = explode('.',$number[1]);
                 $number = ($number[0]+'1');
             } else {
-                $number = '1';
+                $number = '0';
             }
             
-            
-            try {
-                if($thumbnail){
+            try {    
+                foreach($images as $phisic_image){
+                    $filename = $article->id.'-'.$number;
+                    $img = \Image::make($phisic_image);
+                    $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
                     
-                    $thumb = \Image::make($thumbnail);
-                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($imgPath.$article->id.'-thumb'.$extension);
-                    $article->thumb = $article->id.'-thumb'.$extension;
-                    $article->save();
-
-                    $thumbToImg = \Image::make($thumbnail);
-                    $prevImg = CatalogImage::where('name', $article->id.'-0'.$extension);
-                    $prevImg->delete();
                     $image = new CatalogImage();
-                    $image->name = $article->id.'-0'.$extension;
-                    $thumbToImg->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$image->name);
-                    // Si se asocia se creará un doble registro en la db
+                        if($number == '0'){ $image->featured = 1; }
+                    $image->name = $filename.$extension;
                     $image->article()->associate($article);
+                    
+                    $thumb = \Image::make($phisic_image);
+                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
+                    //$article->thumb = $article->id.'-thumb'.$extension;
+                    $image->thumb = $filename.$extension;
                     $image->save();
+                    $number++;
                 }
-
-                if($images){
-                
-                    foreach($images as $phisic_image)
-                    {
-                        $filename = $article->id.'-'.$number++;
-                        $img      = \Image::make($phisic_image);
-                        $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
-                        
-                        $image            = new CatalogImage();
-                        $image->name      = $filename.$extension;
-                        $image->article()->associate($article);
-                        $image->save();
-                    }
-                }
-
             } catch(\Exception $e) {
                 $article->delete();
                 return redirect()->route('catalogo.index')->with('message','Error al crear el item: '. $e);
             }
         }
-
         return redirect()->route('catalogo.index')->with('message', 'Se ha editado el item con éxito');
     }
 
@@ -383,8 +365,9 @@ class ArticlesController extends Controller
 
     public function destroy(Request $request)
     {   
-        $ids      = json_decode('['.str_replace("'",'"',$request->id).']', true);
-        $path     = 'webimages/catalogo/';
+        $ids = json_decode('['.str_replace("'",'"',$request->id).']', true);
+        $path = '/webimages/catalogo/';
+        $thumb = '/webimages/catalogo/thumbs/';
 
         try {
             foreach ($ids as $id) {
@@ -400,12 +383,11 @@ class ArticlesController extends Controller
                 $record->atribute1()->detach();
                 
                 $images = $record->images;
-                File::Delete(public_path($path . $record->thumb));
                 foreach ($images as $image) {
-                    File::Delete(public_path($path . $image->name));
+                    File::Delete(public_path($path.$image->name));
+                    File::Delete(public_path($thumb.$image->name));
                     $image->delete();
                 }
-
                 $delete = $record->delete();
             }
             return response()->json([
@@ -419,3 +401,4 @@ class ArticlesController extends Controller
         }
     }
 }
+

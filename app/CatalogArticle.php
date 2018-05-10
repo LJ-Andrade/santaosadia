@@ -43,6 +43,23 @@ class CatalogArticle extends Model
     	return $this->belongsToMany('App\CatalogTag');
     }
 
+    public function featuredImageName(){
+        
+        $featuredImage = $this->images()->where('featured', true)->first();
+        if(!$featuredImage){
+            $featuredImage = $this->images()->first();
+        }
+        
+        // dd($featuredImage);
+        if($featuredImage){
+            return $featuredImage->name;
+        }
+
+        
+        return '/webimages/gen/catalog-gen.jpg';
+
+    }
+
     public function scopeActive($query){
         return $query->where('status', '1');
     }

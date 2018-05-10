@@ -22,10 +22,7 @@ Route::get('campaign_p_v_2015-2016', function(){ return view('web.web.campaign_p
 Route::get('campaign_o_i_2016', function(){ return view('web.web.campaign_o_i_2016'); });
 Route::get('campaign_p_v_2017', function(){ return view('web.web.campaign_p_v_2017'); });
 Route::get('especial-fiestas', function(){ return view('web.web.especial-fiestas'); });
-
-
- Route::get('descargar-pdf/{filename}', ['as' => 'descargar-catalogo', 'uses' => 'WebController@getDownload']);
-
+Route::get('descargar-pdf/{filename}', ['as' => 'descargar-catalogo', 'uses' => 'WebController@getDownload']);
 
 Route::get('contacto', function(){ return view('web.web.contacto'); });
 
@@ -49,15 +46,10 @@ Route::post('mail_sender', 'WebController@mail_sender');
 |--------------------------------------------------------------------------
 */
 
-
-
-
 Route::get('tienda', ['as' => 'store', 'uses' => 'Store\StoreController@index'])->middleware('active-customer');
 Route::get('store-register-hold', ['as' => 'store-register-hold', 'uses' => 'CustomerAuth\RegisterController@holdRegisterLogin'])->middleware('active-customer');
 
-
 Route::get('tienda/proceso', function(){ return view('store.proceso'); })->middleware('active-customer');
-
 
 Route::group(['prefix'=> 'tienda', 'middleware' => 'active-customer'], function() {    
 
@@ -81,9 +73,6 @@ Route::group(['prefix'=> 'tienda', 'middleware' => 'active-customer'], function(
         Route::get('resumen', ['as' => 'store.checkoutReview', 'uses' => 'Store\StoreController@checkoutReview'])->middleware('verifyOrderStatus');
         Route::get('comprobante/{id}', ['as' => 'store.finishCheckOut', 'uses' => 'Store\StoreController@finishCheckOut'])->middleware('verifyOrderStatus');
         Route::get('descargar-comprobante/{id}', ['as' => 'store.orderInvoice', 'uses' => 'Store\StoreController@downloadInvoice']);
-        
-        
-
         
         //Route::post('mp-connect', ['as' => 'store.getCreatePreference', 'uses' => 'MercadoPagoController@getCreatePreference']);
         Route::post('mp-connect', ['as' => 'store.getCreatePreference', 'uses' => 'Store\StoreController@mpConnect']);
@@ -222,6 +211,10 @@ Route::group(['prefix' => 'vadmin', 'middleware' => 'admin'], function(){
     // Atribute 1
     Route::resource('cat_atribute1', 'Catalog\CatalogAtribute1Controller');
     Route::post('catalog_make_thumb/{id}', 'Catalog\ArticlesController@makeThumb');
+    // CatalogArticle Images
+    Route::get('article/{id}/images/setFeatured/{image}', 'Catalog\ImagesController@setFeatured');
+
+
     // Shipping
     Route::resource('shippings', 'Catalog\ShippingsController');
     // Payments Methods

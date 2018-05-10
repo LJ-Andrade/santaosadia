@@ -4,6 +4,8 @@
 @section('styles')
 	{!! Html::style('plugins/texteditor/trumbowyg.min.css') !!}
 	{!! Html::style('plugins/jqueryFileUploader/jquery.fileuploader.css') !!}
+	{!! Html::style('plugins/jqueryFileUploader/jquery.fileuploader-thumbnailtheme.css') !!}
+	
 	{{-- {!! Html::style('plugins/jqueryfiler/themes/jquery.filer-dragdropbox-theme.css') !!} --}}
 	{!! Html::style('plugins/jqueryfiler/jquery.filer.css') !!}
 	{!! Html::style('plugins/chosen/chosen.min.css') !!}
@@ -61,8 +63,6 @@
 @section('custom_js')
 	
 	<script>
-		//$('.CatalogLi').addClass('open');
-		//$('.CatalogNew').addClass('active');
 		// ------------------- Textarea Text Editor --------------------------- //
 		// Path to icons
 		$.trumbowyg.svgPath = '{{ asset('plugins/texteditor/icons.svg') }}';

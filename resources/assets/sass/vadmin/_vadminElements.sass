@@ -27,6 +27,9 @@
 //                                  //
 //////////////////////////////////////
 
+.inner-wrapper
+	margin-bottom: 45px
+
 .test-box
 	background-color: #ffffff
 	border-radius: 5px
@@ -376,7 +379,9 @@
 			&:hover
 				.overlayItemCenter
 					opacity: 1
-		cursor: pointer
+					cursor: pointer
+		.featured-img
+			border: 5px solid #e9b00d
 	img
 		width: 150px
 		max-width: 100%
@@ -851,6 +856,7 @@ ul.pagination li.disabled
 	bottom: 0
 	right: 0
 	padding: 5px
+	z-index: 10
 	.inner
 		@include flex-center-right
 		.text
