@@ -51,6 +51,17 @@ class VadminController extends Controller
         return view('vadmin.support.docs');
     }
 
+
+    public function searchData(Request $request)
+    {
+        
+        $term = $request->get('term');
+    	$data = DB::table('users')->where("name","LIKE","%$term%")->select('title as value','slug as link')->get();
+        return response()->json($data);
+ 
+       // Something to note here : autocomplete takes value as your data so your title should be displayed as value as i did in my query else data will not be displayed
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MESSAGES / CONTACTS

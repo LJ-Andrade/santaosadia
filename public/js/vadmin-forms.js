@@ -1,1 +1,352 @@
-!function(e){var i={};function t(l){if(i[l])return i[l].exports;var a=i[l]={i:l,l:!1,exports:{}};return e[l].call(a.exports,a,a.exports,t),a.l=!0,a.exports}t.m=e,t.c=i,t.d=function(e,i,l){t.o(e,i)||Object.defineProperty(e,i,{configurable:!1,enumerable:!0,get:l})},t.n=function(e){var i=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(i,"a",i),i},t.o=function(e,i){return Object.prototype.hasOwnProperty.call(e,i)},t.p="",t(t.s=11)}({11:function(e,i,t){e.exports=t(12)},12:function(e,i){$(".Select-Tags").chosen({placeholder_text_multiple:"Seleccione las etiquetas",search_contains:!0,no_results_text:"No se ha encontrado la etiqueta"}),$(".Select-Atribute").chosen({placeholder_text_multiple:"Seleccionar",search_contains:!0,no_results_text:"No se ha encontrado"}),$(".Select-Category").chosen({placeholder_text_single:"Seleccione una categoría"}),$(".Select-Chosen").chosen({placeholder_text_single:"Seleccione una categoría"}),$(".SlugInput").keyup(function(){var e=$(this).val();e=(e=(e=(e=(e=(e=(e=(e=(e=e.toLowerCase()).replace(/[&\/\\#,¡!´#+()$~%.'":*?<>{}]/g,"")).replace(/\s+/g,"-")).replace("ñ","n")).replace("á","a")).replace("é","e")).replace("í","i")).replace("ó","o")).replace("ú","u"),$(".SlugInput").val(e)}),$("#TitleInput").keyup(function(e){$(this).val();var i=$(this).val();i=(i=(i=(i=(i=(i=(i=(i=(i=i.toLowerCase()).replace(/[&\/\\#,¡!´#+()$~%.'":*?<>{}]/g,"")).replace(/\s+/g,"-")).replace("ñ","n")).replace("á","a")).replace("é","e")).replace("í","i")).replace("ó","o")).replace("ú","u"),$(".SlugInput").val(i)}),$(".ShowNotesTextArea").click(function(){var e=$(".NotesTextArea");e.hasClass("Hidden")?e.removeClass("Hidden"):e.addClass("Hidden")}),$(".AddAnotherAddressBtn").click(function(){$(".AnotherAddress").append("<input class='form-control' placeholder='Ingrese otro teléfono' name='deliveryaddress[]' type='text' style='margin-top:5px'>"),$(".AnotherLoc").append("<input class='form-control' placeholder='Ingrese otro teléfono' name='deliveryaddress[]' type='text' style='margin-top:5px'>")}),$("#Single_Image").fileuploader({extensions:["jpg","jpeg","png","gif"],limit:1,addMore:!1,fileMaxSize:2,captions:{button:function(e){return"Seleccionar "+(e.limit,"Imágen")},feedback:function(e){return"Agregar imágenes..."},feedback2:function(e){return e.length+" "+(e.length>1?" imágenes seleccionadas":" imágen seleccionada")},drop:"Arrastre las imágenes aquí",paste:'<div class="fileuploader-pending-loader"><div class="left-half" style="animation-duration: ${ms}s"></div><div class="spinner" style="animation-duration: ${ms}s"></div><div class="right-half" style="animation-duration: ${ms}s"></div></div> Pasting a file, click here to cancel.',removeConfirmation:"Eliminar?",errors:{filesLimit:"Solo es posible subir ${limit} imágen.",filesType:"Solo se aceptan los formatos: ${extensions}.",fileSize:"La imágen pesa mucho! Elija una de ${fileMaxSize}MB como máximo.",fileName:"La imágen con ese nombre ya ha sido elegida",folderUpload:"No está permitido subir carpetas."},dialogs:{alert:function(e){function i(i){return e.apply(this,arguments)}return i.toString=function(){return e.toString()},i}(function(e){return alert(e)}),confirm:function(e,i){"confirm(text) ? callback() : null;"}}}}),$("#Multi_Images").fileuploader({extensions:["jpg","jpeg","png","gif","bmp"],changeInput:" ",theme:"thumbnails",enableApi:!0,addMore:!0,thumbnails:{box:'<div class="fileuploader-items"><ul class="fileuploader-items-list"><li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner">+</div></li></ul></div>',item:'<li class="fileuploader-item"><div class="fileuploader-item-inner"><div class="thumbnail-holder">${image}</div><div class="actions-holder"><a class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="remove"></i></a><span class="fileuploader-action-popup"></span></div><div class="progress-holder">${progressBar}</div></div></li>',item2:'<li class="fileuploader-item"><div class="fileuploader-item-inner"><div class="thumbnail-holder">${image}</div><div class="actions-holder"><a class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="remove"></i></a><span class="fileuploader-action-popup"></span></div></div></li>',startImageRenderer:!0,canvasImage:!1,_selectors:{list:".fileuploader-items-list",item:".fileuploader-item",start:".fileuploader-action-start",retry:".fileuploader-action-retry",remove:".fileuploader-action-remove"},onItemShow:function(e,i,t,l,a){var n=i.find(".fileuploader-thumbnails-input"),o=$.fileuploader.getInstance(a.get(0));n.insertAfter(e.html)[o.getOptions().limit&&o.getChoosedFiles().length>=o.getOptions().limit?"hide":"show"](),"image"==e.format&&e.html.find(".fileuploader-item-icon").hide()}},afterRender:function(e,i,t,l){var a=e.find(".fileuploader-thumbnails-input"),n=$.fileuploader.getInstance(l.get(0));a.on("click",function(){n.open()})},onRemove:function(e,i,t,l,a){var n=i.find(".fileuploader-thumbnails-input"),o=$.fileuploader.getInstance(a.get(0));o.getOptions().limit&&o.getChoosedFiles().length-1<o.getOptions().limit&&n.show()}})}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(12);
+
+
+/***/ }),
+
+/***/ 12:
+/***/ (function(module, exports) {
+
+// ------------ Tags ------------ //
+$('.Select-Tags').chosen({
+    placeholder_text_multiple: 'Seleccione las etiquetas',
+    // max_selected_options: 3,
+    search_contains: true,
+    no_results_text: 'No se ha encontrado la etiqueta'
+});
+
+$('.Select-Atribute').chosen({
+    placeholder_text_multiple: 'Seleccionar',
+    // max_selected_options: 3,
+    search_contains: true,
+    no_results_text: 'No se ha encontrado'
+});
+
+$('.Select-Category').chosen({
+    placeholder_text_single: 'Seleccione una categoría'
+});
+
+$('.Select-Chosen').chosen({
+    placeholder_text_single: 'Seleccione una categoría'
+});
+
+// --------- Slug sanitizer -------- //
+$(".SlugInput").keyup(function () {
+    var Text = $(this).val();
+    Text = Text.toLowerCase();
+    var regExp = /\s+/g;
+    Text = Text.replace(/[&\/\\#,¡!´#+()$~%.'":*?<>{}]/g, '');
+    Text = Text.replace(regExp, '-');
+    Text = Text.replace('ñ', 'n');
+    Text = Text.replace('á', 'a');
+    Text = Text.replace('é', 'e');
+    Text = Text.replace('í', 'i');
+    Text = Text.replace('ó', 'o');
+    Text = Text.replace('ú', 'u');
+
+    $(".SlugInput").val(Text);
+});
+
+// --------- Slug AutoFillnput from title --------- //
+$("#TitleInput").keyup(function (event) {
+    var stt = $(this).val();
+    var Text = $(this).val();
+    Text = Text.toLowerCase();
+    var regExp = /\s+/g;
+    Text = Text.replace(/[&\/\\#,¡!´#+()$~%.'":*?<>{}]/g, '');
+    Text = Text.replace(regExp, '-');
+    Text = Text.replace('ñ', 'n');
+    Text = Text.replace('á', 'a');
+    Text = Text.replace('é', 'e');
+    Text = Text.replace('í', 'i');
+    Text = Text.replace('ó', 'o');
+    Text = Text.replace('ú', 'u');
+    $(".SlugInput").val(Text);
+});
+
+// $(document).ready(function() {
+// 	$('#Multi_Images').filer({
+// 		// limit: 3,
+// 		maxSize: 3,
+// 		extensions: ['jpg', 'jpeg', 'png', 'gif'],
+// 		changeInput: true,
+// 		showThumbs: true,
+// 		addMore: true
+// 	});
+// });
+
+//////////////////////////////
+// 							//
+//      CREATE FORM         //
+//                          //
+//////////////////////////////
+
+// Show Notes Text Area
+$('.ShowNotesTextArea').click(function () {
+    var notes = $('.NotesTextArea');
+    if (notes.hasClass('Hidden')) {
+        notes.removeClass('Hidden');
+    } else {
+        notes.addClass('Hidden');
+    }
+});
+
+// Add Another Address
+$('.AddAnotherAddressBtn').click(function () {
+    var addressInput = "<input class='form-control' placeholder='Ingrese otro teléfono' name='deliveryaddress[]' type='text' style='margin-top:5px'>";
+    var locInput = "<input class='form-control' placeholder='Ingrese otro teléfono' name='deliveryaddress[]' type='text' style='margin-top:5px'>";
+
+    $('.AnotherAddress').append(addressInput);
+    $('.AnotherLoc').append(locInput);
+});
+
+//////////////////////////////
+// 							//
+//   EDITORS AND FIELDS     //
+//                          //
+//////////////////////////////
+
+// $('#Multi_Images').fileuploader({
+//     extensions: ['jpg', 'jpeg', 'png', 'gif'],
+//     limit: null,
+//     addMore: true,
+//     // Peso máximo de todas las imágenes
+//     maxSize: 5,
+//     // Peso máximo por imágen
+//     fileMaxSize: 2,
+//     theme: 'thumbnails',
+//     enableApi: true,
+//     captions: {
+//         button: function(options) { return 'Seleccionar ' + (options.limit == 1 ? 'Imágenes' : 'Imágen'); },
+//         feedback: function(options) { return 'Haga click para agregar...'; },
+//         feedback2: function(options) { return options.length + ' ' + (options.length > 1 ? ' imágenes seleccionadas' : ' imágen seleccionada'); },
+//         drop: 'Arrastre las imágenes aquí',
+//         paste: '<div class="fileuploader-pending-loader"><div class="left-half" style="animation-duration: ${ms}s"></div><div class="spinner" style="animation-duration: ${ms}s"></div><div class="right-half" style="animation-duration: ${ms}s"></div></div> Pasting a file, click here to cancel.',
+//         removeConfirmation: 'Eliminar?',
+//         errors: {
+//             filesLimit: 'Solo es posible subir ${limit} imágen.',
+//             filesType: 'Solo se aceptan los formatos: ${extensions}.',
+//             fileSize: '${name} es muy grandes! Seleccione una de ${fileMaxSize}MB. como máximo',
+//             filesSizeAll: '${name} son muy grandes! Seleccione unas de ${fileMaxSize}MB. como máximo',
+//             fileName: 'La imágen con el nombre ${name} ya está seleccionada.',
+//             folderUpload: 'No está permitido subir carpetas.'
+//         },
+//         dialogs: {
+//             // alert dialog
+//             alert: function(text) {
+//                 return alert_confirm(text);
+//             },
+//             // confirm dialog
+//             confirm: function(text, callback) {
+//                 'confirm(text) ? callback() : null;'
+//             }
+//         },
+//     }
+// });
+
+$('#Single_Image').fileuploader({
+    extensions: ['jpg', 'jpeg', 'png', 'gif'],
+    limit: 1,
+    addMore: false,
+    fileMaxSize: 2,
+    captions: {
+        button: function button(options) {
+            return 'Seleccionar ' + (options.limit == 1 ? 'Imágen' : 'Imágen');
+        },
+        feedback: function feedback(options) {
+            return 'Agregar imágenes...';
+        },
+        feedback2: function feedback2(options) {
+            return options.length + ' ' + (options.length > 1 ? ' imágenes seleccionadas' : ' imágen seleccionada');
+        },
+        drop: 'Arrastre las imágenes aquí',
+        paste: '<div class="fileuploader-pending-loader"><div class="left-half" style="animation-duration: ${ms}s"></div><div class="spinner" style="animation-duration: ${ms}s"></div><div class="right-half" style="animation-duration: ${ms}s"></div></div> Pasting a file, click here to cancel.',
+        removeConfirmation: 'Eliminar?',
+        errors: {
+            filesLimit: 'Solo es posible subir ${limit} imágen.',
+            filesType: 'Solo se aceptan los formatos: ${extensions}.',
+            fileSize: 'La imágen pesa mucho! Elija una de ${fileMaxSize}MB como máximo.',
+            fileName: 'La imágen con ese nombre ya ha sido elegida',
+            folderUpload: 'No está permitido subir carpetas.'
+        },
+        dialogs: {
+            // alert dialog
+            alert: function (_alert) {
+                function alert(_x) {
+                    return _alert.apply(this, arguments);
+                }
+
+                alert.toString = function () {
+                    return _alert.toString();
+                };
+
+                return alert;
+            }(function (text) {
+                return alert(text);
+            }),
+            // confirm dialog
+            confirm: function confirm(text, callback) {
+                'confirm(text) ? callback() : null;';
+            }
+        }
+    }
+});
+
+$('#Multi_Images').fileuploader({
+    extensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
+    changeInput: ' ',
+    theme: 'thumbnails',
+    enableApi: true,
+    addMore: true,
+    thumbnails: {
+        box: '<div class="fileuploader-items">' + '<ul class="fileuploader-items-list">' + '<li class="fileuploader-thumbnails-input"><div class="fileuploader-thumbnails-input-inner">+</div></li>' + '</ul>' + '</div>',
+        item: '<li class="fileuploader-item">' + '<div class="fileuploader-item-inner">' + '<div class="thumbnail-holder">${image}</div>' + '<div class="actions-holder">' + '<a class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="remove"></i></a>' + '<span class="fileuploader-action-popup"></span>' + '</div>' + '<div class="progress-holder">${progressBar}</div>' + '</div>' + '</li>',
+        item2: '<li class="fileuploader-item">' + '<div class="fileuploader-item-inner">' + '<div class="thumbnail-holder">${image}</div>' + '<div class="actions-holder">' + '<a class="fileuploader-action fileuploader-action-remove" title="${captions.remove}"><i class="remove"></i></a>' + '<span class="fileuploader-action-popup"></span>' + '</div>' + '</div>' + '</li>',
+        startImageRenderer: true,
+        canvasImage: false,
+        _selectors: {
+            list: '.fileuploader-items-list',
+            item: '.fileuploader-item',
+            start: '.fileuploader-action-start',
+            retry: '.fileuploader-action-retry',
+            remove: '.fileuploader-action-remove'
+        },
+        onItemShow: function onItemShow(item, listEl, parentEl, newInputEl, inputEl) {
+            var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+                api = $.fileuploader.getInstance(inputEl.get(0));
+
+            plusInput.insertAfter(item.html)[api.getOptions().limit && api.getChoosedFiles().length >= api.getOptions().limit ? 'hide' : 'show']();
+
+            if (item.format == 'image') {
+                item.html.find('.fileuploader-item-icon').hide();
+            }
+        }
+    },
+    afterRender: function afterRender(listEl, parentEl, newInputEl, inputEl) {
+        var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+            api = $.fileuploader.getInstance(inputEl.get(0));
+
+        plusInput.on('click', function () {
+            api.open();
+        });
+    },
+    onRemove: function onRemove(item, listEl, parentEl, newInputEl, inputEl) {
+        var plusInput = listEl.find('.fileuploader-thumbnails-input'),
+            api = $.fileuploader.getInstance(inputEl.get(0));
+
+        if (api.getOptions().limit && api.getChoosedFiles().length - 1 < api.getOptions().limit) plusInput.show();
+    }
+    /*
+    // while using upload option, please set
+    // startImageRenderer: false
+    // for a better effect
+    upload: {
+        url: './php/upload_file.php',
+        data: null,
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        start: true,
+        synchron: true,
+        beforeSend: null,
+        onSuccess: function(data, item) {
+            setTimeout(function() {
+                item.html.find('.progress-holder').hide();
+                item.renderThumbnail();
+            }, 400);
+        },
+        onError: function(item) {
+            item.html.find('.progress-holder').hide();
+            item.html.find('.fileuploader-item-icon i').text('Failed!');
+        },
+        onProgress: function(data, item) {
+            var progressBar = item.html.find('.progress-holder');
+            
+            if(progressBar.length > 0) {
+                progressBar.show();
+                progressBar.find('.fileuploader-progressbar .bar').width(data.percentage + "%");
+            }
+        }
+    },
+    dragDrop: {
+        container: '.fileuploader-thumbnails-input'
+    },
+    onRemove: function(item) {
+        $.post('php/upload_remove.php', {
+            file: item.name
+        });
+    },
+    */
+});
+
+/***/ })
+
+/******/ });

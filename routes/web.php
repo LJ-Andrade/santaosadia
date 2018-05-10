@@ -125,11 +125,11 @@ Route::group(['prefix'=> 'vadmin'], function() {
     Route::get('login', ['as' => 'vadmin.login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::post('login', ['uses' => 'Auth\LoginController@login']);
     Route::post('logout', ['as' => 'vadmin.logout', 'uses' => 'Auth\LoginController@logout']);
-
+    
     // Registration Routes...
     Route::get('register', ['as' => 'vadmin.register', 'uses' => 'Auth\RegisterController@showRegistrationForm']);
     Route::post('register', ['uses' => 'Auth\RegisterController@register']);
-
+    
     // Password Reset Routes...
     Route::get('password/reset', ['as' => 'vadmin.password.reset', 'uses' => 'Auth\ForgotPasswordController@showLinkRequestForm']);
     Route::post('password/email', ['as' => 'vadmin.password.email', 'uses' => 'Auth\ForgotPasswordController@sendResetLinkEmail']);
@@ -166,20 +166,21 @@ Route::group(['prefix' => 'vadmin'], function(){
     Route::get('mailChecker', ['as' => 'vadmin.mailChecker', 'uses' => 'ToolsController@mailChecker']);
     Route::get('configs', ['as' => 'vadmin.configs', 'uses' => 'VadminController@configs']);
     // Route::get('infophp', ['as' => 'vadmin.infophp', 'uses' => 'VadminController@infophp'])->middleware('admin');
-
+    // Autocomplete
+    Route::get('search', ['as' => 'search', 'uses' => 'VadminController@searchData']);
 });
 
 Route::group(['prefix' => 'vadmin', 'middleware' => 'admin'], function(){
-
+    
     //Route::get('/home', 'VadminController@index');
     Route::get('/', 'VadminController@index');
     
     Route::post('updateStatus/{model}/{id}', 'VadminController@updateStatus');
-
+    
     // -- USERS --
     Route::resource('users', 'UserController');
     Route::post('message_status/{id}', 'VadminController@updateMessageStatus');
-
+    
     // -- CUSTOMERS --
     Route::resource('customers', 'CustomerController');
     Route::post('updateCustomerGroup', 'CustomerController@updateCustomerGroup');

@@ -26,8 +26,8 @@
 				</div> --}}
 			</section>
 			<div class="row match-height">
-				<a href="">
-					<div class="col-xl-4 col-lg-12">
+				<a href="{{ route('catalogo.index') }}">
+					<div class="col-xl-4 col-lg-4">
 						<div class="card">
 							<div class="card-body dash-item1">
 								<div class="media">
@@ -43,8 +43,8 @@
 						</div>
 					</div>
 				</a>
-				<a href="">
-					<div class="col-xl-4 col-lg-12">
+				<a href="{{ route('customers.index') }}">
+					<div class="col-xl-4 col-lg-4">
 						<div class="card">
 							<div class="card-body dash-item1">
 								<div class="media">
@@ -60,6 +60,16 @@
 						</div>
 					</div>
 				</a>
+				<div class="col-xl-4 col-lg-4">
+					<div class="form-group">
+						<b>Actualizar Stock</b>
+						{{-- <hr class="softhr">
+						{!! Form::label('term', 'Buscar por nombre') !!}
+						{!! Form::text('term', null, ['id' => 'UpdateStockByName', 'class' => 'form-control']) !!}
+						{!! Form::label('term', 'Buscar por código') !!}
+						{!! Form::text('term', null, ['id' => 'UpdateStockByName', 'class' => 'form-control']) !!} --}}
+					</div>
+				</div>
 			</div>
 
 			<div class="row">
@@ -98,8 +108,8 @@
 
 						</div>	
 					</div>
-				</div>
 			
+				</div>
 			</div>
 
 		</div>
@@ -111,5 +121,20 @@
 @endsection
 
 @section('custom_js')
-
+	<script>
+		//$('#UpdateStockByName').autocomplete({
+		//	source: "{!!URL::route('search')!!}",
+		//	minlength: 1,
+		//	autoFocus: true,
+		//	search: function()
+		//	{
+		//		// Loader
+		//	},
+		//	select: function(e,ui)
+		//	{
+		//		var id = ui.item.codigo;
+		//		$('#UpdateStockByCode').val(id);
+		//	}
+		//});
+	</script>
 @endsection
