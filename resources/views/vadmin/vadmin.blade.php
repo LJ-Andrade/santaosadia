@@ -62,7 +62,7 @@
 				</a>
 				<div class="col-xl-4 col-lg-4">
 					<div class="form-group">
-						<b>Actualizar Stock</b>
+						{{-- <b>Actualizar Stock</b> --}}
 						{{-- <hr class="softhr">
 						{!! Form::label('term', 'Buscar por nombre') !!}
 						{!! Form::text('term', null, ['id' => 'UpdateStockByName', 'class' => 'form-control']) !!}
@@ -104,9 +104,6 @@
 							</ul>
 						</div>
 						<br>
-						<div class="container">
-
-						</div>	
 					</div>
 			
 				</div>

@@ -97,7 +97,7 @@
                                     @if($order->payment_method_id != null)
                                     <td><b>Método de pago:</b></td>
                                     <td>{{ $order->payment->name }} (% {{ $order->payment->percent }})</td>
-                                    <td>${{ calcValuePercentNeg($subtotal,$order->payment->percent) }}</td>
+                                    <td>${{ calcPercent($subtotal,$order->payment->percent) }}</td>
                                     @else
                                     <td>Método de pago no seleccionado</td>
                                     <td></td>

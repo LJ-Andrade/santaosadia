@@ -12,6 +12,8 @@
                             <tr>
                                 <th>Detalle</th>
                                 <th class="text-center">Talle</th>
+                                <th class="text-center">Textil</th>
+                                <th class="text-center">Color</th>
                                 <th class="text-center">Cantidad</th>
                                 <th class="text-center">Subtotal</th>
                                 <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="#">Vaciar Carro</a></th>
@@ -19,12 +21,14 @@
                         </thead>
                         <tbody>
                         {{--  Calc  Order Total Value  --}}
-                        @if($activeCart['activeCart'])
+                        
+                        @if($activeCart)
                             @foreach($activeCart['activeCart']->details as $item)
                             
                             <tr id="Detail{{$item->id}}">
                                 <td>
-                                    <div class="product-item"><a class="product-thumb" href="{{ url('tienda/articulo/'.$item->article->id) }}"><img src="{{ asset('webimages/catalogo/'. $item->article->thumb ) }}" alt="Product"></a>
+                                    <div class="product-item"><a class="product-thumb" href="{{ url('tienda/articulo/'.$item->article->id) }}">
+                                        <img src="{{ asset('webimages/catalogo/'. $item->article->featuredImageName() ) }}" alt="Product"></a>
                                         <div class="product-info">
                                         <h4 class="product-title"><a href="{{ url('tienda/articulo/'.$item->article->id) }}">{{ $item->article->name }}</a></h4>
                                         <span><em>Categoría:</em> {{ $item->article->category->name}}</span>
@@ -35,12 +39,9 @@
                                 
                                 <td class="text-center">
                                     {{ $item->size }}
-                                    <!-- <select class="form-control" id="SelectedSize">
-                                        @foreach($item->article->atribute1 as $sizes)
-                                            <option <?php if($item->size == $sizes->name) { echo "selected='selected'"; } ?> value="{{ $sizes->name }}">{{ $sizes->name }}</option>
-                                        @endforeach
-                                    </select>  -->
                                 </td>
+                                <td>{{ $item->textile }}</td>
+                                <td>{{ $item->color }}</td>
                                 <td class="text-center">
                                     {{ $item->quantity }}
                                 </td>

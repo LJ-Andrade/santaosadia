@@ -29,9 +29,9 @@ class CartsController extends Controller
         $order = Cart::find($id);
         $customer = Customer::find($order->customer_id);
         
-        $prices = $this->calcCartTotalPrice($order);
+        $prices = $this->calcCartData($order);
         
-        $subtotal = $prices['subtotal'];
+        $subtotal = $prices['subTotal'];
         $total = $prices['total'];
 
         return view('vadmin.orders.show')

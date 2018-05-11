@@ -4,39 +4,21 @@ namespace App\Traits;
  
 trait CartTrait {
  
-    public function calcCartTotalPrice($cart)
+    public function calcCartData($cart)
     {
-        $articlesPrice = 0;
-        $shippingCost = 0;
-        $paymentCost = 0;
-        $total = 0;
-        
-        // Sum all article prices
-        foreach($cart->details as $detail)
-        {
-            // Check discounts
-            if($detail->discount != '0'){
-                $articlesPrice += $detail->quantity * calcValuePercentNeg($detail->price, $detail->discount);
+        $cartTotal = '0';
+        $cartSubTotal = '0';
+        foreach($cart->details as $item){
+            if($item->discount > '0'){
+                $cartSubTotal += calcValuePercentNeg($item->price, $item->discount) * $item->quantity;
             } else {
-                $articlesPrice += $detail->quantity * $detail->price;
+                $cartSubTotal += $item->price * $item->quantity;
             }
         }
-
-        $subtotal = $articlesPrice;
-        
-        // Check for shipping cost
-        if($cart->shipping_id != null){
-            $shippingCost = $cart->shipping->price;
-        }
-
-        // Check for payment cost
-        if($cart->payment_method_id != null){
-            $paymentCost  = calcValuePercentNeg($subtotal, $cart->payment->percent);
-        }
-        
-        $total = $subtotal + $shippingCost + $paymentCost;
-              
-        return array("shipping" => $shippingCost, "payment" => $paymentCost, "subtotal" => $subtotal, "total" => $total);
+        $cartTotal = $cartSubTotal + calcPercent($cartSubTotal, $cart->payment_percent) + $cart->shipping_price;
+    
+        $cart = array("cart" => $cart, "paymentPercent" => $cart->payment_percent, "shippingPrice" => $cart->shipping_price, "subTotal" => $cartSubTotal, "total" => $cartTotal);
+        return $cart;
     }
  
 }

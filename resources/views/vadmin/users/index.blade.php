@@ -77,15 +77,15 @@
 				@slot('tableContent')
 					@if(!$items->isEmpty())
 						@foreach($items as $item)
-							<tr>
+							<tr> 
 								@if(Auth::guard('user')->user()->role <= 2)
-								<td>
-									<label class="custom-control custom-checkbox list-checkbox">
-										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
-										<span class="custom-control-indicator"></span>
-										<span class="custom-control-description"></span>
-									</label>
-								</td>
+									<td>
+										<label class="custom-control custom-checkbox list-checkbox">
+											<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
+											<span class="custom-control-indicator"></span>
+											<span class="custom-control-description"></span>
+										</label>
+									</td>
 								@endif
 								<td class="show-link"><a href="{{ url('vadmin/users/'.$item->id) }}">{{ $item->username }}</a></td>
 								<td>{{ $item->name }}</td>
@@ -93,14 +93,16 @@
 								<td>{{ roleTrd($item->role) }}</td>
 								<td>{{ groupTrd($item->group) }}</td>
 								<td class="w-50 pad0 centered">
+									@if($item->role != '1')
 									<label class="switch">
 										<input class="UpdateStatus switch-checkbox" type="checkbox" 
 										data-model="User" data-id="{{ $item->id }}"
 										@if($item->status == '1') checked @endif>
 										<span class="slider round"></span>
 									</label>
+									@endif
 								</td>
-							</tr>						
+							</tr>
 						@endforeach
 					@else
 						<tr>

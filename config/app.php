@@ -169,6 +169,7 @@ return [
         */
         // To send data to all views (Categories, tags)
         App\Providers\ComposerServiceProvider::class,
+        App\Providers\StoreServiceProvider::class,
         
         /*
         * Application Service Providers...
@@ -186,7 +187,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         // Excel Export
         Maatwebsite\Excel\ExcelServiceProvider::class,
-    
+        
     ],
 
     /*

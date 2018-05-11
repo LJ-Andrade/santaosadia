@@ -30,12 +30,12 @@
 						<h2>Imágenes del artículo</h2>
 						<ul>
 							@foreach($article->images->sortByDesc('featured') as $image)
-							<li id="Img{{ $image->id }}" class="{{ $image->featured ? 'featured-img' : '' }}">	
+							<li id="Img{{ $image->id }}" class="{{ $image->featured ? 'is-featured' : '' }}">	
 								<img src="{{ asset('webimages/catalogo/thumbs/'.$image->name) }}">
 								<div class="overlayItemCenter">
 									<a> <i class="Delete-Product-Img icon-ios-trash-outline delete-img" data-imgid="{{ $image->id }}"></i></a>
 									@if(!$image->featured)
-									<a href="{{ url('vadmin/article/'.$article->id.'/images/setFeatured/'.$image->id) }}"><i class="icon-star feature-img"></i></a>
+									<a href="{{ url('vadmin/article/'.$article->id.'/images/setFeatured/'.$image->id) }}"><i class="icon-star"></i></a>
 									@endif
 								</div>
 							</li>

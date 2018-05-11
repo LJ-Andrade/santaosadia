@@ -1,20 +1,20 @@
 {{-- Title --}}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="form-group">
             {!! Form::label('name', 'Nombre') !!}
             {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Título del artículo', 'id' => 'TitleInput', 
             'required' => '', 'maxlength' => '120', 'minlength' => '4']) !!}
         </div>
     </div>
-    {{-- Slug --}}
-    <div class="col-md-4">
+    {{--  Code  --}}
+    <div class="col-md-2">
         <div class="form-group">
-            {!! Form::label('slug', 'Url Amigable - Dirección web') !!}
-            {!! Form::text('slug', null, ['class' => 'SlugInput form-control', 'placeholder' => 'Dirección visible (en explorador)', 'id' => 'SlugInput', 'required' => '']) !!}
-            <div class="slug2"></div>
+            {!! Form::label('code', 'Código') !!}
+            {!! Form::text('code', null, ['class' => 'form-control', 'placeholder' => 'Ingrese el código', 'required' => '']) !!}
         </div>
     </div>
+
     <div class="col-md-2">
         {!! Form::label('stock', 'Stock') !!}
         {!! Form::number('stock', null, ['class' => 'form-control', 'placeholder' => 'Stock']) !!}
@@ -25,13 +25,6 @@
     </div>
 </div>
 <div class="row">
-    {{--  Code  --}}
-    <div class="col-md-2">
-        <div class="form-group">
-            {!! Form::label('code', 'Código') !!}
-            {!! Form::text('code', null, ['class' => 'form-control', 'placeholder' => 'Ingrese el código', 'required' => '']) !!}
-        </div>
-    </div>
     {{--  Price  --}}
     <div class="col-md-2">
         <div class="form-group">
@@ -40,14 +33,14 @@
         </div>
     </div>
     {{--  Discount  --}}
-    <div class="col-md-1">
+    <div class="col-md-2">
         <div class="form-group">
             {!! Form::label('discount', '% Oferta') !!}
             {!! Form::number('discount', '0', ['class' => 'form-control', 'min' => '0', 'maxlength' => '30', 'step'=>'any']) !!}
         </div>
     </div>
     {{-- Slug --}}
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('atribute1', 'Talles') !!}
             {!! Form::select('atribute1[]', $atribute1, null, ['class' => 'Select-Atribute form-control', 'multiple']) !!}
@@ -113,26 +106,35 @@
             @endslot
         @endcomponent
     </div> --}}
-    @if(isset($article) && count($article->images) != 0 )
+    @if(isset($article) && count($article->images) > 0 )
         <div class="col-md-12 actual-images horizontal-list">
             <h2>Imágenes Publicadas</h2>
             <ul>
-                @foreach($article->images->reverse() as $image)
-                <li id="Img{{ $image->id }}">	
+                @foreach($article->images->sortByDesc('featured') as $image)
+                <li id="Img{{ $image->id }}" class="{{ $image->featured ? 'is-featured' : '' }}">	
                     <img class="CheckImg" src="{{ asset('webimages/catalogo/'.$image->name) }}">
                     <div class="overlayItemCenter">
-                        <i class="Delete-Product-Img icon-ios-trash-outline delete-img" data-imgid="{{ $image->id }}"></i>
+                        <a><i class="Delete-Product-Img icon-ios-trash-outline delete-img" data-imgid="{{ $image->id }}"></i></a>
+                        @if(!$image->featured)
+                            <a href="{{ url('vadmin/article/'.$article->id.'/images/setFeatured/'.$image->id) }}"><i class="icon-star"></i></a>
+                        @endif
                     </div>
                 </li>
                 @endforeach
             </ul>
+        <br>
         </div>
-    </div>
-    <br>
         @include('vadmin.components.addimgsform')
     @else
         <div class="col-md-12">
             @include('vadmin.components.addimgsform')
         </div>
-    </div> {{--  /Row  --}}
     @endif
+        {{-- Slug --}}
+    <div class="col-md-4">
+        <div class="form-group">
+            {!! Form::label('slug', 'Url Amigable - Dirección web') !!}
+            {!! Form::text('slug', null, ['class' => 'SlugInput form-control Display-Input-Modificable display-input-disabled', 'placeholder' => 'Dirección visible (en explorador)', 'id' => 'SlugInput', 'required' => '']) !!}
+        </div>
+    </div>
+</div>{{--  /Row  --}}

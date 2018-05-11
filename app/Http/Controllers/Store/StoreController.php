@@ -25,8 +25,7 @@ use App\Traits\CartTrait;
 
 class StoreController extends Controller
 {
-    
-    //public $customer = '2';
+
     use CartTrait;
     
     public function __construct()
@@ -37,7 +36,6 @@ class StoreController extends Controller
     
     public function index(Request $request)
     {   
-        
         if($request->category)
         {
             $articles = CatalogArticle::orderBy('id', 'DESC')->active()->where('category_id', $request->category)->paginate(15);
@@ -57,7 +55,6 @@ class StoreController extends Controller
         $tags = CatalogTag::orderBy('id', 'ASC')->select('name', 'id')->get();
         $atributes1 = CatalogAtribute1::orderBy('id', 'ASC')->select('name', 'id')->get();
         
-        $activeCart = $this->getActiveCart();
         $favs = $this->getCustomerFavs();
 
         return view('store.index')
@@ -66,14 +63,12 @@ class StoreController extends Controller
             ->with('tags', $tags)
             ->with('user', $user)
             ->with('favs', $favs)
-            ->with('atributes1', $atributes1)
-            ->with('activeCart', $activeCart);
+            ->with('atributes1', $atributes1);
     }
     
     public function show(Request $request)
     {
         $article = CatalogArticle::findOrFail($request->id);
-        $activeCart = $this->getActiveCart();
         
         $user    = auth()->guard('customer')->user();
         if($user){
@@ -89,8 +84,7 @@ class StoreController extends Controller
         return view('store.show')
         ->with('article', $article)
         ->with('isFav', $isFav)
-        ->with('user', $user)
-        ->with('activeCart', $activeCart);
+        ->with('user', $user);
     }
 
     /*
@@ -107,16 +101,12 @@ class StoreController extends Controller
     |--------------------------------------------------------------------------
     */
 
-
     // Checkout Step 1
     
     public function checkout(Request $request)
     {
-        $activeCart = $this->getActiveCart();
         $geoprovs = GeoProv::pluck('name','id');
-
         return view('store.checkout-checkdata')
-            ->with('activeCart', $activeCart)
             ->with('geoprovs', $geoprovs);
     }
     
@@ -141,9 +131,7 @@ class StoreController extends Controller
             $item->save();
             
             $items = Shipping::all();
-            $activeCart = $this->getActiveCart();
             return view('store.checkout-shipping')
-                ->with('activeCart', $activeCart)
                 ->with('items', $items);
                 
     }
@@ -151,9 +139,7 @@ class StoreController extends Controller
     public function checkoutShippingGet()
     {
         $items = Shipping::all();
-        $activeCart = $this->getActiveCart();
         return view('store.checkout-shipping')
-            ->with('activeCart', $activeCart)
             ->with('items', $items);
     }
 
@@ -166,12 +152,11 @@ class StoreController extends Controller
         $shipping = Shipping::findOrFail($request->shipping_id);
         $cart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', '=', 'active')->first();
         $cart->shipping_id = $request->shipping_id;
+        $cart->shipping_price = $cart->shipping->price;
         $cart->save();
         
         $items = Payment::all();
-        $activeCart = $this->getActiveCart();
         return view('store.checkout-payment')
-            ->with('activeCart', $activeCart)
             ->with('items', $items);
     }
 
@@ -184,38 +169,34 @@ class StoreController extends Controller
         $payment = Payment::findOrFail($request->payment_method_id);
         $cart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', '=', 'active')->first();
         $cart->payment_method_id = $request->payment_method_id;
+        $cart->payment_percent = $cart->payment->percent;
         $cart->save();
         
-        $activeCart = $this->getActiveCart();
+        // $activeCart = $this->getActiveCart();
         
-        return view('store.checkout-review')
-            ->with('activeCart', $activeCart);
+        return view('store.checkout-review');
+            // ->with('activeCart', $activeCart);
     }
         
     public function checkoutPaymentGet()
     {
         $items = Payment::all();
-        $activeCart = $this->getActiveCart();
         return view('store.checkout-payment')
-            ->with('activeCart', $activeCart)
             ->with('items', $items);
     }
 
     // Step 4
     public function checkoutReview(Request $request)
     {
-        $activeCart = $this->getActiveCart();
-        
-        if($activeCart['activeCart']->payment_method_id == null){
+        if($activeCart['cart']->payment_method_id == null){
             return back()->with('message', 'Debe seleccionar una forma de pago');
         }
         
-        if($activeCart['activeCart']->shipping_id == null){
+        if($activeCart['cart']->shipping_id == null){
             return back()->with('message', 'Debe seleccionar una forma de envío');
         }
         
-        return view('store.checkout-review')
-            ->with('activeCart', $activeCart);
+        return view('store.checkout-review');
     }
 
     // Check if data is full (Not used yet)
@@ -241,6 +222,12 @@ class StoreController extends Controller
 
     public function finishCheckOut($cartid){
         $cart = Cart::find($cartid);
+        foreach($cart->details as $item){
+            $order = CartDetail::find($item->id);
+            $order->price = $item->article->price;
+            $order->discount = $item->article->discount;
+            $order->save();    
+        }
         $cart->status = 'Process';
         $cart->save();
         return view('store.checkout-finish')
@@ -251,12 +238,12 @@ class StoreController extends Controller
     {
         $order = Cart::find($cartid);
         if($order->customer->id == auth()->guard('customer')->user()->id){
-            $cartData = $this->calcCartTotalPrice($order);
+            $cartData = $this->calcCartData($order);
             $pdf = PDF::loadView('store.checkout-invoice', compact('order', 'cartData'))->setPaper('a4', 'portrait');
             $filename = 'Comprobante-Pedido-N-'.$order->id;
             return $pdf->stream($filename.'.pdf');
         } else {
-            return back()->with('message','No...');
+            return back()->with('message','Estás intentando una acción ilegal...');
         }
 
     }
@@ -302,11 +289,9 @@ class StoreController extends Controller
     public function customerAccount(Request $request)
     {
         $favs = $this->getCustomerFavs();
-        $activeCart = $this->getActiveCart();
         $geoprovs = GeoProv::pluck('name','id');
 
         return view('store.customer-account')
-            ->with('activeCart', $activeCart)
             ->with('favs', $favs)
             ->with('geoprovs',$geoprovs);
     }
@@ -315,18 +300,15 @@ class StoreController extends Controller
     {
         $customer = auth()->guard('customer')->user();
         $carts    = Cart::where('customer_id', auth()->guard('customer')->user()->id)->get();
-        $activeCart = $this->getActiveCart();
         return view('store.customer-orders')
             ->with('customer', $customer)
-            ->with('carts', $carts)
-            ->with('activeCart', $activeCart);
+            ->with('carts', $carts);
     }
 
     public function customerCartDetail(Request $request)
     {
         $cart = Cart::where('id', $request->id)->first();
         $cartTotal = 0;
-        $activeCart = $this->getActiveCart();
 
         foreach($cart->details as $item){
             $cartTotal += $item->article->price;
@@ -340,41 +322,14 @@ class StoreController extends Controller
             ->with('cartTotal', $cartTotal)
             ->with('cart', $cart)
             ->with('shippingCost', $shippingCost)
-            ->with('paymentCost', $paymentCost)
-            ->with('activeCart', $activeCart);
+            ->with('paymentCost', $paymentCost);
     }
     
     public function customerActiveCartDetail(Request $request)
     {
-        $cart = $this->getActiveCart();
-        $activeCart = $cart;
-        return view('store.customer-active-cart')
-            ->with('cart', $cart)
-            ->with('activeCart', $activeCart);
+        return view('store.customer-active-cart');
     }
     
-    public function getActiveCart()
-    {
-        $cartTotal = 0;
-        if(auth()->guard('customer')->check()){
-            $activeCart = Cart::where('status', '=', 'Active')->where('customer_id', auth()->guard('customer')->user()->id)->first();
-        } else {
-            $activeCart = null;
-        }
-        if(!$activeCart){
-        } else {
-            foreach($activeCart->details as $item){
-                if($item->discount > '0'){
-                    $cartTotal += calcValuePercentNeg($item->price, $item->discount);
-                } else {
-                    
-                    $cartTotal += $item->price;
-                }
-            }
-        }
-    
-        return array("activeCart" => $activeCart, "cartTotal" => $cartTotal);
-    }
 
     public function updatePassword(Request $request)
     {
@@ -395,8 +350,6 @@ class StoreController extends Controller
 
     public function customerWishlist(Request $request)
     {
-        $activeCart = $this->getActiveCart();
- 
         if(auth()->guard('customer')->check()){
             $favs = $this->getCustomerFavs();
             $customer = auth()->guard('customer')->user();
@@ -407,8 +360,7 @@ class StoreController extends Controller
         
         return view('store.customer-wishlist')
             ->with('customer', $customer)
-            ->with('favs', $favs)
-            ->with('activeCart', $activeCart);
+            ->with('favs', $favs);
     }
     
     public function getCustomerFavs()

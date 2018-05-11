@@ -194,12 +194,14 @@
 				<li class="is-shown {{ Menu::activeMenu('customers') }}"><a href="{{ route('customers.create') }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-plus-round"></i> Nuevo Cliente</a></li>
 			</ul>
 		</li>
+		@if(Auth::guard('user')->user()->role <= 2)
 		<li class="has-sub is-shown {{ Menu::activeMenu('users') }}"><a href="#" data-i18n="nav.menu_levels.second_level_child.main" class="menu-item"><i class="icon-user-tie"></i>	Usuarios</a>
 			<ul class="menu-content" style="">
 				<li class="is-shown {{ Menu::activeMenu('users') }}"><a href="{{ route('users.index') }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> Listado</a></li>
 				<li class="is-shown {{ Menu::activeMenu('users') }}"><a href="{{ route('users.create') }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-plus-round"></i> Nuevo Usuario</a></li>
 			</ul>
 		</li>
+		@endif
 		<li class="{{ Menu::activeMenu('mensajes_recibidos') }}"><a href="{{ url('vadmin/mensajes_recibidos/*') }}" class="menu-item"><i class="icon-envelop"></i> Mensajes 
 			@if($newMessages->count() > 0) 
 				<span class="tag tag tag-primary tag-pill float-xs-right mr-2"><span class="MessagesAmmount">{{ $newMessages->count() }}</span></span>

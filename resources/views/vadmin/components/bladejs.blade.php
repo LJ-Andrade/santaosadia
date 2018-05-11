@@ -476,4 +476,27 @@
     }
 
 
+    // Update User Avatar
+    $('#Avatar').click(function(){
+        $('#ImageInput').click();
+    });    
+       
+    $(document).ready(function() {
+    
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.Image-Container').attr('src', e.target.result);
+                    $('.ActionContainer').removeClass('Hidden');
+                }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#ImageInput").change(function(){
+            readURL(this);
+            $('.UpdateAvatarForm').removeClass('Hidden');
+        });
+    });
+
 </script>

@@ -20,21 +20,33 @@ class UserController extends Controller
     */
     public function index(Request $request)
     {
-        $name  = $request->get('name');
-        $role  = $request->get('role');
+        $name = $request->get('name');
+        $role = $request->get('role');
         $group = $request->get('group');
         $paginate = 15;
 
         if(isset($name)){
-            $items = User::searchName($name)->orderBy('id', 'ASC')->paginate($paginate); 
+            if(auth()->guard('user')->user()->role == '1'){
+                $items = User::searchName($name)->orderBy('id', 'ASC')->paginate($paginate); 
+            } else {
+                $items = User::searchName($name)->where('role','!=','1')->orderBy('id', 'ASC')->paginate($paginate); 
+            }
         }
         elseif(isset($role) || isset($group))
         {
-            $items = User::searchRoleGroup($role, $group)->orderBy('id', 'ASC')->paginate($paginate); 
+            if(auth()->guard('user')->user()->role == '1'){
+                $items = User::searchRoleGroup($role, $group)->orderBy('id', 'ASC')->paginate($paginate); 
+            } else {
+                $items = User::searchRoleGroup($role, $group)->where('role', '!=', '1')->orderBy('id', 'ASC')->paginate($paginate); 
+            }
         }
         else 
         {
-            $items = User::orderBy('id', 'ASC')->paginate($paginate); 
+            if(auth()->guard('user')->user()->role == '1'){
+                $items = User::orderBy('id', 'ASC')->paginate($paginate); 
+            } else {
+                $items = User::orderBy('id', 'ASC')->where('role', '!=', '1')->paginate($paginate); 
+            }   
         }
 
         return view('vadmin.users.index')
@@ -114,32 +126,37 @@ class UserController extends Controller
         return view('vadmin.users.create');
     }
 
+
     public function store(Request $request)
     {
         $user = new User($request->all());
         $this->validate($request,[
             'name'           => 'required',
             'email'          => 'min:3|max:250|required|unique:users,email',
-            'password'       => 'min:4|max:12listado-usuarios0|required|',
+            'password'       => 'min:4|max:12|required|',
             
         ],[
             'email.required' => 'Debe ingresar un email',
             'email.unique'   => 'El email ya existe',
             'password'       => 'Debe ingresar una contraseña',
         ]);
-
         if($request->file('avatar') != null){
             $avatar   = $request->file('avatar');
             $filename = $user->username.'.jpg';
-            Image::make($avatar)->encode('jpg', 80)->fit(300, 300)->save(public_path('images/users/'.$filename));
+            $path = public_path('images/users/');
+            if (!file_exists($path)) {
+                $oldmask = umask(0);
+                mkdir($path, 0777);
+                umask($oldmask);
+            }
+            Image::make($avatar)->encode('jpg', 80)->fit(300, 300)->save($path.$filename);
             $user->avatar = $filename;
         }
-
         $user->password = bcrypt($request->password);
         $user->save();
-
         return redirect('vadmin/users')->with('message', 'Usuario agregado correctamente');
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -159,31 +176,35 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'username' => 'required|max:20|unique:users,username,'.$user->id,
             'email' => 'required|email|max:255|unique:users,email,'.$user->id,
-            'password' => 'required|min:6|confirmed',
-            
+            'role' => 'required',
+            'group' => 'required'
         ],[
             'name.required' => 'Debe ingresar un nombre',
             'username.required' => 'Debe ingresar un nombre de usuario',
             'username.unique' => 'El nombre de usuario ya está siendo utilizado',
             'email.required' => 'Debe ingresar un email',
             'email.unique' => 'El email ya existe',
-            'password.min' => 'El password debe tener al menos :min caracteres',
-            'password.required' => 'Debe ingresar una contraseña',
-            'password.confirmed' => 'Las contraseñas no coinciden',
+            'role.required' => 'Debe ingresar un rol',
+            'role.group' => 'Debe pertenecer a un grupo'
         ]);
-
-        $user->fill($request->all());
-
-        $user->password = bcrypt($request->password);
+        
+        $filename = $user->username.'.jpg';
+        $path = public_path('images/users/');
+        
         if($request->file('avatar') != null){
             $avatar   = $request->file('avatar');
-            $filename = $user->username.'.jpg';
-            Image::make($avatar)->encode('jpg', 80)->fit(300, 300)->save(public_path('images/users/'.$filename));
-            $user->avatar = $filename;
+            if (!file_exists($path)) {
+                $oldmask = umask(0);
+                mkdir($path, 0777);
+                umask($oldmask);
+            }
+            Image::make($avatar)->encode('jpg', 80)->fit(300, 300)->save($path.$filename);
         }
-
+        
+        $user->fill($request->all());
+        $user->avatar = $filename;
+        $user->password = bcrypt($request->password);
         $user->save();
-
         return redirect('vadmin/users')->with('Message', 'Usuario '. $user->name .'editado correctamente');
     }
 

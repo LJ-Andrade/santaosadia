@@ -6,39 +6,36 @@
         <table class="table">
         <tr>
             <td>Subtotal:</td>
-            <td class="text-medium">$ {{ $activeCart['cartTotal'] }}</td>
+            <td class="text-medium dont-break">$ {{ $activeCart['cartSubTotal'] }}</td>
         </tr>
         <tr>
             <td>Costo de envío:</td>
-            <td class="text-medium">
-                @if($activeCart['activeCart']->shipping != null && $activeCart['activeCart']->shipping)
-                <?php $shippingCost = $activeCart['activeCart']->shipping->price ?>
-                    $ {{ $activeCart['activeCart']->shipping->price }}
+            <td class="text-medium dont-break">
+                @if($activeCart['shippingPrice'] != null)
+                
+                    $ {{ $activeCart['shippingPrice'] }}
                 @else
-                    <?php $shippingCost = '0'; ?>
                     $ 0
                 @endif
             </td>
         </tr>
         <tr>
-            @if($activeCart['activeCart']->payment !=null && $activeCart['activeCart']->payment->percent > '0')
-            <td>Recargo por forma de pago: <br> (% {{ $activeCart['activeCart']->payment->percent }}) </td>
-            <td class="text-medium">
-                <?php $chargesCost = calcValuePercentNeg($activeCart['cartTotal'], $activeCart['activeCart']->payment->percent) ?>
-                $ {{ $chargesCost }}
+            @if($activeCart['paymentPercent'] !=null)
+            <td>Recargo por forma de pago: <br> (% {{ $activeCart['paymentPercent'] }}) </td>
+            <td class="text-medium dont-break">
+                $ {{ calcPercent($activeCart['cartSubTotal'], $activeCart['paymentPercent']) }}
             </td>    
             @else
             <td>Recargo: </td>
-            <td class="text-medium">
-                <?php $chargesCost = '0'; ?>
+            <td class="text-medium dont-break">
                 $ 0
             </td>
             @endif
         </tr>
         <tr>
-            <td class="text-lg text-medium"><h4>Total $ {{ $activeCart['cartTotal'] + $shippingCost + $chargesCost  }}</h4></td>
-            <input id="CartTotal" type="hidden" name="carttotal" value="{{ $activeCart['cartTotal'] + $shippingCost + $chargesCost }}">
+            <input id="CartTotal" type="hidden" name="carttotal" value="{{ $activeCart['cartTotal'] }}">
             <td></td>
+            <td class="text-lg text-medium txtR dont-break"><h4>Total $ {{ $activeCart['cartTotal'] }}</h4></td>
         </tr>
         </table>
     </section>

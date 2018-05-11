@@ -279,28 +279,31 @@ class ArticlesController extends Controller
                 $number = '0';
             }
             
-            try {    
-                foreach($images as $phisic_image){
-                    $filename = $article->id.'-'.$number;
-                    $img = \Image::make($phisic_image);
-                    $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
-                    
-                    $image = new CatalogImage();
-                        if($number == '0'){ $image->featured = 1; }
-                    $image->name = $filename.$extension;
-                    $image->article()->associate($article);
-                    
-                    $thumb = \Image::make($phisic_image);
-                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
-                    //$article->thumb = $article->id.'-thumb'.$extension;
-                    $image->thumb = $filename.$extension;
-                    $image->save();
-                    $number++;
+            if($images){
+                try {    
+                    foreach($images as $phisic_image){
+                        $filename = $article->id.'-'.$number;
+                        $img = \Image::make($phisic_image);
+                        $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
+                        
+                        $image = new CatalogImage();
+                            if($number == '0'){ $image->featured = 1; }
+                        $image->name = $filename.$extension;
+                        $image->article()->associate($article);
+                        
+                        $thumb = \Image::make($phisic_image);
+                        $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
+                        //$article->thumb = $article->id.'-thumb'.$extension;
+                        $image->thumb = $filename.$extension;
+                        $image->save();
+                        $number++;
+                    }
+                } catch(\Exception $e) {
+                    $article->delete();
+                    return redirect()->route('catalogo.index')->with('message','Error al crear el item: '. $e);
                 }
-            } catch(\Exception $e) {
-                $article->delete();
-                return redirect()->route('catalogo.index')->with('message','Error al crear el item: '. $e);
             }
+            
         }
         return redirect()->route('catalogo.index')->with('message', 'Se ha editado el item con éxito');
     }

@@ -74,7 +74,7 @@
 			</div>
 			<div class="shopping-cart-footer">
 				<div class="column"></div>
-				<div class="column text-lg"><h4>Subtotal: <span class="text-medium">${{ $activeCart['cartTotal'] }}</span></h4></div>
+				<div class="column text-lg"><h4>Subtotal: <span class="text-medium">${{ $activeCart['cartSubTotal'] }}</span></h4></div>
 			</div>
 			<?php $user = auth()->guard('customer')->user() ?>
 			<div class="row review-bottom padding-top-1x mt-3">

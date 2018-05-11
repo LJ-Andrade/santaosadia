@@ -29,14 +29,14 @@
             </div>
                 @if(isset($activeCart['activeCart']))
                 <div class="cart"><i class="icon-bag"></i><span class="count">{{ $activeCart['activeCart']->details->count() }}</span>
-                    <span class="subtotal">$ {{ $activeCart['cartTotal'] }}</span>
+                    <span class="subtotal">$ {{ $activeCart['cartSubTotal'] }}</span>
                     <div class="toolbar-dropdown toolbar-user-dropdown">
                         @foreach($activeCart['activeCart']->details as $detail)
                             <div class="dropdown-product-item">
                                 <span class="RemoveArticleFromCart dropdown-product-remove" data-detailid="{{ $detail->id }}">
                                     <i class="icon-cross"></i></span>
                                 <a class="dropdown-product-custom-thumb" href="{{ url('tienda/articulo/'.$detail->id) }}">
-                                    <img src="{{ asset('webimages/catalogo/'.$detail->article->thumb) }}" alt="Product">
+                                    <img src="{{ asset('webimages/catalogo/'.$detail->article->featuredImageName()) }}" alt="Product">
                                 </a>
                                 <div class="dropdown-product-info">
                                     <a class="dropdown-product-title" href="shop-single.html">
@@ -46,13 +46,13 @@
                                             {{ $detail->article->name }}
                                         @endif
                                     </a>
-                                    <span class="dropdown-product-details">{{ $detail->quantity }} x {{ $detail->price }}</span>
+                                    <span class="dropdown-product-details">{{ $detail->quantity }} x {{ calcValuePercentNeg($detail->article->price, $detail->article->discount) }}</span>
                                 </div>
                             </div>
                         @endforeach
                         <div class="toolbar-dropdown-group">
                             <div class="column"><span class="text-lg">Total:</span></div>
-                            <div class="column text-right"><span class="text-lg text-medium">$ {{ $activeCart['cartTotal'] }} &nbsp;</span></div>
+                            <div class="column text-right"><span class="text-lg text-medium">$ {{ $activeCart['cartSubTotal'] }} &nbsp;</span></div>
                         </div>
                         <div class="toolbar-dropdown-group">
                             <div class="column"><a class="btn btn-sm btn-block btn-secondary" href="{{ route('store.activecart') }}">Ver Carrito</a></div>

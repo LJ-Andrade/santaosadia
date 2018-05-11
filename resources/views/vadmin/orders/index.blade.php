@@ -15,8 +15,8 @@
 		@slot('actions')
 			{{-- Actions --}}
 			<div class="list-actions">
-				<a href="{{ route('payments.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo </a>
-				<button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button>
+				{{-- <a href="{{ route('payments.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo </a> --}}
+				{{-- <button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button> --}}
 				
 				{{-- Delete --}}
 				{{--  THIS VALUE MUST BE THE NAME OF THE SECTION CONTROLLER  --}}
@@ -24,13 +24,13 @@
 				<button class="DeleteBtn btn btnRed Hidden"><i class="icon-bin2"></i> Eliminar</button>
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 				{{-- If Search --}}
-				@if(isset($_GET['name']))
+				{{-- @if(isset($_GET['name']))
 				<a href="{{ url('vadmin/payments') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
-				@endif
+				@endif --}}
 			</div>
 		@endslot
 		@slot('searcher')
-			@include('vadmin.catalog.payments.searcher')
+			{{-- @include('vadmin.catalog.payments.searcher') --}}
 		@endslot
 	@endcomponent
 @endsection
@@ -54,7 +54,7 @@
 						<th class="w-50"></th>
 						<th>N°</th>
 						<th>Cliente</th>
-						<th>Valor</th>
+						{{-- <th>Valor</th> --}}
 						<th>Estado</th>
 						<th>Fecha</th>
 					@endslot
@@ -75,6 +75,7 @@
 										{{ $item->customer->name }} {{ $item->customer->surname }} ({{ $item->customer->username }})
 									</a>
 								</td>
+								{{-- <td>Valor</td> --}}
 								<td>
 									<div class="input-group"> 
 										<span class="input-group-btn">

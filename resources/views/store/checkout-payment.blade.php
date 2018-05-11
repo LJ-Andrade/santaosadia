@@ -42,6 +42,7 @@
 										type="radio" required>
 										<span class="custom-control-indicator"></span>
 									</label>
+									
 								</td>
 							</tr>
 							@endforeach

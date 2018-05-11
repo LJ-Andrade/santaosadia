@@ -57,3 +57,7 @@ mix.sass('resources/assets/sass/vadmin/vadmin.sass', 'public/css')
     processCssUrls: false,
     outputStyle: 'compressed'
 });
+
+mix.options({
+    sourcemaps: 'inline-source-map'
+});
