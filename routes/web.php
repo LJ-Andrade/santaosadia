@@ -176,6 +176,7 @@ Route::group(['prefix' => 'vadmin', 'middleware' => 'admin'], function(){
     Route::get('/', 'VadminController@index');
     
     Route::post('updateStatus/{model}/{id}', 'VadminController@updateStatus');
+    Route::post('updateStatusMultiple/{id}/{model}/{status}', 'VadminController@updateStatusMultiple');
     
     // -- USERS --
     Route::resource('users', 'UserController');

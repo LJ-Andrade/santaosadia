@@ -1,5 +1,5 @@
 @extends('layouts.vadmin.main')
-@section('title', 'Vadmin | Portfolio')
+@section('title', 'Vadmin | Mensajes')
 {{-- STYLE INCLUDES --}}
 @section('styles')
 @endsection
@@ -53,7 +53,7 @@
 						<th>E-Mail</th>
 						<th>Teléfono</th>
 						<th>Mensaje</th>
-						<th>Estado</th>
+						<th style="min-width: 160px">Estado</th>
 						<th></th>
 						<th>Fecha</th>
 					@endslot
@@ -73,7 +73,8 @@
 								<td>{{ $item->phone }}</td>
 								<td class="max-text">{{ $item->message }}</td>
 								<td>
-									{!! Form::select('category_id', ['0' => 'No Leído', '1' => 'Leído', '2' => 'En proceso', '3' => 'Finalizado'] , $item->status, ['class' => 'form-control Select-Chosen ChangeMessageStatus', 'data-id' => $item->id]) !!}
+									{!! Form::select('category_id', ['0' => 'No Leído', '1' => 'Leído', '2' => 'En proceso', '3' => 'Finalizado'],
+									 $item->status, ['class' => 'form-control Select-Chosen updateStatusMultiple', 'data-id' => $item->id]) !!}
 								</td>
 								<td>{{ $item->user }}</td>
 								<td>{{ transDateAndTime($item->created_at) }}</td>
@@ -112,16 +113,15 @@
 {{-- CUSTOM JS SCRIPTS--}}
 @section('custom_js')
 	<script>
-		$('.AdminLi').addClass('open');
-		$('.MensajesLi').addClass('active');
-
-		$(document).on('change', '.ChangeMessageStatus', function(e) {
-			var id     = $(this).data('id');
-			var route  = "{{ url('/vadmin/message_status') }}/"+id+"";
-			var user   = "{{ Auth::user()->name }}";
+		$(document).on('change', '.updateStatusMultiple', function(e) {
+			var id = $(this).data('id');
 			var status = $(this).val();
-			var action = 'reload';
-			updateStatus(id, route, status, user, action);
+			var action = function(){
+				location.reload();
+			}
+			
+			var model = 'Contact';
+			updateStatusMultiple(id, model, status, action);
 
 		});
 

@@ -16,38 +16,23 @@
                         <th>Fecha de Compra</th>
                         <th>Estado</th>
                         <th>Cant.Prod.</th>
-                        <th>Total</th>
                         <th></th>
                         </tr>
                     </thead>
                     <tbody>
                     @if(!$carts->isEmpty())
                         @foreach($carts as $cart)
-                            <?php $total = 0 ?>
-                            {{--  Calcs total items price  --}}
-                            @foreach($cart->details as $detail)
-                                <?php 
-                                if($detail->discount > 0){
-                                    $total += calcValuePercentNeg($detail->price, $cart->payment->percent);
-                                } else {
-                                    $total += $detail->price;
-                                }
-                                ?>
-
-                            @endforeach
-                            <?php $total += $cart->shipping->price; ?>
-                                <tr>
-                                    <td><span class="text-medium">{{ $cart->id }}</span></td>
-                                    <td>{{ transDateAndTime($cart->created_at) }}</td>
-                                    <td><span class="text-danger">{{ orderStatusTrd($cart->status) }}</span></td>
-                                    <td><span class="text-medium">{{ $cart->details->count() }}</span></td>
-                                    <td>$ {{ $total }}</td>
-                                    @if($cart->status == 'Active')
-                                    <td><a href="{{ route('store.activecart') }}">Ver Detalle</a></td>                                    
-                                    @else
-                                    <td><a href="{{ route('store.cartdetail', ['id' => $cart->id]) }}">Ver Detalle</a></td>
-                                    @endif
-                                </tr>
+                            <tr>
+                                <td><span class="text-medium">{{ $cart->id }}</span></td>
+                                <td>{{ transDateAndTime($cart->created_at) }}</td>
+                                <td><span class="text-danger">{{ orderStatusTrd($cart->status) }}</span></td>
+                                <td><span class="text-medium">{{ $cart->details->count() }}</span></td>
+                                @if($cart->status == 'Active')
+                                <td><a href="{{ route('store.activecart') }}">Ver Detalle</a></td>                                    
+                                @else
+                                <td><a href="{{ route('store.cartdetail', ['id' => $cart->id]) }}">Ver Detalle</a></td>
+                                @endif
+                            </tr>
                         @endforeach
                         @else 
                         <tr>
@@ -62,7 +47,7 @@
                     </table>
                 </div>
                 <hr>
-            
+             <div class="column"><a class="btn btn-sm btn-block btn-secondary" href="{{ route('store.activecart') }}">Ver carro de compras activo</a></div>
             </div>
             
 		</div>

@@ -11,9 +11,7 @@
                         <thead>
                             <tr>
                                 <th>Detalle</th>
-                                <th class="text-center">Talle</th>
-                                <th class="text-center">Textil</th>
-                                <th class="text-center">Color</th>
+                                <th class="text-center">P.U.</th>
                                 <th class="text-center">Cantidad</th>
                                 <th class="text-center">Subtotal</th>
                                 <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="#">Vaciar Carro</a></th>
@@ -22,7 +20,7 @@
                         <tbody>
                         {{--  Calc  Order Total Value  --}}
                         
-                        @if($activeCart)
+                        @if(isset($activeCart))
                             @foreach($activeCart['activeCart']->details as $item)
                             
                             <tr id="Detail{{$item->id}}">
@@ -31,28 +29,33 @@
                                         <img src="{{ asset('webimages/catalogo/'. $item->article->featuredImageName() ) }}" alt="Product"></a>
                                         <div class="product-info">
                                         <h4 class="product-title"><a href="{{ url('tienda/articulo/'.$item->article->id) }}">{{ $item->article->name }}</a></h4>
+                                        <span><em>Código:</em> #{{ $item->article->id }}</span>
                                         <span><em>Categoría:</em> {{ $item->article->category->name}}</span>
-                                        <span><em>Código de producto:</em> #{{ $item->article->id }}</span>
+                                        <span><em>Tela:</em> {{ $item->article->textile }}</span>
+                                        <span><em>Color:</em> {{ $item->article->color }}</span>
+                                        <span><em>Talle:</em> 
+                                            @foreach($item->article->atribute1 as $size)
+                                                {{ $size->name }}
+                                            @endforeach
+                                            </span>
                                         </div>
                                     </div>
                                 </td>
                                 
                                 <td class="text-center">
-                                    {{ $item->size }}
+                                    <del class="text-muted text-normal">$ {{ $item->article->price }}</del>
+                                    $ {{ calcValuePercentNeg($item->article->price, $item->article->discount) }}
                                 </td>
-                                <td>{{ $item->textile }}</td>
-                                <td>{{ $item->color }}</td>
                                 <td class="text-center">
                                     {{ $item->quantity }}
                                 </td>
                                 
                                 @if($item->article->discount > 0)
                                     <td class="text-center text-lg text-medium">
-                                        <del class="text-muted text-normal">$ {{ $item->article->price }}</del>
-                                        $ {{ calcValuePercentNeg($item->article->price, $item->article->discount) }}
+                                        $ {{ calcValuePercentNeg($item->article->price, $item->article->discount) * $item->quantity }}
                                     </td>
                                 @else
-                                    <td class="text-center text-lg text-medium">$ {{ $item->article->price }}</td>
+                                    <td class="text-center text-lg text-medium">$ {{ $item->article->price * $item->quantity }}</td>
                                 @endif
                                 
                                 <td class="text-center"><a class="RemoveArticleFromCart cursor-pointer" data-detailid="{{ $item->id }}">
@@ -71,14 +74,9 @@
                     </table>
                 </div>
                 <div class="shopping-cart-footer">
-                    {{--  <div class="column">
-                        <form class="coupon-form" method="post">
-                        <input class="form-control form-control-sm" type="text" placeholder="Coupon code" required>
-                        <button class="btn btn-outline-primary btn-sm" type="submit">Apply Coupon</button>
-                        </form>
-                    </div>  --}}
+
                     @if($activeCart['activeCart'])
-                    <div class="column text-lg">Total: <span class="text-medium">$ {{ $activeCart['cartTotal'] }}</span></div>
+                    <div class="column text-lg">Total: <span class="text-medium">$ {{ $activeCart['cartSubTotal'] }}</span></div>
                     @endif
                 </div>
                 <div class="shopping-cart-footer">

@@ -299,7 +299,7 @@ class StoreController extends Controller
     public function customerOrders(Request $request)
     {
         $customer = auth()->guard('customer')->user();
-        $carts    = Cart::where('customer_id', auth()->guard('customer')->user()->id)->get();
+        $carts = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', '!=', 'Active')->get();
         return view('store.customer-orders')
             ->with('customer', $customer)
             ->with('carts', $carts);

@@ -9,11 +9,12 @@
                 <div class="table-responsive shopping-cart">
                     <table class="table">
                         <thead>
-                            <tr>
+                              <tr>
                                 <th>Detalle</th>
-                                <th>Talle</th>
-                                <th>Cantidad</th>
-                                <th>Subtotal</th>
+                                <th class="text-center">P.U.</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Subtotal</th>
+                                <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="#">Vaciar Carro</a></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -23,25 +24,41 @@
                             <tr id="Detail{{$item->id}}">
                                 <td>
                                     <div class="product-item"><a class="product-thumb" href="{{ url('tienda/articulo/'.$item->article->id) }}">
-                                        <img src="{{ asset('webimages/catalogo/'. $item->article->thumb ) }}" alt="{{ $item->name }}"></a>
+                                        <img src="{{ asset('webimages/catalogo/'. $item->article->featuredImageName() ) }}" alt="{{ $item->name }}"></a>
                                         <div class="product-info">
                                         <h4 class="product-title"><a href="{{ url('tienda/articulo/'.$item->article->id) }}">{{ $item->article->name }}</a></h4>
+                                        <span><em>Código:</em> #{{ $item->article->id }}</span>
                                         <span><em>Categoría:</em> {{ $item->article->category->name}}</span>
-                                        <span><em>Código:</em> #{{ $item->id }}</span>
+                                        <span><em>Tela:</em> {{ $item->article->textile }}</span>
+                                        <span><em>Color:</em> {{ $item->article->color }}</span>
+                                        <span><em>Talle:</em> 
+                                            @foreach($item->article->atribute1 as $size)
+                                                {{ $size->name }}
+                                            @endforeach
+                                            </span>
+                                        </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $item->size }}</td>
-                                <td>{{ $item->quantity }}</td>
-                                <td class=" text-lg text-medium">
-                                @if($item->discount > '0')
-                                {{ calcValuePercentNeg($item->discount, $item->discount) }}
-                                @else 
-                                $ {{ $item->discount }}
+                                 <td class="text-center">
+                                    <del class="text-muted text-normal">$ {{ $item->price }}</del>
+                                    $ {{ calcValuePercentNeg($item->article->price, $item->discount) }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $item->quantity }}
+                                </td>
+                                
+                                @if($item->article->discount > 0)
+                                    <td class="text-center text-lg text-medium">
+                                        $ {{ calcValuePercentNeg($item->price, $item->discount) * $item->quantity }}
+                                    </td>
+                                @else
+                                    <td class="text-center text-lg text-medium">$ {{ $item->price * $item->quantity }}</td>
                                 @endif
                                 
+                                <td class="text-center"><a class="RemoveArticleFromCart cursor-pointer" data-detailid="{{ $item->id }}">
+                                    <i class="icon-cross"></i></a>
                                 </td>
-                                {{--  <td class="text-center"><a class="RemoveArticleFromCart cursor-pointer" data-detailid="{{ $item->id }}"><i class="icon-cross"></i></a></td>  --}}
                             </tr>
 
                             
@@ -79,17 +96,8 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- <div class="shopping-cart-footer">
-                     <div class="column">
-                        <form class="coupon-form" method="post">
-                        <input class="form-control form-control-sm" type="text" placeholder="Coupon code" required>
-                        <button class="btn btn-outline-primary btn-sm" type="submit">Apply Coupon</button>
-                        </form>
-                    </div>  
-                    <div class="pull-right">
-                        <div class="text-medium"><h3> $ {{ $cartTotal }}</h3></div>
-                    </div> 
-                </div>--}}
+
+
                 <div class="shopping-cart-footer">
                     <div class="column">
                         <a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>

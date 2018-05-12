@@ -29,7 +29,11 @@ function calcValuePercentPos($price, $percent)
 function calcPercent($price, $percent)
 {
     $percent = $price * $percent / 100;
-    return convertAndRoundDecimal($percent, 2);
+    $result = convertAndRoundDecimal($percent, 2);
+    if($result == '0'){
+        $result = '0.00';
+    }
+    return $result;
 }
 
 function formatNum($number, $digits)

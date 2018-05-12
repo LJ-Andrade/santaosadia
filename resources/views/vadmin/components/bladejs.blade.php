@@ -348,6 +348,31 @@
 
     }
 
+    function updateStatusMultiple(id, model, status, action){
+
+        var route  = "{{ url('vadmin/updateStatusMultiple/')}}/"+id+"/"+model+"/"+status+"";
+        $.ajax({
+            url: route,
+            type: 'POST',
+            dataType: 'JSON',
+            beforeSend: function(){
+                
+            },
+            success: function(data){
+                console.log(data.success);
+                if(data.success == true){
+                    action();
+                }
+            },
+            error: function(data){
+                alert_error('Ha ocurrido un error');
+                console.log(data);
+                //$('#Error').html(data.responseText);
+            }
+        }); 
+
+    }
+
     /*
     |--------------------------------------------------------------------------
     | UPDATE CUSTOMER GROUP

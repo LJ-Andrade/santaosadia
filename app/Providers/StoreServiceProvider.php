@@ -30,7 +30,11 @@ class StoreServiceProvider extends ServiceProvider
             'store.customer-account',
             'store.customer-wishlist',
             'store.customer-orders',
-            'store.cartdetail'
+            'store.show',
+            'store.cartdetail',
+            'store.checkout-mp',
+            'store.wishlist'
+
         ], 'App\Http\ViewComposers\StoreComposer');
         
     }

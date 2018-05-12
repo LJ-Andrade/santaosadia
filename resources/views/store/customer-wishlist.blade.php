@@ -20,29 +20,30 @@
 							</tr>
 						</thead>
 						<tbody>
-							
 							@if($favs['favs']->count() > '0')
 								@foreach($favs['favs'] as $item)
-
 									@if(!$item == null)
 									<tr>
 										<td>
 											<div class="product-item">
 												<a class="product-thumb" href="{{ url('tienda/articulo/'.$item->article->id) }}">
-													@if($item->article->thumb)
-													<img src="{{ asset('webimages/catalogo/'.$item->article->thumb) }}" alt="Product">
+													@if($item->article->featuredImageName())
+													<img src="{{ asset('webimages/catalogo/'.$item->article->featuredImageName()) }}" alt="Producto del Catálogo">
 													@else
 													<img src="{{ asset('webimages/gen/catalog-gen.jpg') }}" alt="Producto del Catálogo">
 													@endif
 												</a>
 												<div class="product-info">
-													<h4 class="product-title"><a href="{{ url('tienda/articulo/'.$item->article->id) }}">{{ $item->article->name }}</a></h4>
+													<h4 class="product-title"><a href="{{ url('tienda/articulo/'.$item->article->id) }}">
+													{{ $item->article->name }}</a>
+													</h4>
 													<div class="text-lg text-medium text-muted">
-															{{-- @if($item->article->offer > 0)
-															<del>$ {{ $item->article->price }}</del> $ {{ calcValuePercentNeg($item->article->price, $item->article->offer) }}
-															@else
-															$ {{ $item->article->price }}
-															@endif --}}
+													{{ $item->article->textile }} | 
+													{{ $item->article->color }}  <br>
+													Talle: 
+														@foreach($item->article->atribute1 as $size)
+															{{ $size->name }}
+														@endforeach
 													</div>
 													<div>Disponibilidad:
 														<div class="d-inline text-success">

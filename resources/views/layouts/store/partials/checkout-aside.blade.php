@@ -12,10 +12,9 @@
             <td>Costo de envío:</td>
             <td class="text-medium dont-break">
                 @if($activeCart['shippingPrice'] != null)
-                
                     $ {{ $activeCart['shippingPrice'] }}
                 @else
-                    $ 0
+                    $ 0.00
                 @endif
             </td>
         </tr>
@@ -28,7 +27,7 @@
             @else
             <td>Recargo: </td>
             <td class="text-medium dont-break">
-                $ 0
+                $ 0.00
             </td>
             @endif
         </tr>

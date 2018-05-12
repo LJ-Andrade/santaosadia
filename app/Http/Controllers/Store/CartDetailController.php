@@ -20,8 +20,8 @@ class CartDetailController extends Controller
         
         // check and set if article has discount
         $article = CatalogArticle::where('id', $request->article_id)->first();
-        $cartDetail->price = $article->price;
-        $cartDetail->discount = $article->discount;
+        $cartDetail->color = $request->color;
+        $cartDetail->textile = $request->textile;
         
         $cartDetail->save();
 

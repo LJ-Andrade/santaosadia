@@ -106,6 +106,7 @@ class VadminController extends Controller
 
     public function updateMessageStatus(Request $request, $id)
     {
+        
         try{
             $item = Contact::findOrFail($id);
             $item->status = $request->status;
@@ -237,7 +238,6 @@ class VadminController extends Controller
     {
             $model_name = '\\App\\'.$model;
             $model = new $model_name;
-            
             $item = $model->find($id);
             if($item->status == '0'){
                 $item->status = '1';
@@ -250,6 +250,22 @@ class VadminController extends Controller
             return response()->json([
                 "success" => true,
                 "newStatus" => $item->status
+            ]);
+    }
+    
+    public function updateStatusMultiple($id, $model, $status)
+    {
+            
+            $model_name = '\\App\\'.$model;
+            $model = new $model_name;
+            $item = $model->find($id);
+            $item->status = $status;
+            $item->user = auth()->guard('user')->user()->name;
+            $item->save();
+
+            return response()->json([
+                "success" => true,
+                "message" => auth()->guard('user')->user()->name
             ]);
 	}
     

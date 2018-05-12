@@ -2,12 +2,13 @@
 
 @section('content')
 	<div class="container padding-bottom-3x mb-1 marg-top-25">
-		<div class="row">
-			<div class="col-md-5 col-xs-12">
-				<div class="product-gallery"><span class="product-badge text-danger">@if($article->offer > 0) DESCUENTO % {{ $article->offer }}!! @endif</span>
+		<div class="row product-show">
+			<div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 image">
+				<div class="product-gallery">
+					<span class="product-badge">@if($article->offer > 0) DESCUENTO % {{ $article->offer }}!! @endif</span>
 					<div class="gallery-wrapper">
 						@foreach($article->images as $index => $image)
-						<div class="gallery-item {{ $index == 0 ? 'active' : '' }}"><a href="{{ asset('webimages/catalogo/'. $image->name) }}" data-hash="{{ $image->id }}" data-size="1000x1000"></a></div>
+						<div class="gallery-item {{ $index == 0 ? 'active' : '' }}"><a href="{{ asset('webimages/catalogo/'. $image->name) }}" data-hash="{{ $image->id }}" data-size="426x640"></a></div>
 						@endforeach
 					</div>
 					<div class="product-carousel owl-carousel">
@@ -27,7 +28,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-7 col-xs-12">
+			<div class="col-sm-9 col-md-9 col-lg-9 col-xs-12 products-details">
 				<div class="padding-top-2x mt-2 hidden-md-up"></div>
 				{{--  Reviews Not Implemented  --}}
 				{{--  <div class="rating-stars"><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star filled"></i>
@@ -36,7 +37,7 @@
 				{{--  <span class="text-muted align-middle">&nbsp;&nbsp;4.2 | 3 customer reviews</span>  --}}
 				
 				{{--  Article Name  --}}
-				<h2 class="padding-top-1x text-normal">{{ $article->name }}</h2>
+				<h2 class="text-normal">{{ $article->name }}</h2>
 
 				{{--  Article Price and Discount  --}}
 				@if($article->discount > 0)
@@ -90,12 +91,6 @@
 					<a class="navi-link" href="#">{{ $article->category->name }}</a>
 				</div>
 				<hr class="mb-3">
-				{{-- 
-				<div class="d-flex flex-wrap justify-content-between ">
-					<div class="entry-share mt-2 mb-2"><span class="text-muted">Compartir:</span>
-						<div class="share-links"><a class="social-button shape-circle sb-facebook" href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="socicon-facebook"></i></a><a class="social-button shape-circle sb-twitter" href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="socicon-twitter"></i></a><a class="social-button shape-circle sb-instagram" href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="socicon-instagram"></i></a><a class="social-button shape-circle sb-google-plus" href="#" data-toggle="tooltip" data-placement="top" title="Google +"><i class="socicon-googleplus"></i></a></div>
-					</div> 
-				</div>--}}
 					<div class="sp-buttons mt-2 mb-2">
 						<button class="AddToFavs btn btn-outline-secondary btn-sm btn-wishlist
 							@if($isFav) addedToFavs @endif" data-id="{{ $article->id }}" data-toggle="tooltip" title="Agregar a Favoritos">

@@ -2,10 +2,10 @@
 <html lang="es">
 	<head>
 		<meta charset="utf-8">
-		<title>Tienda</title>
+		<title>Santaosadia | Tienda</title>
 		<!-- SEO Meta Tags-->
-		<meta name="description" content="Tienda - Vimana Studio">
-		<meta name="keywords" content="shop, e-commerce, modern, flat style, responsive, online store, business, mobile, blog, bootstrap 4, html5, css3, jquery, js, gallery, slider, touch, creative, clean">
+		<meta name="description" content="Santaosadia | Tienda">
+		<meta name="keywords" content="santaosadia, indumentaria, ropa, vestidos, ropa interior, lenceria, bombachas, tangas">
 		<meta name="author" content="Vimana Studio">
 		<meta name="csrf-token" content="{{ csrf_token() }}" />
 		<!-- Mobile Specific Meta Tag-->
