@@ -77,7 +77,7 @@
 				<hr class="softhr">
 				<div class="row">
 					<div class="col-md-12">
-						<b>Categoría:</b> <span class="custom-badge btnBlue">{!! $article->category->name !!}</span> |
+						<b>Categoría:</b> <span class="custom-badge btnBlue">@if($article->category){{ $article->category->name }}@else Sin Categoría @endif</span> |
 						<b>Etiquetas:</b>
 						@foreach($article->tags as $tag)
 						<span class="custom-badge btnRed">{!! $tag->name !!}</span>

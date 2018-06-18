@@ -117,7 +117,7 @@
 									<div class="UpdateDiscountBtn action-button Hidden" data-id="{{ $item->id }}"><i class="icon-checkmark2"></i></div>
 								</td>
 								{{--  DATE   --}}
-								<td class="w-200">{{ $item->category->name }}</td>
+								<td class="w-200">@if($item->category){{ $item->category->name }}@else Sin Categoría @endif</td>
 								<td class="w-50 pad0 centered">
 									<label class="switch">
 										<input class="UpdateStatus switch-checkbox" type="checkbox" 
