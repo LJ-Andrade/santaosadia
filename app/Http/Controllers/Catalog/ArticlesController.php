@@ -133,7 +133,7 @@ class ArticlesController extends Controller
         } 
         else
         {
-            return $checkSlug;
+            return $slug;
         }
     }
 
@@ -165,7 +165,6 @@ class ArticlesController extends Controller
         if($request->slug) {
             $checkSlug = $this->checkSlug($request->slug);
         }
-            
         $article = new CatalogArticle($request->all());
         $article->slug = $checkSlug;
         $article->user_id = \Auth::guard('user')->user()->id;
