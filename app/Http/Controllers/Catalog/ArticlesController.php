@@ -247,7 +247,7 @@ class ArticlesController extends Controller
         $article   = CatalogArticle::find($id);
 
         $this->validate($request,[
-            'name'                 => 'required|min:4|max:250|unique:catalog_articles,name,'.$article->id,
+            'name'                 => 'required|min:4|max:250',
             'code'                 => 'unique:catalog_articles,code,'.$article->id,
             'category_id'          => 'required',
             'slug'                 => 'required|alpha_dash|min:4|max:255',
@@ -257,7 +257,6 @@ class ArticlesController extends Controller
             'name.required'        => 'Debe ingresar un nombre',
             'name.min'             => 'El título debe tener al menos 4 caracteress',
             'name.max'             => 'El título debe tener como máximo 250 caracteress',
-            'name.unique'          => 'El título ya existe en otro artículo',
             'code.unique'          => 'El código está utilizado por otro producto',
             'category_id.required' => 'Debe ingresar una categoría',
             'slug.required'        => 'Se requiere un slug',
