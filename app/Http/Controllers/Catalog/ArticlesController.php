@@ -122,34 +122,52 @@ class ArticlesController extends Controller
             ->with('tags', $tags);
     }
 
+
+    public function checkSlug($slug)
+    {
+        $checkSlug = CatalogArticle::where('slug', $slug)->first();
+        if($checkSlug != null) 
+        {
+            $checkSlug = $checkSlug->slug.'-variante-'. rand(1000,10000). date('d').date('s');
+            return $checkSlug;
+        } 
+        else
+        {
+            return $checkSlug;
+        }
+    }
+
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request,[
-            'name'                 => 'required|min:4|max:250|unique:catalog_articles',
+            'name'                 => 'required|min:4|max:250',
             'code'                 => 'unique:catalog_articles,code',
             'category_id'          => 'required',
-            'slug'                 => 'required|alpha_dash|min:4|max:255|unique:catalog_articles,slug',
             'image'                => 'image|mimes:jpeg,png,jpg,gif',
         ],[
             'name.required'        => 'Debe ingresar un nombre',
             'name.min'             => 'El título debe tener al menos 4 caracteress',
             'name.max'             => 'El título debe tener como máximo 250 caracteress',
-            'name.unique'          => 'El título ya existe en otro artículo',
             'code.unique'          => 'El código está utilizado por otro producto',
             'category_id.required' => 'Debe ingresar una categoría',
             'slug.required'        => 'Se requiere un slug',
             'slug.min'             => 'El slug debe tener 4 caracteres como mínimo',
             'slug.max'             => 'El slug debe tener 255 caracteres como máximo',
             'slug.max'             => 'El slug debe tener guiones bajos en vez de espacios',
-            'slug.unique'          => 'El slug debe ser único, algún otro artículo lo está usando',
             'image'                => 'El archivo adjuntado no es soportado',
         ]);
         
         if($request->discount == null){
             $request->discount = '0';
         }
-        
+
+        if($request->slug) {
+            $checkSlug = $this->checkSlug($request->slug);
+        }
+            
         $article = new CatalogArticle($request->all());
+        $article->slug = $checkSlug;
         $article->user_id = \Auth::guard('user')->user()->id;
         
         $images = $request->file('images');
@@ -171,29 +189,30 @@ class ArticlesController extends Controller
         if($article->save()) {
             $article->atribute1()->sync($request->atribute1);
             $article->tags()->sync($request->tags);
-            try {    
-                $number = '0';
-                
-                foreach($images as $phisic_image){
-                    $filename = $article->id.'-'.$number;
-                    $img = \Image::make($phisic_image);
-                    $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
-                    
-                    $image = new CatalogImage();
-                        if($number == '0'){ $image->featured = 1; }
-                    $image->name = $filename.$extension;
-                    $image->article()->associate($article);
-                    
-                    $thumb = \Image::make($phisic_image);
-                    $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
-                    //$article->thumb = $article->id.'-thumb'.$extension;
-                    $image->thumb = $filename.$extension;
-                    $image->save();
-                    $number++;
+                if($images){
+                try {    
+                    $number = '0';
+                    foreach($images as $phisic_image){
+                        $filename = $article->id.'-'.$number;
+                        $img = \Image::make($phisic_image);
+                        $img->encode('jpg', 80)->fit($imgWidth, $imgHeight)->save($imgPath.$filename.$extension);
+                        
+                        $image = new CatalogImage();
+                            if($number == '0'){ $image->featured = 1; }
+                        $image->name = $filename.$extension;
+                        $image->article()->associate($article);
+                        
+                        $thumb = \Image::make($phisic_image);
+                        $thumb->encode('jpg', 80)->fit($thumbWidth, $thumbHeight)->save($thumbPath.$filename.$extension);
+                        //$article->thumb = $article->id.'-thumb'.$extension;
+                        $image->thumb = $filename.$extension;
+                        $image->save();
+                        $number++;
+                    }
+                } catch(\Exception $e) {
+                    $article->delete();
+                    return redirect()->route('catalogo.index')->with('message','Error al crear el artículo: '. $e);
                 }
-            } catch(\Exception $e) {
-                $article->delete();
-                return redirect()->route('catalogo.index')->with('message','Error al crear el artículo: '. $e);
             }
         }
     
@@ -232,7 +251,7 @@ class ArticlesController extends Controller
             'name'                 => 'required|min:4|max:250|unique:catalog_articles,name,'.$article->id,
             'code'                 => 'unique:catalog_articles,code,'.$article->id,
             'category_id'          => 'required',
-            'slug'                 => 'required|alpha_dash|min:4|max:255|unique:catalog_articles,slug,'.$article->id,
+            'slug'                 => 'required|alpha_dash|min:4|max:255',
             'image'                => 'image|mimes:jpeg,png,jpg,gif',
 
         ],[
@@ -246,12 +265,17 @@ class ArticlesController extends Controller
             'slug.min'             => 'El slug debe tener 4 caracteres como mínimo',
             'slug.max'             => 'El slug debe tener 255 caracteres como máximo',
             'slug.max'             => 'El slug debe tener guiones bajos en vez de espacios',
-            'slug.unique'          => 'El slug debe ser único, algún otro artículo lo está usando',
             'image'                => 'El archivo adjunto no es soportado',
         ]);
 
         $article->fill($request->all());
         
+        if($request->slug) {
+            $checkSlug = $this->checkSlug($request->slug);
+        }
+            
+        $article->slug = $checkSlug;
+
         $images = $request->file('images');
         $thumbnail = $request->file('thumbnail');
         $imgPath = public_path("webimages/catalogo/"); 
