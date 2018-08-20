@@ -83,9 +83,7 @@ $(document).ready(function () {
     //Activate nav effects in desktop
 	if (screen.width > 775) {
         nav_logic();
- 	} else {
-		
-	}
+ 	} 
 
 
 }); // Document Ready

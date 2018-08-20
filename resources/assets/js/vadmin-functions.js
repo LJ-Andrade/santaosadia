@@ -217,3 +217,4 @@ function alert_info(bigtext, smalltext){
 function closeParent(){
 	$(this).parent('hide');
 }
+

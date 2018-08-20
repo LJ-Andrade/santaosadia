@@ -21,9 +21,9 @@
 
     $(document).on("click", ".RemoveArticleFromCart", function(e){
         var route     = "{{ route('store.removefromcart') }}";
-        var detailid = $(this).data('detailid');
+        var itemid = $(this).data('itemid');
         
-        RemoveArticleFromCart(route, detailid)
+        RemoveArticleFromCart(route, itemid)
     });
 
 
@@ -53,14 +53,13 @@
         });
     }
 
-    function RemoveArticleFromCart(route, detailid){
+    function RemoveArticleFromCart(route, itemid){
         $.ajax({	
             url: route,
             method: 'POST',             
             dataType: 'JSON',
-            data: { detailid: detailid },
+            data: { itemid: itemid },
             success: function(data){
-                console.log(data);
                 var action = 'reload';
                 var time   = 500;
                 if(data.response == true){
@@ -82,11 +81,67 @@
         });
     }
 
+    // Sum divs text
+    function sumDivs(origins, target){
+        let sum = 0;
+        origins.each(function(){
+            sum += parseFloat($(this).text());
+        });
+        target.text(sum);   
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | COUPON
+    |--------------------------------------------------------------------------
+    */
+    $('#CheckCoupon').click(function(){
+        let code = $('#CuponCodeInput').val();
+        let cartid = $('#CartId').val();
+        validateAndSetCoupon(code, cartid);
+    });
+
+    function validateAndSetCoupon(code, cartid)
+    {
+        let couponDiv = $('#CouponDiv');
+        let couponSet = $('#SettedCoupon');
+
+        $.ajax({	
+            url: "{{ route('store.validateAndSetCoupon') }}",
+            method: 'POST',             
+            dataType: 'JSON',
+            data: {code: code, cartid: cartid},
+            beforeSend: function(){
+                console.log("Comprobando cupón...");
+                $('.CouponLoader').removeClass('Hidden');
+            },
+            success: function(data){
+                if(data.response == true){
+                    $('#CouponValidationMessage').html("Cupón aceptado !");
+                    couponDiv.hide(200, function() {
+                        couponSet.removeClass('Hidden');
+                    });
+                    location.reload();
+                } else if(data.response == null){
+                    $('#CouponValidationMessage').html(data.message);
+                }
+            },
+            error: function(data){
+                $('#CouponValidationMessage').html(data.responseText);
+                console.log(data);
+            },
+            complete: function(){
+                $('.CouponLoader').addClass('Hidden');
+            }
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | WHISH-LISTS
     |--------------------------------------------------------------------------
     */
+
     // Add Article to WishList
     $(document).on("click", ".AddToFavs", function(e){
         e.preventDefault();

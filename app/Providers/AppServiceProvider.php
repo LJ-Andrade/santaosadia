@@ -22,8 +22,9 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Carbon::setLocale('es');
         $newMessages = Contact::where('status', '=', '0')->get();
-        $newOrders = Cart::where('status', 'Active')->count();
-        View::share(['newMessages' => $newMessages, 'newOrders' => $newOrders]);
+        $newOrders = Cart::where('status', '=', 'Process')->count();
+        $activeOrders = Cart::where('status', '=', 'Active')->count();
+        View::share(['newMessages' => $newMessages, 'newOrders' => $newOrders, 'activeOrders' => $activeOrders]);
     }
 
     /**

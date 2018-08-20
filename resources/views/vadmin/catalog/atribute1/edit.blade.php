@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'VADmin | Editar Categoría')
 
 @section('styles')

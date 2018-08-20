@@ -139,7 +139,6 @@ class ArticlesController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $this->validate($request,[
             'name'                 => 'required|min:4|max:250',
             'code'                 => 'unique:catalog_articles,code',
@@ -216,7 +215,7 @@ class ArticlesController extends Controller
         }
     
     
-        return redirect()->route('catalogo.index')->with('message','Item creado');
+        return redirect()->route('catalogo.index')->with('message','Artículo agregado al catálogo');
     }
 
     /*
@@ -325,51 +324,82 @@ class ArticlesController extends Controller
                     return redirect()->route('catalogo.index')->with('message','Error al crear el item: '. $e);
                 }
             }
-            
         }
         return redirect()->route('catalogo.index')->with('message', 'Se ha editado el item con éxito');
     }
 
     public function updateStatus(Request $request, $id)
     {
-            $article = CatalogArticle::find($id);
-            $article->status = $request->status;
-            $article->save();
-
-            return response()->json([
-                "lastStatus" => $article->status,
-            ]);
-    }
-
-    public function updateStock(Request $request, $id)
-    {   
-        $item          = CatalogArticle::find($id);
-        $item->stock   = $request->value;
-        $item->save();
+        $article = CatalogArticle::find($id);
+        $article->status = $request->status;
+        $article->save();
 
         return response()->json([
-            "response" => '1',
-            "newstock" => $item->stock,
-            "action"   => $request->action
+            "lastStatus" => $article->status,
         ]);
     }
 
-    public function updatePrice(Request $request, $id)
+    public function updateField(Request $request)
+    {
+        $article = CatalogArticle::find($request->id);
+        $article->{$request->field} = $request->value;
+        
+        try {
+            $article->save();
+            return response()->json([
+                "response" => "success",
+                "action"   => $request->action
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "response" => "error",
+                "message"  => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function updateStock(Request $request)
     {   
-        $item          = CatalogArticle::find($id);
+        if(!ctype_digit($request->value)){
+            return response()->json([
+                "response" => "error",
+                "message"   => "El valor ingresado no es un número entero"
+            ]);
+        }
+
+        $item          = CatalogArticle::find($request->id);
+        $item->stock   = $request->value;
+        
+        try {
+            $item->save();
+            return response()->json([
+                "response" => "success",
+                "action"   => $request->action
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "response" => "error",
+                "message"  => $e
+            ]);
+        }
+    }
+
+    public function updatePrice(Request $request)
+    {   
+        $item          = CatalogArticle::find($request->id);
         $item->price   = $request->value;
         $item->save();
 
         return response()->json([
-            "response" => '1',
-            "newprice" => $item->price,
+            "response" => 'success',
             "action"   => $request->action
         ]);
     }
 
     public function updateDiscount(Request $request, $id)
     {   
-        $item          = CatalogArticle::find($id);
+        $item          = CatalogArticle::find($request->id);
         $item->discount   = $request->value;
         $item->save();
 

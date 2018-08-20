@@ -12,7 +12,7 @@ class CustomerController extends Controller
     {
         $user = auth()->guard('customer')->user();
         $item = Customer::find($user->id);
-
+        
         $this->validate($request,[
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
@@ -23,12 +23,16 @@ class CustomerController extends Controller
             'cp' => 'required|max:255',
             'geoprov_id' => 'required|max:255',
             'geoloc_id' => 'required|max:255',
-        ]);
-        
-        $item->fill($request->all());
-        $item->save();
-        
+            ]);
+            
+            $item->fill($request->all());
+            $item->save();
+            
+        if($request->from == "checkout"){
+            return redirect()->route('store.checkout')->with('message','Datos actualizados');
+        } 
         return redirect()->route('store.customer-account')->with('message','Datos actualizados');
+
     }
 
     public function updatePassword(Request $request)

@@ -28,15 +28,13 @@
             data: { id: id },
             success: function(data){
                 if(data.response == true){
-
                     // Hide Message and Number of Messages displays
                     if(allReaded == false){
                         display.hide(500);
                     } else if(allReaded == true){
                         location.reload();
                     }
-                    $('.MessagesAmmount').html(data.newMessagesN);
-                    
+                    $('.MessagesAmmount').html(data.newMessagesN);   
                 }
             },
             error: function(data){
@@ -46,5 +44,22 @@
         });
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Loaders
+    |--------------------------------------------------------------------------
+    */
+    
+    function fullLoader(action)
+    {
+        //let loader = $(this).parent().html("<img src='{{ asset('images/gral/loader-sm.svg') }}'>");
+        if(action == "show"){
+            $('#FullLoader').removeClass('Hidden');
+        }
+        if(action == "hide"){
+            $('#FullLoader').addClass('Hidden');
+        }
+            
+    }
 
 </script>

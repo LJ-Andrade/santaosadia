@@ -1,5 +1,5 @@
-@extends('layouts.vadmin.main')
-@section('title', 'VADmin | Editar Categoría')
+@extends('vadmin.partials.main')
+@section('title', 'VADmin | Editar método de pago')
 
 @section('styles')
 @endsection
@@ -8,12 +8,12 @@
 	@component('vadmin.components.header')
 		@slot('breadcrums')
 			<li class="breadcrumb-item"><a href="{{ url('vadmin')}}">Inicio</a></li>
-			<li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de Payments</a></li>
-			<li class="breadcrumb-item active">Edición de Payment</li>
+			<li class="breadcrumb-item"><a href="{{ route('catalogo.index')}}">Listado de métodos de pago</a></li>
+			<li class="breadcrumb-item active">Edición de métodos de pago</li>
 		@endslot
 		@slot('actions')
 			<div class="list-actions">
-				<h2>Editando Payment</h2>
+				<h2>Editando método de pago</h2>
 				{{-- Edit --}}
 				<a href="#" id="EditBtn" class="btn btnGreen Hidden"><i class="icon-pencil2"></i> Editar</a>
 			</div>

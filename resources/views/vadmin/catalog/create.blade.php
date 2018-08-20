@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'VADmin | Nuevo artículo')
 
 @section('styles')
@@ -54,8 +54,6 @@
 	<script type="text/javascript" src="{{ asset('plugins/validation/parsley.min.js') }}" ></script>
 	<script type="text/javascript" src="{{ asset('plugins/validation/es/parsley-es.min.js') }}" ></script>
 	<script type="text/javascript" src="{{ asset('plugins/jqueryFileUploader/jquery.fileuploader.min.js')}} "></script>
-	<script type="text/javascript" src="{{ asset('plugins/colorpicker/spectrum.js')}} "></script>
-	<script type="text/javascript" src="{{ asset('plugins/colorpicker/jquery.spectrum-es.js')}} "></script>
 	<script type="text/javascript" src="{{ asset('js/vadmin-forms.js') }}" ></script>
 	@include('vadmin.components.bladejs')
 @endsection
@@ -71,16 +69,16 @@
 
 		// ----------------------- Color Picker --------------------------------//
 		// Add Color Selector
-		$(".ColorPicker").spectrum({
-			color: "#fff",
-			change: function(color) {
-				// var div = ;
-				var hex = color.toHexString(); // #ff0000
-				// alert(div);
-				$('.ColorPickerList').append("<div class='picked-color' style='background-color:"+ hex +"'><input type='hidden' name='color[]' value='"+ hex +"'></div>");
-				console.log(hex);
-			}
-		});
+		//$(".ColorPicker").spectrum({
+		//	color: "#fff",
+		//	change: function(color) {
+		//		// var div = ;
+		//		var hex = color.toHexString(); // #ff0000
+		//		// alert(div);
+		//		$('.ColorPickerList').append("<div class='picked-color' style='background-color:"+ hex +"'><input type='hidden' name='color[]' value='"+ hex +"'></div>");
+		//		console.log(hex);
+		//	}
+		//});
 	</script>
 
 @endsection

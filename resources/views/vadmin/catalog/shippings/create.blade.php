@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'VADmin | Métodos de Envío')
 
 @section('styles')
@@ -21,19 +21,31 @@
 
 @section('content')
 	<div class="inner-wrapper">
-		{!! Form::open(['route' => 'shippings.store', 'method' => 'POST', 'class' => 'row big-form mw450', 'data-parsley-validate' => '']) !!}	
-			@include('vadmin.catalog.shippings.form')
-			<div class="form-actions right">
-				<a href="{{ route('shippings.index')}}">
-					<button type="button" class="btn btnRed">
-						<i class="icon-cross2"></i> Cancelar
-					</button>
-				</a>
-				<button type="submit" class="btn btnGreen">
-					<i class="icon-check2"></i> Guardar
-				</button>
+		<div class="row">
+			<div class="col-md-5">
+				{!! Form::open(['route' => 'shippings.store', 'method' => 'POST', 'class' => 'row big-form mw450', 'data-parsley-validate' => '']) !!}	
+					@include('vadmin.catalog.shippings.form')
+					<div class="form-actions right">
+						<a href="{{ route('shippings.index')}}">
+							<button type="button" class="btn btnRed">
+								<i class="icon-cross2"></i> Cancelar
+							</button>
+						</a>
+						<button type="submit" class="btn btnGreen">
+							<i class="icon-check2"></i> Guardar
+						</button>
+					</div>
+				{!! Form::close() !!}
 			</div>
-		{!! Form::close() !!}
+			<div class="col-md-7">
+				@component('vadmin.components.infoContainer')
+					@slot('text')
+					<b>El método de envío</b></b> que será creado aparecerá como una opción a seleccionar por el cliente al momento de finalizar su compra (checkout). <br><br>
+					<b>El costo indicado</b></b> se sumará al subtotal de la compra.
+					@endslot
+				@endcomponent
+			</div>
+		</div>
 	</div>  
 @endsection
 

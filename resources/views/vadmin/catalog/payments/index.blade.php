@@ -1,5 +1,5 @@
 
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Métodos de Pago')
 {{-- STYLE INCLUDES --}}
 @section('styles')
@@ -27,7 +27,8 @@
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 				{{-- If Search --}}
 				@if(isset($_GET['name']))
-				<a href="{{ url('vadmin/payments') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
+					<a href="{{ url('vadmin/payments') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
+					<div class="results">{{ $items->total() }} resultados de búsqueda</div>
 				@endif
 			</div>
 		@endslot

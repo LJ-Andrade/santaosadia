@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Cart;
 use App\Customer;
+use App\Shipping;
+use App\Payment;
 use App\Traits\CartTrait;
 
 class CartsController extends Controller
@@ -20,9 +22,19 @@ class CartsController extends Controller
 
     public function index(Request $request)
     {   
-        $items = Cart::orderBy('created_at', 'DESC')->get();
+        if($request->show == 'Orders') 
+        {
+            $items = Cart::orderBy('created_at', 'DESC')->where('status', '!=','Active')->get();
+        }
+        else if($request->show == 'Active')
+        {
+            $items = Cart::orderBy('created_at', 'DESC')->where('status', '=','Active')->get();   
+        } else {
+            $items = Cart::orderBy('created_at', 'DESC')->where('status', '!=','Active')->get();
+        }
         return view('vadmin.orders.index')->with('items', $items);    
     }
+
 
     public function show($id)
     {
@@ -35,10 +47,38 @@ class CartsController extends Controller
         $total = $prices['total'];
 
         return view('vadmin.orders.show')
-        ->with('order', $order)
-        ->with('subtotal', $subtotal)
-        ->with('total', $total)
-        ->with('customer', $customer);
+            ->with('order', $order)
+            ->with('subtotal', $subtotal)
+            ->with('total', $total)
+            ->with('customer', $customer);
+    }
+
+    public function updatePaymentAndShipping(Request $request)
+    {
+        $cart = Cart::findOrFail($request->id);
+        if($request->payment_method_id != null)
+        {
+            $cart->payment_method_id = $request->payment_method_id;
+            $payment_percent = Payment::where('id', $request->payment_method_id)->first()->percent;
+            $cart->payment_percent = $payment_percent;
+        }
+        
+        if($request->shipping_id != null)
+        {
+            $cart->shipping_id = $request->shipping_id;
+            $shipping_price = Shipping::where('id', $request->shipping_id)->first()->price;
+            $cart->shipping_price = $shipping_price;
+        }
+        
+        try
+        {
+            $cart->save();
+            return redirect(url()->previous().'#pago-y-envio');
+        }
+        catch (\Exception $e)
+        {
+            return back()->with('message', 'Error al actualizar: '. $e->getMessage());
+        }
     }
     
     public function updateStatus(Request $request)
@@ -54,7 +94,7 @@ class CartsController extends Controller
         }  catch (\Exception $e) {
             return response()->json([
                 'response'   => false,
-                'error'    => 'Error: '.$e
+                'error'    => 'Error: '.$e->getMessage()
             ]);    
         } 
     }

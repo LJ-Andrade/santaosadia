@@ -10,11 +10,20 @@
     {!! Form::label('zone', 'Zona') !!}
     {!! Form::text('zone', null, ['class' => 'form-control', 'placeholder' => 'Zonas o Límites']) !!}
 </div>  
-<div class="form-group">
-    {!! Form::label('delivery_time', 'Tiempo de entrega') !!}
-    {!! Form::text('delivery_time', null, ['class' => 'form-control', 'placeholder' => 'Tiempo de espera estimado']) !!}
-</div>  
-<div class="form-group">
-    {!! Form::label('price', 'Costo') !!}
-    {!! Form::number('price', null, ['class' => 'form-control', 'placeholder' => 'Costo de envio', 'min' => '0']) !!}
-</div>  
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('delivery_time', 'Tiempo de entrega') !!}
+            {!! Form::text('delivery_time', null, ['class' => 'form-control', 'placeholder' => 'Tiempo estimado']) !!}
+        </div>
+    </div>
+    <div class="col-md-6">
+            {!! Form::label('price', 'Costo de envío') !!}
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">$</span>
+            </div>
+            {!! Form::number('price', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any', 'placeholder' => 'Ingrese valor', 'required' => '']) !!}
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Pedido N {{ $order->id }}')
 
 
@@ -18,7 +18,7 @@
 				<input id="EditId" type="hidden">
 				{{-- Delete --}}
 				{{--  THIS VALUE MUST BE THE NAME OF THE SECTION CONTROLLER  --}}
-				<input id="ModelName" type="hidden" value="cartdetails">
+				<input id="ModelName" type="hidden" value="cartitems">
 				<button class="DeleteBtn btn btnRed Hidden"><i class="icon-bin2"></i> Eliminar</button>
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 
@@ -55,21 +55,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($order->details as $detail)
+                            @foreach($order->items as $item)
                             <tr>
                                 <td class="w-50">
 									<label class="custom-control custom-checkbox list-checkbox">
-										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $detail->id }}">
+										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
 										<span class="custom-control-indicator"></span>
 										<span class="custom-control-description"></span>
 									</label>
 								</td>
-                                <td><a href="">{{ $detail->article->name }} (#{{ $detail->article->code }})</a></td>
-                                <td>{{ $detail->size }}</td>
-                                <td>{{ $detail->quantity }}</td>
-                                <td>$ {{ $detail->price }}</td>
-                                <td>% {{ $detail->discount }}</td>
-                                <td>$ {{ $detail->quantity * calcValuePercentNeg($detail->price, $detail->discount)}} </td>
+                                <td><a href="">{{ $item->article->name }} (#{{ $item->article->code }})</a></td>
+                                <td>{{ $item->size }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>$ {{ $item->price }}</td>
+                                <td>% {{ $item->discount }}</td>
+                                <td>$ {{ $item->quantity * calcValuePercentNeg($item->price, $item->discount)}} </td>
                             </tr>
                             @endforeach
                             <tr>

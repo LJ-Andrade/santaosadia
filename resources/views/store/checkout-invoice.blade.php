@@ -1,4 +1,4 @@
-@extends('layouts.store.invoice')
+@extends('store.partials.invoice')
 
 @section('title', 'Comprobante | Pedido N°'.$order->id)
 
@@ -11,61 +11,63 @@
         </div>
         <div class="content">
                 <div class="top-text">
-                    {{ $order->customer->name }} {{ $order->customer->surname }} | Nombre de usuario: {{ $order->customer->username }} <br>
-                    {{ $order->customer->address }} | {{ $order->customer->geoprov->name }} | {{ $order->customer->geoloc->name }} <br>
-                    {{ $order->customer->phone }} <br>
-                    {{ $order->customer->email }} <br>
+                    <b>Nombre y Apellido:</b> {{ $order->customer->name }} {{ $order->customer->surname }} | <b>Usuario:</b> {{ $order->customer->username }} <br>
+                    <b>Dirección: </b> {{ $order->customer->address }} | {{ $order->customer->geoprov->name }} | {{ $order->customer->geoloc->name }} <br>
+                    <b>Teléfonos: </b> {{ $order->customer->phone }} @if($order->customer->phone2) | {{ $order->customer->phone2 }} @endif<br>
+                    <b>E-mail: </b> {{ $order->customer->email }} <br>
                 </div>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Artículo</th>
-                            <th>Cantidad</th>
+                            <th>Código</th>
+                            <th>Producto</th>
                             <th>Talle</th>
                             <th>Color</th>
-                            <th>Precio</th>
+                            <th>P.U | Cantidad</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($order->details as $item)
-                        <tr>
+                        @foreach($order->items as $item)
+                        <tr class="content">
+                            <td>#{{ $item->article->code }}</td>
                             <td>{{ $item->article->name }}</td>
-                            <td>{{ $item->quantity }}</td>
                             <td>{{ $item->size }}</td>
-                            <td>{{ $item->article->color }}</td>
-                            @if($item->discount > 0)
-                                <td>$ {{ calcValuePercentNeg($item->price, $item->discount) }}</td>
-                            @else
-                                <td>$ {{ $item->price }}</td>
-                            @endif
-                            <td></td>
+                            <td>{{ $item->color }}</td>
+                            <td>$ {{ $item->final_price }} (x {{ $item->quantity }})</td>
+                            <td>$ {{ number_format($item->final_price * $item->quantity, 2) }}</td>
                         </tr>
                         @endforeach
-                        <tr style="border: 1px solid black">
-                            <td></td><td></td><td></td>
+                        <tr class="bottom-data">
+                            <td></td><td></td><td></td><td></td>
                             <td>Subtotal</td>
-                            <td>$ {{ $cartData['subTotal'] }}</td>
+                            <td>$ {{ $cart['subTotal'] }}</td>
                         </tr>
+                        @if($cart['orderDiscount'] > 0)
                         <tr>
-                            <td></td><td></td><td></td>
+                            <td></td><td></td><td></td><td></td>
+                                <td>Descuento (% {{$cart['orderDiscount']}})</td>
+                            <td>$ - {{ $cart['discountValue'] }}</td>
+                        </tr>
+                        @endif
+                        <tr>
+                            <td></td><td></td><td></td><td></td>
                             <td>Costo de envío</td>
-                            <td>$ {{ $cartData['shippingPrice'] }}</td>
+                            <td>$ {{ $cart['shippingCost'] }}</td>
                         </tr>
                         <tr>
-                            <td></td><td></td><td></td>
-                            <td>Recargo por forma de pago (% {{ $cartData['paymentPercent'] }})</td>
-                            <td>$ {{ calcPercent($cartData['subTotal'], $cartData['paymentPercent']) }}</td>
+                            <td></td><td></td><td></td><td></td>
+                            <td>Recargo por forma de pago (% {{ $cart['paymentPercent'] }})</td>
+                            <td>$ {{ calcPercent($cart['subTotal'], $cart['paymentPercent']) }}</td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td></td><td></td><td></td><td></td>
                             <td>TOTAL</td>
-                            <td>$ {{ $cartData['total'] }}</td>
+                            <td>$ {{ $cart['total'] }}</td>
                         </tr>
                     </tbody>
                 </table>
         </div>
     </div>
-    <div class="footer">Santaosadia - Indumentaria</div>
+    <div class="footer">{{ APP_BUSSINESS_NAME }}</div>
 @endsection

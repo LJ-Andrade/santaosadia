@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 
 @section('title', 'Vadmin | Previsualización de Item')
 
@@ -42,6 +42,8 @@
 							@endforeach
 						</ul>
 					</div>
+					@else
+						No hay imágenes cargadas
 					@endif
 					</div>
 				</div>
@@ -53,25 +55,45 @@
 				</div>
 				<hr class="softhr">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-3 col-sm-6">
+						<h5>Minorístas</h5>
 						<b>Precio:</b> <span class="custom-badge btnBlue"> $ {!! $article->price !!}</span> <br>
-						<b>Descuento: </b> 
+						<b>Descuento: </b>
 						<span class="custom-badge btnRed">
 							@if($article->discount == null || $article->discount == '0')
 							Sin descuento						
 							@else %  {{ $article->discount }}
 							@endif
-						</span> <br>	
+						</span><br>
 						<b> Precio c/ Desc.: </b> <span class="custom-badge btnGreen"> $ {{ calcValuePercentNeg($article->price, $article->discount)}}</span>
 					</div>
+					<div class="col-md-3 col-sm-6">
+						<h5>Mayorístas</h5>
+						<b>Precio:</b> <span class="custom-badge btnBlue"> $ {!! $article->reseller_price !!}</span> <br>
+						<b>Descuento: </b>
+						<span class="custom-badge btnRed">
+							@if($article->reseller_discount == null || $article->reseller_discount == '0')
+							Sin descuento						
+							@else %  {{ $article->reseller_discount }}
+							@endif
+						</span><br>
+						<b> Precio c/ Desc.: </b> <span class="custom-badge btnGreen"> $ {{ calcValuePercentNeg($article->price, $article->discount)}}</span>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<b>Stock:</b> {{ $article->stock }} <br>
+						Stock mínimo: {{ $article->stockmin}}
+					</div>
+					
+				</div>
+				<hr class="softhr">
+				<div class="row">
 					<div class="col-md-3">
-						<b>Color: </b> <span class="custom-badge btnBlue">{{ $article->color }}</span> <br>	
-						<b>Textil: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span> <br>	
+						<b>Color: </b> <span class="custom-badge btnBlue">{{ $article->color }}</span> |
+						<b>Textil: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span> |	
 						<b>Talles:</b>
 						@foreach($article->atribute1 as $atribute1)
 						<span class="custom-badge btnBlue">{!! $atribute1->name !!}</span>
 						@endforeach <br>
-						<b>Propiedad: </b> <span class="custom-badge btnBlue">{{ $article->textile }}</span>
 					</div>
 				</div>
 				<hr class="softhr">

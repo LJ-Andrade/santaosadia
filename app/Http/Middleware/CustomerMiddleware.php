@@ -13,8 +13,7 @@ class CustomerMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = 'customer')
-    {
-        
+    {   
         if(!auth()->guard($guard)->check()){
             return redirect('/tienda');
         }
@@ -22,6 +21,7 @@ class CustomerMiddleware
             $request->session()->invalidate();
             return redirect('tienda/proceso');
         };
+        
         return $next($request);
     }
 }

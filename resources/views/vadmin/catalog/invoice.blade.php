@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.invoice')
+@extends('vadmin.partials.invoice')
 
 @section('title', 'Items del Catálogo')
 

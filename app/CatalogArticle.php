@@ -9,7 +9,7 @@ class CatalogArticle extends Model
 {
     protected $table = "catalog_articles";
 
-    protected $fillable = ['name', 'code', 'stock', 'stockmin', 'price', 'discount', 'textile', 'color', 'description', 'category_id', 'user_id', 'thumb', 'status', 'slug'];
+    protected $fillable = ['category_id', 'user_id', 'name', 'code',  'description', 'color', 'textile', 'stock', 'stockmin', 'price', 'discount', 'reseller_price', 'reseller_discount', 'thumb', 'status', 'slug'];
 
     public function category(){
     	return $this->belongsTo('App\CatalogCategory');
@@ -50,13 +50,12 @@ class CatalogArticle extends Model
             $featuredImage = $this->images()->first();
         }
         
-        // dd($featuredImage);
         if($featuredImage){
-            return $featuredImage->name;
+            return 'webimages/catalogo/'.$featuredImage->name;
         }
 
         
-        return '/webimages/gen/catalog-gen.jpg';
+        return 'webimages/gen/catalog-gen.jpg';
 
     }
 

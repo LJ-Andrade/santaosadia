@@ -1,4 +1,4 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Etiquetas')
 {{-- STYLE INCLUDES --}}
 @section('styles')

@@ -14,15 +14,13 @@ class CustomerActiveMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = 'customer')
-    {
-        
+    {   
         if(auth()->guard($guard)->user() && auth()->guard($guard)->user()->status == 0){
-            
             $request->session()->invalidate();
             auth()->guard()->logout();
-            
         }
         return $next($request);
+        
     }
 }
 

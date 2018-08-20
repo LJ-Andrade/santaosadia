@@ -1,6 +1,5 @@
-
-@extends('layouts.vadmin.main')
-@section('title', 'Vadmin | Métodos de Envío')
+@extends('vadmin.partials.main')
+@section('title', 'Vadmin | Métodos de envío')
 {{-- STYLE INCLUDES --}}
 @section('styles')
 @endsection
@@ -15,7 +14,7 @@
 		@slot('actions')
 			{{-- Actions --}}
 			<div class="list-actions">
-				<a href="{{ route('shippings.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo Método de Envío</a>
+				<a href="{{ route('shippings.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo método de envío</a>
 				<button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button>
 				{{-- Edit --}}
 				<button class="EditBtn btn btnGreen Hidden"><i class="icon-pencil2"></i> Editar</button>
@@ -27,7 +26,8 @@
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 				{{-- If Search --}}
 				@if(isset($_GET['name']))
-				<a href="{{ url('vadmin/shipping') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
+					<a href="{{ url('vadmin/shipping') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
+					<div class="results">{{ $items->total() }} resultados de búsqueda</div>
 				@endif
 			</div>
 		@endslot

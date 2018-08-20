@@ -57,10 +57,12 @@ class PaymentsController extends Controller
     {
 
         $this->validate($request,[
-            'name'          => 'required|min:4|max:250|unique:payment_methods',
+            'name'             => 'required|min:4|max:250|unique:payment_methods',
+            'percent'          => 'required'
         ],[
-            'name.required' => 'Debe ingresar un nombre',
-            'name.unique'   => 'El item ya existe',
+            'name.required'    => 'Debe ingresar un nombre',
+            'name.unique'      => 'El item ya existe',
+            'percent.required' => 'Debe ingresar un porcentaje'
         ]);
 
         $item = new Payment($request->all());
@@ -87,10 +89,12 @@ class PaymentsController extends Controller
         $item = Payment::find($id);
 
         $this->validate($request,[
-            'name'          => 'required|unique:payment_methods,name,'.$item->id,
+            'name'             => 'required|unique:payment_methods,name,'.$item->id,
+            'percent'          => 'required'
         ],[
-            'name.required' => 'Debe ingresar un nombre',
-            'name.unique'   => 'El item ya existe'
+            'name.required'    => 'Debe ingresar un nombre',
+            'name.unique'      => 'El item ya existe',
+            'percent.required' => 'Debe ingresar un porcentaje'
         ]);
         
         $item->fill($request->all());
@@ -108,37 +112,21 @@ class PaymentsController extends Controller
     public function destroy(Request $request)
     {   
         $ids = json_decode('['.str_replace("'",'"',$request->id).']', true);
-        
-        if(is_array($ids)) {
-            try {
-                foreach ($ids as $id) {
-                    $record = Payment::find($id);
-                    $record->delete();
-                }
-                return response()->json([
-                    'success'   => true,
-                ]); 
-            }  catch (Exception $e) {
-                return response()->json([
-                    'success'   => false,
-                    'error'    => 'Error: '.$e
-                ]);    
+    
+        try {
+            foreach ($ids as $id) {
+                $item = Payment::find($id);
+                $item->delete();
             }
-        } else {
-            try {
-                $record = Payment::find($id);
-                $record->delete();
-                    return response()->json([
-                        'success'   => true,
-                    ]);  
-                    
-                } catch (Exception $e) {
-                    return response()->json([
-                        'success'   => false,
-                        'error'    => 'Error: '.$e
-                    ]);    
-                }
-        }
+            return response()->json([
+                'success'   => true,
+            ]); 
+        }  catch (\Exception $e) {
+            return response()->json([
+                'success'   => false,
+                'error'    => 'Error: '.$e
+            ]);    
+        } 
     }
 
 }

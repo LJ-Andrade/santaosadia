@@ -8,22 +8,13 @@ $orange:  #dc9f1d
 $orangeH: #ceaa5f
 $greenD:  #8DBB61
 $greenL:  #9FD56B
-$green:   #8DBB61
+$green:   rgb(189, 198, 167)
 $greenH:  #9FD56B
 $blue:    #5D76C9
 $blueH:   #7689C8
 $lblue:   #0da9ef
 $red:     #D05C5C
 $redH:    #C47777
-
-//////////////////////////////////////
-//                                  //
-//            HELPERS               //
-//                                  //
-//////////////////////////////////////
-
-.Hidden
-	display: none !important
 
 //////////////////////////////////////
 //                                  //
@@ -61,6 +52,8 @@ $redH:    #C47777
 //                                  //
 //////////////////////////////////////
 
+.Hidden
+	display: none !important
 .brd
   	border: 1px solid red
 .txtL
@@ -78,6 +71,33 @@ $redH:    #C47777
 //                                  //
 //////////////////////////////////////
 
+.checkout-accordion
+	.card
+		border-radius: 0
+	.card-header
+		border-radius: 0
+		padding: 0.2rem 1rem
+
+.checkout-table
+	margin-bottom: 0
+	
+.full-loader
+	position: fixed
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+	z-index: 9999
+	@include flex-column
+	.inner
+		width: 80px
+		height: 80px
+		border-radius: 4px
+		@include flex-column
+		@include box-shadow()
+		background-color: #ededed
+		img
+			width: 60px
 
 
 //////////////////////////////////////
@@ -135,7 +155,6 @@ ul.pagination li a.active,ul.pagination li.active
 .grid-item
 	.product-card
 		padding: 0
-		padding-bottom: 20px
 		a
 			text-decoration: none
 		.product-thumb
@@ -176,6 +195,54 @@ ul.pagination li a.active,ul.pagination li.active
 				&:hover
 					.data
 						opacity: 1
+		.footer
+			height: 54px
+			position: relative
+			.product-buttons
+				position: absolute
+				bottom: 0
+				right: 0
+			.price
+				position: absolute
+				bottom: 0
+				left: 0
+				width: 50%
+				padding-top: 6px
+				height: 100%
+				@include flex-center()
+				.inner
+
+
+.dont-wrap
+	border: 1px solid red
+	display: flex
+	flex-wrap: nowrap
+
+
+.discount-badge
+	position: absolute
+	right: 0
+	top: 0
+	width: 100px
+	height: 100px
+	overflow: hidden
+	.triangle
+		position: absolute
+		right: 0
+		left: 0
+		text-align: center
+		padding: 10px
+		padding-top: 50px
+		background-color: #ccc
+		transform: rotate(45deg)
+		width: 150px
+		z-index: 50
+	.inner
+		position: absolute
+		font-weight: 700
+		top: 8px
+		right: 10px
+		z-index: 100
 
 .widget
 	.inline
@@ -295,12 +362,32 @@ ul.pagination li a.active,ul.pagination li.active
 						border-radius: 50%
 
 .btn-sm-round
-	height: 36px
+	height: 30px
 	padding: 0 7px
 	border-radius: 18px
 	font-size: 12px
 	line-height: 34px
 	width: 37px
+
+.btm-sm
+	padding: 0px 10px
+	height: 30px
+	line-height: 30px
+	font-size: 0.8rem
+
+.btn-green
+	background-color: $green
+	color: #000
+
+.btn-blue
+	background-color: $blue
+	color: #fff
+	&:hover
+		opacity: .9
+		color: #f9f9f9
+
+.button-and-loader
+	@include flex-center-left()
 
 //////////////////////////////////////
 //                                  //
@@ -312,6 +399,15 @@ ul.pagination li a.active,ul.pagination li.active
 	@include flex-column
 	.inner
 		max-width: 500px
+
+.form-group
+	margin-bottom: 10px
+
+.form-control:not(textarea)
+	height: 30px
+
+select.form-control:not([size]):not([multiple])
+	height: 30px
 
 //////////////////////////////////////
 //                                  //
@@ -388,8 +484,6 @@ ul.pagination li a.active,ul.pagination li.active
 			.account
 				display: block
 
-.sidebar
-
 
 @media (max-width: 991px)
 	.sidebar
@@ -404,6 +498,28 @@ ul.pagination li a.active,ul.pagination li.active
 		text-decoration: none
 		font-size: 1rem
 
+//////////////////////////////////////
+//                                  //
+//            CHECKOUT              //
+//                                  //
+//////////////////////////////////////
+
+.shopping-cart
+	.product-item
+		.product-thumb
+			max-width: 80px
+
+.coupon-message
+	.inner
+		padding: 10px
+		border: 1px solid #ccc
+		text-align: center
+		.small
+			font-size: 1.2rem
+		.big
+			font-size: 2rem
+			color: green
+			
 //////////////////////////////////////
 //                                  //
 //           DECORATIONS            //
@@ -426,9 +542,12 @@ ul.pagination li a.active,ul.pagination li.active
 //////////////////////////////////////
 
 .alert-success
-	background-color: rgba(161, 147, 231, 0.1)
+	background-color: $green
 	color: #000
-	margin-top: 20px
+	margin-top: 20px 
+	
+.alert-success > :not(.text-white), .alert-success > :not(.text-light), .alert-success h1:not(.text-white), .alert-success h1:not(.text-light), .alert-success h2:not(.text-white), .alert-success h2:not(.text-light), .alert-success h3:not(.text-white), .alert-success h3:not(.text-light), .alert-success h4:not(.text-white), .alert-success h4:not(.text-light), .alert-success h5:not(.text-white), .alert-success h5:not(.text-light), .alert-success h6:not(.text-white), .alert-success h6:not(.text-light), .alert-success p:not(.text-white), .alert-success p:not(.text-light), .alert-success ul:not(.text-white), .alert-success ul:not(.text-light), .alert-success ol:not(.text-white), .alert-success ol:not(.text-light), .alert-success a:not(.text-white), .alert-success a:not(.text-light)
+	color: #000
 
 .centered-notification
 	text-align: center
@@ -456,7 +575,11 @@ ul.pagination li a.active,ul.pagination li.active
 .cursor-pointer
 	&:hover
 		cursor: pointer
-
+.anchor
+	display: block
+	position: relative
+	top: -50px
+	visibility: hidden
 
 .horizontal-list
 	ul

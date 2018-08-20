@@ -1,10 +1,10 @@
-@extends('layouts.store.main')
+@extends('store.partials.main')
 
 @section('content')
     <div class="container padding-bottom-3x mb-2 marg-top-25">
         <div class="row">
             <div class="col-lg-4">
-                @include('layouts.store.partials.profile-aside')
+                @include('store.partials.profile-aside')
             </div>
             <div class="col-lg-8">
 				<div class="padding-top-2x mt-2 hidden-lg-up"></div>

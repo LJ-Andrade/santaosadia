@@ -11,8 +11,8 @@ class Cart extends Model
 
     protected $fillable = ['customer_id', 'status', 'shipping_id', 'shipping_price', 'payment_method_id', 'payment_percent', 'payment_token', 'order_date', 'arrived_date'];
 
-    public function details(){
-    	return $this->hasMany('App\CartDetail');
+    public function items(){
+    	return $this->hasMany('App\CartItem');
     }
 
     public function shipping()

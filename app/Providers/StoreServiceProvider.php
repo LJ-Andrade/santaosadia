@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-
-
 class StoreServiceProvider extends ServiceProvider
 {
     
@@ -22,6 +18,7 @@ class StoreServiceProvider extends ServiceProvider
     {
         View::composer([
             'store.index', 
+            'store.checkout', 
             'store.checkout-checkdata', 
             'store.checkout-shipping',
             'store.checkout-payment',
@@ -34,9 +31,7 @@ class StoreServiceProvider extends ServiceProvider
             'store.cartdetail',
             'store.checkout-mp',
             'store.wishlist'
-
         ], 'App\Http\ViewComposers\StoreComposer');
         
     }
 }
-

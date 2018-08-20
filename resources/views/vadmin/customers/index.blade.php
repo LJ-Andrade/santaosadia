@@ -1,11 +1,7 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 {{-- PAGE TITLE --}}
 @section('title', 'Vadmin | Clientes')
 
-{{-- STYLE INCLUDES --}}
-@section('styles')
-	
-@endsection
 {{-- CONTENT --}}
 @section('header')
 	@component('vadmin.components.header-list')
@@ -61,10 +57,10 @@
 				@slot('tableTitles')
 					@if(!$items->isEmpty())
 						@if(Auth::guard('user')->user()->role <= 2)
-						<th></th>
+						<th class="w-50"></th>
 						@endif
-						<th>Cliente</th>
 						<th>Nombre y apellido</th>
+						<th>Usuario</th>
 						<th>Email</th>
 						<th style="min-width: 150px">Tipo</th>
 						<th>Estado</th>
@@ -78,7 +74,7 @@
 						@foreach($items as $item)
 							<tr>
 								@if(Auth::guard('user')->user()->role <= 2)
-								<td>
+								<td class="mw-50">
 									<label class="custom-control custom-checkbox list-checkbox">
 										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
 										<span class="custom-control-indicator"></span>
@@ -86,8 +82,8 @@
 									</label>
 								</td>
 								@endif
-								<td class="show-link"><a href="{{ url('vadmin/customers/'.$item->id) }}">{{ $item->username }}</a></td>
-								<td>{{ $item->name }} {{ $item->surname}}</td>
+								<td class="show-link"><a href="{{ url('vadmin/customers/'.$item->id) }}"> {{ $item->name }} {{ $item->surname}}</a></td>
+								<td>{{ $item->username }}</td>
 								<td>{{ $item->email }}</td>
 								<td>
 									{!! Form::select('group', [1 => 'Nuevo', 2 => 'Minorísta', 3 => 'Mayorísta'], $item->group, ['class' => 'form-control', 'onChange' => 'updateCustomerGroup(this, this.dataset.id)', 'data-id' => $item->id]) !!}

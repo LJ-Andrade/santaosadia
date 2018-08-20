@@ -7,7 +7,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="Adaptamos tendencias internacionales a nuestro estilo y también nos mantenemos fieles a prendas que son infaltables para el guardarropa de cualquier mujer."  />
-    	<meta name="keywords" content="SantaOsadia,Santa Osadia, ropa, mujer, ropa mujer, vestidos, pollera, vestido, indumentaria, color, rojo, tendencia, color, tejido, romantico, moda, zapatos, santa, osadia, femenino, concepto, estampado, prenda, versatilidad, temporada"/>
+    	<meta name="keywords" content="SantaOsadia, Santa Osadia, ropa, mujer, ropa mujer, vestidos, pollera, vestido, indumentaria, color, rojo, tendencia, color, tejido, romantico, moda, zapatos, santa, osadia, femenino, concepto, estampado, prenda, versatilidad, temporada"/>
 		<meta name="author" content="Vimana Studio"/>
     	<meta name="owner" content="Santaosadia" />
     	<meta name="copyright" content="Copyright (c) 2018 - Vimana Studio" />
@@ -27,8 +27,11 @@
 		{{-- <meta name="twitter:card"       content="" /> --}}
 		{{--<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">--}}
 		<link rel="stylesheet" type="text/css" href="{{ asset('web/css/bootstrap.css') }}">
+		{{-- Original Styles --}}
 		<link rel="stylesheet" type="text/css" href="{{ asset('web/css/styles.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ asset('web/css/main.css') }}">
+		{{-- New Styles --}}
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/web.css') }}">
 
 		<!-- Beginning of compulsory code below -->
 

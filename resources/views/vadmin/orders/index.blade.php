@@ -1,5 +1,4 @@
-
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Pedidos')
 {{-- STYLE INCLUDES --}}
 @section('styles')
@@ -27,6 +26,7 @@
 				{{-- @if(isset($_GET['name']))
 				<a href="{{ url('vadmin/payments') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
 				@endif --}}
+				
 			</div>
 		@endslot
 		@slot('searcher')
@@ -43,11 +43,19 @@
 		<div id="TestBox" class="col-xs-12 test-box Hidden">
 		</div>
 		<div class="row">
+			{{-- Active Orders Message --}}
+			@if(app('request')->input('show') == 'Active')
+			<h1>Pedidos en proceso</h1>
+			<p>Estos son los pedidos que se están realizando los usuarios en este momento. <br>
+			Aún no han sido confirmados.</p>
+			@endif
+			{{-- List --}}
 			@component('vadmin.components.list')
 				@slot('actions', '')
 				@slot('title', 'Pedidos')
 					@if($items->count() == '0')
-						@slot('tableTitles', '')
+						@slot('tableTitles')
+						<th>No se han realizado pedidos</th>
 						@slot('tableContent', '')
 					@else
 					@slot('tableTitles')
@@ -57,6 +65,7 @@
 						{{-- <th>Valor</th> --}}
 						<th>Estado</th>
 						<th>Fecha</th>
+						<th></th>
 					@endslot
 
 					@slot('tableContent')

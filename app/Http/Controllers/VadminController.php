@@ -29,7 +29,6 @@ class VadminController extends Controller
         $processCartsCount = Cart::where('status', 'Process')->count();
         $approvedCartsCount = Cart::where('status', 'Approved')->count();
         $finishedCartsCount = Cart::where('status', 'Finished')->count();
-        
         return view('vadmin.vadmin')
             ->with('catalogarticlesCount', $catalogarticlesCount)
             ->with('customersCount', $customersCount)
@@ -227,7 +226,6 @@ class VadminController extends Controller
         }
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | GENERIC FUNCTIONS
@@ -236,37 +234,36 @@ class VadminController extends Controller
 
 	public function updateStatus($model, $id)
     {
-            $model_name = '\\App\\'.$model;
-            $model = new $model_name;
-            $item = $model->find($id);
-            if($item->status == '0'){
-                $item->status = '1';
-            } else {
-                $item->status = '0';
-            }
+        $model_name = '\\App\\'.$model;
+        $model = new $model_name;
+        $item = $model->find($id);
+        
+        if($item->status == '0'){
+            $item->status = '1';
+        } else {
+            $item->status = '0';
+        }
+        $item->save();
 
-            $item->save();
-
-            return response()->json([
-                "success" => true,
-                "newStatus" => $item->status
-            ]);
+        return response()->json([
+            "success" => true,
+            "newStatus" => $item->status
+        ]);
     }
     
     public function updateStatusMultiple($id, $model, $status)
-    {
-            
-            $model_name = '\\App\\'.$model;
-            $model = new $model_name;
-            $item = $model->find($id);
-            $item->status = $status;
-            $item->user = auth()->guard('user')->user()->name;
-            $item->save();
+    {      
+        $model_name = '\\App\\'.$model;
+        $model = new $model_name;
+        $item = $model->find($id);
+        $item->status = $status;
+        $item->user = auth()->guard('user')->user()->name;
+        $item->save();
 
-            return response()->json([
-                "success" => true,
-                "message" => auth()->guard('user')->user()->name
-            ]);
+        return response()->json([
+            "success" => true,
+            "message" => auth()->guard('user')->user()->name
+        ]);
 	}
     
     
@@ -280,11 +277,6 @@ class VadminController extends Controller
     public function configs()
     {
         return view('vadmin.configs');
-    }
-
-    public function infophp()
-    {
-        phpinfo();
     }
 
 

@@ -1,8 +1,5 @@
-@extends('layouts.vadmin.main')
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Categorías')
-{{-- STYLE INCLUDES --}}
-@section('styles')
-@endsection
 
 {{-- HEADER --}}
 @section('header')
@@ -26,7 +23,7 @@
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 				{{-- If Search --}}
 				@if(isset($_GET['name']))
-				<a href="{{ url('vadmin/categories') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
+				<a href="{{ route('cat_categorias.index') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
 				<div class="results">{{ $categories->total() }} resultados de búsqueda</div>
 				@endif
 			</div>

@@ -1,8 +1,5 @@
-@extends('layouts.vadmin.main')
-@section('title', 'Vadmin | Item')
-{{-- STYLE INCLUDES --}}
-@section('styles')
-@endsection
+@extends('vadmin.partials.main')
+@section('title', 'Vadmin | Listados de artículos del catálogo')
 
 {{-- HEADER --}}
 @section('header')
@@ -20,7 +17,7 @@
 				<button class="EditBtn btn btnGreen Hidden"><i class="icon-pencil2"></i> Editar</button>
 				<input id="EditId" type="hidden">
 				{{-- Delete --}}
-				{{--  THIS VALUE MUST BE THE NAME OF THE SECTION CONTROLLER  --}}
+				{{-- THIS VALUE MUST BE THE NAME OF THE SECTION CONTROLLER --}}
 				<input id="ModelName" type="hidden" value="catalogo">
 				<button class="DeleteBtn btn btnRed Hidden"><i class="icon-bin2"></i> Eliminar</button>
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
@@ -40,9 +37,8 @@
 @section('content')
 	<div class="list-wrapper">
 		{{-- Search --}}
-		<div class="row">
+		<span class="row">
 			@component('vadmin.components.list')
-			
 				@slot('actions')
 					@if(isset($_GET['code']) || isset($_GET['title']) || isset($_GET['category']))
 						<a href="{{ route('vadmin.exportCatalogListPdf', ['params' => http_build_query($_GET)]) }}" data-toggle="tooltip" title="Exportar a PDF"><i class="icon-file-pdf"></i></a>
@@ -56,68 +52,77 @@
 				@slot('title', 'Listado de artículos de la tienda')
 				@slot('tableTitles')
 					@if(!$articles->count() == '0')
-						<th class="w-50">
-							
+						<th class="w-50"></th>
 						<th></th>
 						<th>Cód.</th>
 						<th>Título</th>
-						<th>Color</th>
 						<th>Stock</th>
 						<th>Precio</th>
-						<th>Oferta (%)</th>
-						<th>Categoría</th>
+						<th>% Oferta</th>
+						<th>Precio May.</th>
+						<th>% Oferta May.</th>
 						<th>Estado</th>
 					@endslot
 					@slot('tableContent')
 						@foreach($articles as $item)
-							<tr>
-								<td class="w-50">
+							<tr id="ItemId{{$item->id}}">
+								<td class="mw-50">
 									<label class="CheckBoxes custom-control custom-checkbox list-checkbox">
 										<input type="checkbox" class="List-Checkbox custom-control-input row-checkbox" data-id="{{ $item->id }}">
 										<span class="custom-control-indicator"></span>
 										<span class="custom-control-description"></span>
 									</label>
 								</td>
+								{{-- THUMBNAIL --}}
 								<td class="thumb">
-								{{-- {{dd($item->featuredImageName())}} --}}
 									@if($item->featuredImageName())
-										<img class="CheckImg" src="{{ asset('webimages/catalogo/thumbs/'. $item->featuredImageName()) }}">
+										<img class="CheckImg" src="{{ asset($item->featuredImageName()) }}">
 									@endif
 								</td>
-								<td class="w-50">#{{ $item->code }}</td>
-								<td class="show-link max-text"><a href="{{ url('vadmin/catalogo/'.$item->id) }}">{{ $item->name }}</a></td>
-								<td class="show-link max-text">{{ $item->color }}</td>
-								{{--  STOCK  --}}
-								<td class="Modificable-Stock-Input modificable-input">
-									@if($item->stock > $item->stockmin)
-										<input class="UpdateStockInput List-Input Hidden" type="number" name="stock">
-										<div class="DisplayStockData">{{ $item->stock }}</div>
-										<div class="UpdateStockBtn action-button Hidden" data-id="{{ $item->id }}"><i class="icon-checkmark2"></i></div>
-									@else
-										<input class="UpdateStockInput List-Input Hidden" type="number" name="stock">
-										<div class="DisplayStockData custom-badge btnRed">{{ $item->stock }}</div>
-										<div class="UpdateStockBtn action-button Hidden" data-id="{{ $item->id }}"><i class="icon-checkmark2"></i></div>
-									@endif
+								<td class="mw-100">#{{ $item->code }}
 								</td>
-								{{--  PRICE  --}}
-								<td class="Modificable-Price-Input modificable-input">
-									<input class="UpdatePriceInput List-Input Hidden" type="text" name="price">
-									<span class="Extra-Data">$ </span><span class="DisplayPriceData">{{ $item->price }}</span>
-									<div class="UpdatePriceBtn action-button Hidden" data-id="{{ $item->id }}"><i class="icon-checkmark2"></i></div>
+								{{-- NAME --}}
+								<td class="show-link max-text">
+									<a href="{{ url('vadmin/catalogo/'.$item->id) }}">{{ $item->name }}</a>
 								</td>
-								{{--  Discount PERCENT and PRICE  --}}
-								<td class="Modificable-Discount-Input modificable-input">
-									@if($item->discount == '0')
-									<input class="UpdateDiscountInput List-Input Hidden" type="text" name="price">
-									<span class="Extra-Data">-</span>
-									@else
-									<input class="UpdateDiscountInput List-Input Hidden" type="text" name="price">
-									<span class="Extra-Data">%</span><span class="DisplayDiscountData">{{ $item->discount }}</span><span class="Extra-Data"> ($ {{ calcValuePercentNeg($item->price, $item->discount) }})</span>
-									@endif
-									<div class="UpdateDiscountBtn action-button Hidden" data-id="{{ $item->id }}"><i class="icon-checkmark2"></i></div>
+								{{--  STOCK --}}
+								<td class="with-notification">
+									<input class="editable-input mw-50" onfocus="event.target.select()" type="number" value="{{ $item->stock }}" min="0">
+									<div class="editable-input-data " data-id="{{ $item->id }}" 
+									data-route="update_catalog_field" data-field="stock" data-type="int" data-action="reload" data-value=""></div>
+									@if($item->stock < $item->stockmin) <div class="cell-notification"><i class="icon-notification"></i></div> @endif
+								</td> 
+								{{-- PRICE --}}
+								<td>
+									<span class="money"><input class="editable-input mw-80" onfocus="event.target.select()" type="number" value="{{ $item->price }}" min="0">
+									<div class="editable-input-data" data-id="{{ $item->id }}" 
+									data-route="update_catalog_field" data-field="price" data-type="decimal" data-action="reload" data-value=""></div>
+									</span>
 								</td>
-								{{--  DATE   --}}
-								<td class="w-200">@if($item->category){{ $item->category->name }}@else Sin Categoría @endif</td>
+								{{-- DISCOUNT --}}
+								<td>
+									<span class="percent"><input class="editable-input mw-50" onfocus="event.target.select()" type="number" value="{{ $item->discount }}" min="0">
+									@if($item->discount >= '0')<span> ($ {{ calcValuePercentNeg($item->price, $item->discount) }})</span>@endif
+									<div class="editable-input-data" data-id="{{ $item->id }}" 
+									data-route="update_catalog_field" data-field="discount" data-type="decimal" data-action="reload" data-value=""></div>
+									</span>
+								</td>
+								{{-- RESELLER PRICE --}}
+								<td>
+									<span class="money"><input class="editable-input mw-80" type="number" value="{{ $item->reseller_price }}" min="0">
+									<div class="editable-input-data" data-id="{{ $item->id }}" 
+									data-route="update_catalog_field" data-field="reseller_price" data-type="decimal" data-action="reload" data-value=""></div>
+									</span>
+								</td>
+								{{-- RESELLER DISCOUNT --}}
+								<td>
+									<span class="percent"><input class="editable-input mw-50" type="number" value="{{ $item->reseller_discount }}" min="0">
+									@if($item->reseller_discount >= '0')<span> ($ {{ calcValuePercentNeg($item->reseller_price, $item->reseller_discount) }})</span>@endif
+									<div class="editable-input-data" data-id="{{ $item->id }}" 
+									data-route="update_catalog_field" data-field="reseller_discount" data-type="decimal" data-action="reload" data-value=""></div>
+									</span>
+								</td>
+								{{-- DATE --}}
 								<td class="w-50 pad0 centered">
 									<label class="switch">
 										<input class="UpdateStatus switch-checkbox" type="checkbox" 
@@ -149,7 +154,7 @@
 				{!! $articles->render() !!}
 			@endif
 		</div>
-		<div id="Error"></div>	
+		<div id="Error"></div>
 	</div>
 @endsection
 
@@ -158,36 +163,12 @@
 	@include('vadmin.components.bladejs')
 @endsection
 
-{{-- CUSTOM JS SCRIPTS--}}
 @section('custom_js')
 	<script>
-	$(document).ready(function(e) {
-
-		// Article Status
-		$('.PauseArticle').click(function() {
-			var cbx = $(this);
-			if (cbx[0].checked) {
-				// console.log("Error en checkbox");
-			} else {
-				console.log("Pausar");
-				var id     = cbx.data('id');
-				var route = "{{ url('/vadmin/cat_article_status') }}/"+id+"";
-				updateStatus(id, route, '0');
-			}
-		});
-
-		$('.ActivateArticle').click(function() {
-			var cbx = $(this);
-			if (cbx[0].checked) {
-				var id = cbx.data('id');
-				console.log("Activar");
-				var route = "{{ url('/vadmin/cat_article_status') }}/"+id+"";
-				updateStatus(id, route, '1');
-			} else {
-				//console.log("Error en checkbox");
-			}
-		});
-	});
-
+		function selectText(e)
+		{
+			console.log(e);
+			$(this).select();
+		}
 	</script>
 @endsection

@@ -188,30 +188,50 @@
 // ------- FILTERS -------- //
 	
 .search-filters
+	display: none
 	position: relative
-	background-color: #fff
-	border: 1px solid #ccc
+	margin-bottom: 10px
+	padding: 15px
+	background-color: #eaeaea
+	border: 0
+	border-radius: 5px
 	color: #383838
 	@include box-shadow-floor-big
-	padding: 15px
 	z-index: 999
-	margin-bottom: 10px
+	.form-control
+		background: transparent
+		border: 0
+		padding: 2px
+		input,select
+			background: #fff
+			border: 1px solid #ccc
+	input.form-control,select.form-control
+		background: #fff
+	
 	.col
 		float: left
 		width: auto
 	form
 		margin-left: 10px
+	input,select
+		background: #fff
+		border: 1px solid #ccc
 	label
 		font-weight: 400
 		margin: 0
+		margin-bottom: 2px
 		color: #383838
-	input,select
-		margin-right: 10px
 	.hide-desk
 		display: none
 	.actionBtn
 		margin-left: 10px
 		margin-top: 20px
+	.searchBtn
+		min-height: 40px
+		margin-right: 5px
+		margin-bottom: 5px
+	.appendBtn
+		border-radius: 0 2px 2px 0 
 	.loneBtn
 		margin-left: 10px
 		margin-top: 25px
@@ -260,52 +280,22 @@
 			list-style: none
 
 
-.custom-list
-	.row-selected
-		background-color: #fff1e8 !important
-		&:hover
-			background-color: #ece1d9 !important 
-	tr
-		@include transition(0.2s)
-		&:hover
-			background-color: #ececec !important
-			.show-link a
-				color: $green
-		td.max-text
-			max-width: 200px
-			overflow: hidden
-			white-space: nowrap
-			text-overflow: ellipsis
-		td.thumb
-			padding: 0
-			width: 70px
-			text-align: center
-			img
-				width: 70px
-				max-width: 100%
-		td
-			vertical-align: middle
-				
-	.show-link a
-		color: $blue
-		font-weight: 600
-.list-checkbox
-	padding-left: 0 !important
-	margin-bottom: 0
-
 
 //////////////////////////////////////
 //                                  //
 //            FORMS                 //
 //                                  //
 //////////////////////////////////////
-
+input,select
+	color: #000
 
 .big-form
 	padding: 10px
 	background-color: #fff
 	@include box-shadow
 	padding: 20px
+	.form-group 
+		margin-bottom: .8rem
 	label
 		font-size: 1rem
 		font-weight: 700
@@ -316,7 +306,6 @@
 		margin-top: 10px
 		.box-inner
 			padding: 10px
-
 	.sub-title
 		.inner-sub-title
 			margin-top: 15px
@@ -445,7 +434,78 @@
 	padding: 0
 	padding-top: 5px
 
-.display-input-enabled
+
+
+
+
+.custom-list
+	.row-selected
+		background-color: #fff1e8 !important
+		&:hover
+			background-color: #ece1d9 !important 
+	tr
+		@include transition(0.2s)
+		&:hover
+			background-color: #ececec !important
+			.show-link a
+				color: $green
+		td.max-text
+			max-width: 200px
+			overflow: hidden
+			white-space: nowrap
+			text-overflow: ellipsis
+		td.thumb
+			padding: 0
+			width: 70px
+			text-align: center
+			img
+				width: 70px
+				max-width: 100%
+		td.with-notification
+			padding-left: 24px
+		td
+			white-space: nowrap
+			vertical-align: middle
+			position: relative
+			.cell-notification
+				position: absolute
+				height: 100%
+				left: 6px
+				top: 0
+				@include flex-column()
+				i
+					color: red
+			.editable-input
+				padding-left: 3px
+				border: 0
+				background: transparent
+				&:focus
+					border: 1px solid #b1b1da
+			.percent
+				white-space: nowrap
+			.percent::before
+				content: "%"
+				padding: 0 5px
+				text-align: center
+			.money::before
+				content: "$"
+				padding: 0 5px
+				text-align: center
+			// Hide arrows in number inputs
+			input[type='number']
+    			-moz-appearance:textfield
+			input::-webkit-outer-spin-button
+			input::-webkit-inner-spin-button
+    			-webkit-appearance: none
+			.label
+				margin: 0
+	.show-link a
+		color: $blue
+		font-weight: 600
+
+.list-checkbox
+	padding-left: 0 !important
+	margin-bottom: 0
 
 //////////////////////////////////////
 //                                  //
@@ -531,6 +591,15 @@
 	height: 15px
 	font-size: 1.2rem
 	// border-radius: 50%
+
+
+.circle-alert
+	background-color: $blue
+	padding: 4px 7px
+	border-radius: 50%
+	margin-left: 5px
+
+
 
 //////////////////////////////////////
 //                                  //
@@ -801,12 +870,12 @@ ul.pagination li.disabled
 	@include flex-center
 	.inner
 		@include box-shadow-soft
-		border-radius: 20px
+		border-radius: 0
 		width: 400px
 		max-width: 100%
-		margin-top: 150px
+		margin-top: 80px
 		.card
-			border-radius: 20px
+			border-radius: 2px
 		.card-header
 			padding: 0
 			background-color: transparent

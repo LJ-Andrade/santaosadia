@@ -1,11 +1,6 @@
-@extends('layouts.vadmin.main')
-{{-- PAGE TITLE --}}
+@extends('vadmin.partials.main')
 @section('title', 'Vadmin | Usuarios')
 
-{{-- STYLE INCLUDES --}}
-@section('styles')
-	
-@endsection
 {{-- CONTENT --}}
 @section('header')
 	@component('vadmin.components.header-list')
@@ -124,18 +119,7 @@
 	</div>
 @endsection
 
-
-
 {{-- SCRIPT INCLUDES --}}
 @section('scripts')
 	@include('vadmin.components.bladejs')
-@endsection
-
-{{-- CUSTOM JS SCRIPTS--}}
-@section('custom_js')
-	<script>
-		$('.AdminLi').addClass('open');
-		$('.UsersLi').addClass('open');
-		$('.UsersList').addClass('active');
-	</script>
 @endsection

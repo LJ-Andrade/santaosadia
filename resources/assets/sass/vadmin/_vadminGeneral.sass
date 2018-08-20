@@ -24,7 +24,7 @@ a
 		text-decoration: none
 		color: #383838
 p
-  	font-size: 1.2rem 
+  	font-size: 1rem 
   	font-family: $fv
   	font-weight: $fvw1
 h1
@@ -64,12 +64,24 @@ hr
   	width: 20px
 .w-50
 	width: 50px
-.w-100
-  	width: 100px
-.w-150
-  	width: 150px
+.mw-50
+	max-width: 50px
+.mw-70
+	max-width: 50px
+.mw-80
+  	max-width: 80px
+.mw-90
+  	max-width: 90px
+.mw-100
+  	max-width: 100px
+.mw-150
+  	max-width: 150px
 .w-200
-  	width: 200px
+  	width: 
+	  
+	
+.mw300
+	max-width: 300px	  
 .mw450
   	max-width: 450px
 .minWidth150
@@ -95,6 +107,13 @@ hr
 	float: left
 .centered
 	text-align: center
+
+//////// BROWSER FIXES ///////
+// Disable arrows in input number fields
+input[type=number]
+	-moz-appearance: textfield
+select
+    -moz-appearance: none
 
 /////////// FLEXBOX ////////////
 .flexCentVert

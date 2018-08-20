@@ -60,6 +60,7 @@ class Customer extends Authenticatable
     public function scopeSearchname($query, $name)
     {
         $query->where('name', 'LIKE', "%$name%")
+            ->orWhere('surname', 'LIKE', "%$name%")
             ->orWhere('username', 'LIKE', "%$name%")
             ->orWhere('email', 'LIKE', "%$name%");
     }

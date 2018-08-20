@@ -1,14 +1,15 @@
-@extends('layouts.store.main')
+@extends('store.partials.main')
 
 @section('content')
 	<div class="container padding-bottom-3x mb-1 marg-top-25">
 		<div class="row product-show">
 			<div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 image">
 				<div class="product-gallery">
-					<span class="product-badge">@if($article->offer > 0) DESCUENTO % {{ $article->offer }}!! @endif</span>
 					<div class="gallery-wrapper">
 						@foreach($article->images as $index => $image)
-						<div class="gallery-item {{ $index == 0 ? 'active' : '' }}"><a href="{{ asset('webimages/catalogo/'. $image->name) }}" data-hash="{{ $image->id }}" data-size="426x640"></a></div>
+						<div class="gallery-item {{ $index == 0 ? 'active' : '' }}">
+							<a href="{{ asset('webimages/catalogo/'. $image->name) }}" data-hash="{{ $image->id }}" data-size="500x750"></a>
+						</div>
 						@endforeach
 					</div>
 					<div class="product-carousel owl-carousel">
@@ -17,7 +18,7 @@
 							<div data-hash="{{ $image->id }}"><img src="{{ asset('webimages/catalogo/'. $image->name) }}" alt="Product"></div>
 						@endforeach
 						@else
-						<img src="{{ asset('webimages/catalogo/'.$article->thumb) }}" alt="Producto del Catálogo">
+							<img src="{{ asset($article->featuredImageName()) }}" alt="Producto del Catálogo">
 						@endif
 					</div>
 					<ul class="product-thumbnails">
@@ -30,27 +31,35 @@
 
 			<div class="col-sm-9 col-md-9 col-lg-9 col-xs-12 products-details">
 				<div class="padding-top-2x mt-2 hidden-md-up"></div>
-				{{--  Reviews Not Implemented  --}}
-				{{--  <div class="rating-stars"><i class="icon-star filled"></i><i class="icon-star filled"></i><i class="icon-star filled"></i>
-					<i class="icon-star filled"></i><i class="icon-star"></i>
-				</div>  --}}
-				{{--  <span class="text-muted align-middle">&nbsp;&nbsp;4.2 | 3 customer reviews</span>  --}}
-				
 				{{--  Article Name  --}}
+				
 				<h2 class="text-normal">{{ $article->name }}</h2>
-
-				{{--  Article Price and Discount  --}}
-				@if($article->discount > 0)
-					<span class="h2 d-block">
-						<del class="text-muted text-normal">$ {{ $article->price }}</del>
-						&nbsp; ${{ calcValuePercentNeg($article->price, $article->discount) }}
-					</span>
+				@if(Auth::guard('customer')->check() && Auth::guard('customer')->user()->group == '3')
+					{{-- Reseller Article Price and Discount --}}	
+					@if($article->reseller_discount > 0)
+						DESCUENTO % {{ $article->reseller_discount }}!!
+						<span class="h2 d-block">
+							<del class="text-muted text-normal">$ {{ $article->reseller_price }}</del>
+							&nbsp; ${{ calcValuePercentNeg($article->reseller_price, $article->reseller_discount) }}
+						</span>
+					@else
+						<span class="h2 d-block">$ {{ $article->reseller_price }}</span>
+					@endif
 				@else
-					<span class="h2 d-block">$ {{ $article->price }}</span>
+					{{-- Article Price and Discount --}}
+					@if($article->discount > 0)
+						DESCUENTO % {{ $article->discount }}!!
+						<span class="h2 d-block">
+							<del class="text-muted text-normal">$ {{ $article->price }}</del>
+							&nbsp; ${{ calcValuePercentNeg($article->price, $article->discount) }}
+						</span>
+					@else
+						<span class="h2 d-block">$ {{ $article->price }}</span>
+					@endif
 				@endif
 				<div class="pt-1 mb-2"><span class="text-medium">Código:</span> #{{ $article->id }}</div>
 			
-				{{--  Article Description  --}}
+				{{-- Article Description --}}
 				<p>{{ strip_tags($article->description) }}</p>
 				<div class="row margin-top-1x">
 					{{--  Sizes  --}}
@@ -64,23 +73,13 @@
 							</select>
 						</div>
 					</div>
-					{{--  Quantity  --}}
+					{{-- Quantity --}}
 					<div class="col-sm-3">
 						<div class="form-group">
 							<label for="quantity">Cantidad</label>
 							<input id="SelectedQuantity" class="form-control" type="number" min="1" value="1">
 						</div>
 					</div>
-					{{--  <div class="col-sm-5">
-						<div class="form-group">
-							<label for="color">Choose color</label>
-							<select class="form-control" id="color">
-							<option>White/Red/Blue</option>
-							<option>Black/Orange/Green</option>
-							<option>Gray/Purple/White</option>
-							</select>
-						</div>
-					</div>  --}}
 				</div>
 				<div class="padding-bottom-1x mb-2">
 					<span class="text-medium">Textil:</span>

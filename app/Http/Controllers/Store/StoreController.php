@@ -17,10 +17,12 @@ use App\Shipping;
 use App\Payment;
 use App\GeoProv;
 use App\Cart;
-use App\CartDetail;
+use App\CartItem;
+use App\CatalogCoupon;
 use PDF;
 use MP;
 use App\Traits\CartTrait;
+use Illuminate\Support\Facades\View;
 
 
 class StoreController extends Controller
@@ -46,11 +48,9 @@ class StoreController extends Controller
             $articles = CatalogArticle::orderBy('id', 'DESCC')->active()->paginate(15);
         }
 
-        $user = auth()->guard('customer')->user();
-
+        
         // Get only categories with active products
-        $categories = CatalogCategory::with(['articles' => function($query) { 
-            $query->where('status','=', '1'); }])->get();
+        $categories = CatalogCategory::with(['articles' => function($query) { $query->where('status','=', '1'); } ])->get();
 
         $tags = CatalogTag::orderBy('id', 'ASC')->select('name', 'id')->get();
         $atributes1 = CatalogAtribute1::orderBy('id', 'ASC')->select('name', 'id')->get();
@@ -61,7 +61,6 @@ class StoreController extends Controller
             ->with('articles', $articles)
             ->with('categories', $categories)
             ->with('tags', $tags)
-            ->with('user', $user)
             ->with('favs', $favs)
             ->with('atributes1', $atributes1);
     }
@@ -69,184 +68,118 @@ class StoreController extends Controller
     public function show(Request $request)
     {
         $article = CatalogArticle::findOrFail($request->id);
-        
-        $user    = auth()->guard('customer')->user();
-        if($user){
+        $user = auth()->guard('customer')->user();
+
+        if($user)
+        {
             $isFav   = CatalogFav::where('customer_id', '=', $user->id)->where('article_id', '=', $article->id)->get();
             if(!$isFav->isEmpty()){
                 $isFav = true;
             } else {
                 $isFav = false;
             }
-        } else {
+        } 
+        else 
+        {
             $isFav = false;
         }
         return view('store.show')
-        ->with('article', $article)
-        ->with('isFav', $isFav)
-        ->with('user', $user);
+            ->with('article', $article)
+            ->with('isFav', $isFav)
+            ->with('user', $user);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | SEARCHS
+    | SHOP and CHECKOUT
     |--------------------------------------------------------------------------
     */
 
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SHOP and CHECKOUT LOGIC
-    |--------------------------------------------------------------------------
-    */
-
-    // Checkout Step 1
-    
     public function checkout(Request $request)
     {
+        
+        $activeCart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', 'active')->get();
+        
+        if(count($activeCart) == 0)
+        {
+            return redirect()->route('store')->with('message', 'La página solicitada no existe o ha expirado');
+        }
+
         $geoprovs = GeoProv::pluck('name','id');
-        return view('store.checkout-checkdata')
+        $shippings = Shipping::orderBy('name', 'ASC')->get();
+        $payment_methods = Payment::orderBy('name', 'ASC')->get();
+        
+        return view('store.checkout')
+            ->with('geoprovs', $geoprovs)
+            ->with('shippings', $shippings)
+            ->with('payment_methods', $payment_methods)
             ->with('geoprovs', $geoprovs);
     }
+
+    public function validateAndSetCoupon(Request $request)
+    {
+        $coupon = CatalogCoupon::where('code', $request->code)->first();
+
+        if($coupon == null)
+        {
+            return response()->json(['response' => null, 'message' => "El cupón no existe"]);
+        }
+        
+        try {
+            $cart = Cart::find($request->cartid);
+            $cart->order_discount = $coupon->percent;
+            $cart->save();
+        } catch (\Exception $e) {
+            return response()->json(['response' => false, 'message' => $e->getMessage()]);
+        }
+
+
+        if($cart == null)
+        {
+            return response()->json(['response' => null, 'message' => "Error. El carro de compras no existe"]);
+        }
+
+        return response()->json(['response' => true, 'message' => $coupon->percent]);
+
+    }
+
     
-    public function checkoutCustomerData(Request $request)
+    public function processCheckout(Request $request)
     {
-            $user = auth()->guard('customer')->user();
-            $item = Customer::find($user->id);
-
-            $this->validate($request,[
-                'name' => 'required|string|max:255',
-                'surname' => 'required|string|max:255',
-                'username' => 'required|string|max:20|unique:customers,username,'.$user->id,
-                'email' => 'required|string|email|max:255|unique:customers,email,'.$user->id,
-                'phone' => 'required|max:255',
-                'address' => 'required|max:255',
-                'cp' => 'required',
-                'geoprov_id' => 'required|max:255',
-                'geoloc_id' => 'required|max:255',
-            ]);
-            
-            $item->fill($request->all());
-            $item->save();
-            
-            $items = Shipping::all();
-            return view('store.checkout-shipping')
-                ->with('items', $items);
-                
-    }
-
-    public function checkoutShippingGet()
-    {
-        $items = Shipping::all();
-        return view('store.checkout-shipping')
-            ->with('items', $items);
-    }
-
-    // Checkout Step 2
-    public function checkoutShipping(Request $request)
-    {   
-        if($request->shipping_id == null) {
-            return back()->with('message', 'Debe seleccionar un método de envío');
-        }
-        $shipping = Shipping::findOrFail($request->shipping_id);
-        $cart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', '=', 'active')->first();
-        $cart->shipping_id = $request->shipping_id;
-        $cart->shipping_price = $cart->shipping->price;
-        $cart->save();
+        // Check if user has required data completed
+        $userData = $this->checkCustomerRequiredData(auth()->guard('customer')->user()->id);
+        if(!$userData)
+            return back()->with('error', 'missing-data');
+        $cart = Cart::findOrFail($request->cart_id);  
+        // Check if user choose payment method
+        if($cart->payment_method_id == null)
+            return back()->with('error', 'missing-payment');
+        // Check if user choose payment method and shipping
+        if($cart->shipping_id == null)
+            return back()->with('error', 'missing-shipping');
         
-        $items = Payment::all();
-        return view('store.checkout-payment')
-            ->with('items', $items);
-    }
-
-    // Checkout Step 3
-    public function checkoutPayment(Request $request)
-    {
-        if($request->payment_method_id == null) {
-            return back()->with('message', 'Debe seleccionar una forma de pago');
-        }
-        $payment = Payment::findOrFail($request->payment_method_id);
-        $cart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', '=', 'active')->first();
-        $cart->payment_method_id = $request->payment_method_id;
-        $cart->payment_percent = $cart->payment->percent;
-        $cart->save();
-        
-        // $activeCart = $this->getActiveCart();
-        
-        return view('store.checkout-review');
-            // ->with('activeCart', $activeCart);
-    }
-        
-    public function checkoutPaymentGet()
-    {
-        $items = Payment::all();
-        return view('store.checkout-payment')
-            ->with('items', $items);
-    }
-
-    // Step 4
-    public function checkoutReview(Request $request)
-    {
-        if($activeCart['cart']->payment_method_id == null){
-            return back()->with('message', 'Debe seleccionar una forma de pago');
-        }
-        
-        if($activeCart['cart']->shipping_id == null){
-            return back()->with('message', 'Debe seleccionar una forma de envío');
-        }
-        
-        return view('store.checkout-review');
-    }
-
-    // Check if data is full (Not used yet)
-    public function checkoutCheckData(Request $request)
-    {
-        // Check if customer data has null or empty values
-        $customer = Customer::where('id', auth()->guard('customer')->user()->id)->first();
-        $customer = $customer->toArray();
-        unset($customer['id'], $customer['created_at'], $customer['updated_at'], $customer['avatar'], $customer['phone2']);
-        
-        $emptyValues = [];
-        foreach ($customer as $key => $val) {
-            if($val == '' or $val === '0' or $val === null){
-                $emptyValues += [$key => $val];
+        // Set fixed prices on checkout confirmation
+        foreach($cart->items as $item){
+            $order = CartItem::find($item->id);
+            if(auth()->guard('customer')->user()->group == '3'){
+                $order->final_price = calcValuePercentNeg($item->article->reseller_price, $item->article->reseller_discount);
+            } else {
+                $order->final_price = calcValuePercentNeg($item->article->price, $item->article->discount);
             }
-        }
-        if(!$emptyValues){
-            return true;
-        } else {
-            return back()->with('message','Debe completar todos los datos requeridos');
-        }    
-    }
-
-    public function finishCheckOut($cartid){
-        $cart = Cart::find($cartid);
-        foreach($cart->details as $item){
-            $order = CartDetail::find($item->id);
-            $order->price = $item->article->price;
-            $order->discount = $item->article->discount;
+            
             $order->save();    
         }
         $cart->status = 'Process';
         $cart->save();
-        return view('store.checkout-finish')
+        return view('store.checkout-success')
             ->with('cart', $cart);
     }
-
-    public function downloadInvoice($cartid)
-    {
-        $order = Cart::find($cartid);
-        if($order->customer->id == auth()->guard('customer')->user()->id){
-            $cartData = $this->calcCartData($order);
-            $pdf = PDF::loadView('store.checkout-invoice', compact('order', 'cartData'))->setPaper('a4', 'portrait');
-            $filename = 'Comprobante-Pedido-N-'.$order->id;
-            return $pdf->stream($filename.'.pdf');
-        } else {
-            return back()->with('message','Estás intentando una acción ilegal...');
-        }
-
-    }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | MERCADO LIBRE
+    |--------------------------------------------------------------------------
+    */
 
     public function mpConnect(Request $request)
     {
@@ -265,8 +198,8 @@ class StoreController extends Controller
                     'quantity' => 1,
                     'currency_id' => 'ARS',
                     'unit_price' => floatval($cartTotal)
-                ]
-            ],
+                    ]
+                ],
         ];
         //dd($preferenceData);
         try{
@@ -276,10 +209,62 @@ class StoreController extends Controller
             $initPoint = $preference['response']['init_point'];
             return response()->json(['response' => true, 'result' => $preference]);
         } catch (\Exception $e){
-            return response()->json(['response' => false, 'result' => $e]);
+            return response()->json(['response' => false, 'result' => $e->getMessage()]);
         }
     }
+    
+    // Check if customer has required data completed
+    public function checkCustomerRequiredData($customerId)
+    {
+        // Check if customer data has null or empty values
+        $customer = Customer::where('id', $customerId)->first();
+        $customer = $customer->toArray();
+        
+        unset($customer['id'], $customer['created_at'], $customer['updated_at'], $customer['avatar'], $customer['phone2']);
+        
+        $emptyValues = array();
+        foreach ($customer as $key => $val) {
+            if($val == '' or $val === '0' or $val === null){
+                array_push($emptyValues, $key);
+            }
+        }
+        if(!$emptyValues){
+            return true;
+        } else {
+            return false;
+        }    
+    }
 
+    /*
+    |--------------------------------------------------------------------------
+    | INVOICE
+    |--------------------------------------------------------------------------
+    */
+
+    // DOWNLOAD INVOICE PDF
+    public function downloadInvoice($id, $action)
+    {
+        // Return Options
+        // return $pdf->dowload($filename.'.pdf');
+        // return $pdf->stream($filename.'.pdf');
+        $order = Cart::find($id);
+        if($order != null && $order->customer->id == auth()->guard('customer')->user()->id){
+            $cart = $this->calcCartData($order);
+            $pdf = PDF::loadView('store.checkout-invoice', compact('order', 'cart'))->setPaper('a4', 'portrait');
+            $filename = 'Comprobante-Pedido-N-'.$order->id;
+            if($action == 'stream')
+            {
+                return $pdf->stream($filename.'.pdf');
+            } else {
+                return $pdf->download($filename.'.pdf');
+            }
+            die();
+
+        } else {
+            return redirect()->route('store')->with('message','Estás intentando una acción ilegal...');
+        }
+    }
+    
     /*
     |--------------------------------------------------------------------------
     | CUSTOMER
@@ -305,46 +290,25 @@ class StoreController extends Controller
             ->with('carts', $carts);
     }
 
-    public function customerCartDetail(Request $request)
+    public function customerCartItem(Request $request)
     {
-        $cart = Cart::where('id', $request->id)->first();
-        $cartTotal = 0;
-
-        foreach($cart->details as $item){
-            $cartTotal += $item->article->price;
-        }
-
-        $paymentCost = calcValuePercentNeg($cartTotal, $cart->payment->percent);
-        $shippingCost = $cart->shipping->price;
-        $cartTotal += $paymentCost + $shippingCost;
-
-        return view('store.customer-cart')
-            ->with('cartTotal', $cartTotal)
-            ->with('cart', $cart)
-            ->with('shippingCost', $shippingCost)
-            ->with('paymentCost', $paymentCost);
+        $cart = $this->calcCartData(Cart::where('id', $request->id)->first());
+        if($cart == null)
+            return back();
+        return view('store.customer-order')
+            ->with('cart', $cart);
     }
-    
-    public function customerActiveCartDetail(Request $request)
-    {
-        return view('store.customer-active-cart');
-    }
-    
+
 
     public function updatePassword(Request $request)
     {
-        $cart = $this->getActiveCart();
-        $activeCart = $cart;
-
-        return view('store.customer-updatepassword')
-            ->with('activeCart', $activeCart)
-            ->with('cart', $cart);
+        return view('store.customer-updatepassword');
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | WISHLIST METHODS
+    | WISHLIST
     |--------------------------------------------------------------------------
     */
 

@@ -11,53 +11,32 @@ let mix = require('laravel-mix');
 |
 */
 
-// mix.js('resources/assets/js/app.js', 'public/js')
-//    .sass('resources/assets/sass/app.scss', 'public/css');
-
-// Web
-
-/*
 mix.js('resources/assets/js/web/web.js', 'public/js')
-.sass('resources/assets/sass/web.scss', 'public/css')
-.options({
-    processCssUrls: false
-});
+    .sass('resources/assets/sass/web/web.sass', 'public/css')
+    .options({
+        processCssUrls: false,
+        outputStyle: 'compressed'
+    })
 
-mix.sass('resources/assets/sass/web/web.sass', 'public/css')
-.options({
-    processCssUrls: false,
-    outputStyle: 'compressed'
-});
-*/
+    // Store
+    .js('resources/assets/js/store/store-scripts.js', 'public/js')
+    .sass('resources/assets/sass/store/store-custom.sass', 'public/css')
+    .options({
+        processCssUrls: false,
+        outputStyle: 'compressed'
+    })
 
-// Web
-mix.js('resources/assets/js/web/web.js', 'public/js');
-mix.sass('resources/assets/sass/web/web.sass', 'public/css')
-.options({
-    processCssUrls: false,
-    outputStyle: 'compressed'
-});
+    // Vadmin 
+    .js('resources/assets/js/vadmin-ui.js', 'public/js')
+    .js('resources/assets/js/vadmin-functions.js', 'public/js')
+    .js('resources/assets/js/vadmin-forms.js', 'public/js')
 
-// Store
-mix.js('resources/assets/js/store/store-scripts.js', 'public/js');
-mix.sass('resources/assets/sass/store/store-custom.sass', 'public/css')
-.options({
-    processCssUrls: false,
-    outputStyle: 'compressed'
-});
-
-// Vadmin 
-
-mix.js('resources/assets/js/vadmin-ui.js', 'public/js');
-mix.js('resources/assets/js/vadmin-functions.js', 'public/js');
-mix.js('resources/assets/js/vadmin-forms.js', 'public/js');
-
-mix.sass('resources/assets/sass/vadmin/vadmin.sass', 'public/css')
-.options({
-    processCssUrls: false,
-    outputStyle: 'compressed'
-});
-
-mix.options({
-    sourcemaps: 'inline-source-map'
-});
+    .sass('resources/assets/sass/vadmin/vadmin.sass', 'public/css')
+    .options({
+        processCssUrls: false,
+        outputStyle: 'compressed'
+    })
+    .options({
+        sourcemaps: 'inline-source-map'
+    })
+    .browserSync('http://localhost/santaosadia/public/');

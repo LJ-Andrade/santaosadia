@@ -19,9 +19,10 @@ class CustomerController extends Controller
     |--------------------------------------------------------------------------
     */
     public function index(Request $request)
-    {
-        $name  = $request->get('name');
+    {    
         $group = $request->get('group');
+        // Name is name, surname, username, email
+        $name  = $request->get('name');
         $paginate = 15;
 
         if(isset($name))
@@ -36,6 +37,7 @@ class CustomerController extends Controller
         {
             $items = Customer::orderBy('id', 'ASC')->paginate($paginate); 
         }
+
 
         return view('vadmin.customers.index')
             ->with('items', $items)

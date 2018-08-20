@@ -1,13 +1,16 @@
 <div id="SearchFilters" class="search-filters">
     {{-- Search --}}
     <div class="row">
-    {!! Form::open(['id' => 'SearchForm', 'method' => 'GET', 'route' => 'cat_categorias.index', 'class' => 'form-inline col-md-4 col-sm-12', 'role' => 'search']) !!} 
-        <div class="form-group">
-            {!! Form::label('name', 'Nombre') !!} <br>  
-            {!! Form::text('name', null, ['class' => 'form-control', 'aria-describedby' => 'search']) !!}
-        </div>
-        <div class="form-group">
-            <button type="submit" id="SearchFiltersBtn" class="btnSm btnGreen actionBtn">Buscar</button>
+     {!! Form::open(['id' => 'SearchForm', 'method' => 'GET', 'route' => 'cat_categorias.index', 'class' => 'col-md-4 col-sm-12', 'role' => 'search']) !!} 
+        <div class="form-control">
+            {!! Form::label('name', 'Buscar por nombre') !!} 
+            <div class="input-group">
+                {!! Form::text('name', null, ['class' => 'form-control', 'aria-describedby' => 'search']) !!}<br> 
+                {{-- <input type="text" class="form-control" placeholder="Ingrese código..." aria-label="Buscar por código"> --}}
+                <div class="input-group-append">
+                    <button type="submit" id="SearchFiltersBtn" class="btnSm btnGreen appendBtn">Buscar</button>
+                </div>
+            </div>
         </div>
     {!! Form::close() !!}
     </div>

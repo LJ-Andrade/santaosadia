@@ -1,5 +1,5 @@
-@extends('layouts.vadmin.main')
-@section('title', 'VADmin | Nuevo Payment')
+@extends('vadmin.partials.main')
+@section('title', 'VADmin | Nuevo método de pago')
 
 @section('styles')
 @endsection
@@ -8,12 +8,12 @@
 	@component('vadmin.components.header')
 		@slot('breadcrums')
 			<li class="breadcrumb-item"><a href="{{ url('vadmin')}}">Inicio</a></li>
-			<li class="breadcrumb-item"><a href="{{ route('payments.index')}}">Listado de Métodos de Pago</a></li>
-			<li class="breadcrumb-item active">Nuevo Método de Pago</li>
+			<li class="breadcrumb-item"><a href="{{ route('payments.index')}}">Listado de métodos de pago</a></li>
+			<li class="breadcrumb-item active">Nuevo métodos de pago</li>
 		@endslot
 		@slot('actions')
 			<div class="list-actions">
-				<h1>Nuevo Método de Pago</h1>
+				<h1>Nuevo método de pago</h1>
 			</div>
 		@endslot
 	@endcomponent
@@ -21,19 +21,31 @@
 
 @section('content')
 	<div class="inner-wrapper">
-		{!! Form::open(['route' => 'payments.store', 'method' => 'POST', 'class' => 'row big-form mw450', 'data-parsley-validate' => '']) !!}	
-			@include('vadmin.catalog.payments.form')
-			<div class="form-actions right">
-				<a href="{{ route('payments.index')}}">
-					<button type="button" class="btn btnRed">
-						<i class="icon-cross2"></i> Cancelar
-					</button>
-				</a>
-				<button type="submit" class="btn btnGreen">
-					<i class="icon-check2"></i> Guardar
-				</button>
+		<div class="row">	
+			<div class="col-md-5">
+				{!! Form::open(['route' => 'payments.store', 'method' => 'POST', 'class' => 'row big-form mw450', 'data-parsley-validate' => '']) !!}	
+					@include('vadmin.catalog.payments.form')
+					<div class="form-actions right">
+						<a href="{{ route('payments.index')}}">
+							<button type="button" class="btn btnRed">
+								<i class="icon-cross2"></i> Cancelar
+							</button>
+						</a>
+						<button type="submit" class="btn btnGreen">
+							<i class="icon-check2"></i> Guardar
+						</button>
+					</div>
+				{!! Form::close() !!}
 			</div>
-		{!! Form::close() !!}
+			<div class="col-md-7">
+				@component('vadmin.components.infoContainer')
+					@slot('text')
+					<b>El método de pago</b></b> que será creado aparecerá como una opción a seleccionar por el cliente al momento de finalizar su compra (checkout). <br><br>
+					<b>El porcentaje indicado</b></b> se sumará al subtotal de la compra.
+					@endslot
+				@endcomponent
+			</div>
+		</div>
 	</div>  
 @endsection
 
