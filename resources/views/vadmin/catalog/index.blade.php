@@ -37,7 +37,7 @@
 @section('content')
 	<div class="list-wrapper">
 		{{-- Search --}}
-		<span class="row">
+		<div class="row">
 			@component('vadmin.components.list')
 				@slot('actions')
 					@if(isset($_GET['code']) || isset($_GET['title']) || isset($_GET['category']))

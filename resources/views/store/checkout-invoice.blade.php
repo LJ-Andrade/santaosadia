@@ -46,7 +46,7 @@
                         @if($cart['orderDiscount'] > 0)
                         <tr>
                             <td></td><td></td><td></td><td></td>
-                                <td>Descuento (% {{$cart['orderDiscount']}})</td>
+                                <td>Descuento <span class="dont-break">(% {{$cart['orderDiscount']}})</span></td>
                             <td>$ - {{ $cart['discountValue'] }}</td>
                         </tr>
                         @endif
@@ -57,7 +57,7 @@
                         </tr>
                         <tr>
                             <td></td><td></td><td></td><td></td>
-                            <td>Recargo por forma de pago (% {{ $cart['paymentPercent'] }})</td>
+                            <td>Recargo por forma de pago <span class="dont-break">(% {{ $cart['paymentPercent'] }})</span></td>
                             <td>$ {{ calcPercent($cart['subTotal'], $cart['paymentPercent']) }}</td>
                         </tr>
                         <tr>

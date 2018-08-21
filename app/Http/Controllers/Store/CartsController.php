@@ -21,7 +21,7 @@ class CartsController extends Controller
     */
 
     public function index(Request $request)
-    {   
+    {          
         if($request->show == 'Orders') 
         {
             $items = Cart::orderBy('created_at', 'DESC')->where('status', '!=','Active')->get();
@@ -32,24 +32,18 @@ class CartsController extends Controller
         } else {
             $items = Cart::orderBy('created_at', 'DESC')->where('status', '!=','Active')->get();
         }
+
         return view('vadmin.orders.index')->with('items', $items);    
     }
 
-
     public function show($id)
     {
-        $order = Cart::find($id);
-        $customer = Customer::find($order->customer_id);
+        $cart = Cart::find($id);
+        $customer = Customer::find($cart->customer_id);
         
-        $prices = $this->calcCartData($order);
-        
-        $subtotal = $prices['subTotal'];
-        $total = $prices['total'];
-
+        $order = $this->calcCartData($cart);
         return view('vadmin.orders.show')
             ->with('order', $order)
-            ->with('subtotal', $subtotal)
-            ->with('total', $total)
             ->with('customer', $customer);
     }
 

@@ -4,17 +4,17 @@
 //                                  //
 //////////////////////////////////////
 
-$orange:  #dc9f1d
-$orangeH: #ceaa5f
-$greenD:  #8DBB61
-$greenL:  #9FD56B
-$green:   rgb(189, 198, 167)
-$greenH:  #9FD56B
-$blue:    #5D76C9
-$blueH:   #7689C8
-$lblue:   #0da9ef
-$red:     #D05C5C
-$redH:    #C47777
+$orange:     #dc9f1d
+$orangeH:    #ceaa5f
+$greenD:     #8DBB61
+$greenL:     #9FD56B
+$green:      rgb(189, 198, 167)
+$greenH:     #9FD56B
+$blue:       #5D76C9
+$blueH:      #7689C8
+$lblue:      #92c6de
+$red:        #D05C5C
+$redH:       #C47777
 
 //////////////////////////////////////
 //                                  //
@@ -212,13 +212,6 @@ ul.pagination li a.active,ul.pagination li.active
 				@include flex-center()
 				.inner
 
-
-.dont-wrap
-	border: 1px solid red
-	display: flex
-	flex-wrap: nowrap
-
-
 .discount-badge
 	position: absolute
 	right: 0
@@ -304,26 +297,6 @@ ul.pagination li a.active,ul.pagination li.active
 //                                  //
 //////////////////////////////////////
 
-.product-gallery
-	padding: 0
-	border: 0
-	.product-carousel .owl-stage-outer .owl-stage .owl-item img
-		width: 100% 
-
-.product-gallery .gallery-item 
-	z-index: 50
-	position: absolute
-	top: 8px
-	right: 9px
-	margin-bottom: 0
-	background: #fff
-	border-radius: 50%
-	
-.product-show
-	.products-details
-		h2
-			padding-top: 0
-
 
 //////////////////////////////////////
 //                                  //
@@ -361,6 +334,7 @@ ul.pagination li a.active,ul.pagination li.active
 					img
 						border-radius: 50%
 
+
 .btn-sm-round
 	height: 30px
 	padding: 0 7px
@@ -389,6 +363,23 @@ ul.pagination li a.active,ul.pagination li.active
 .button-and-loader
 	@include flex-center-left()
 
+.btn-wishlist
+	height: 36px
+
+.btnIcon
+	// background-color: $lblue
+	border: 1px solid #ccc
+	padding: 4px 14px 9px
+	margin-bottom: 2px
+	color: #383838
+	@include transition(0.2s)
+	i
+		font-size: 0.9rem
+		line-height: 1px
+	&:hover
+		opacity: .6
+	
+
 //////////////////////////////////////
 //                                  //
 //             FORMS                //
@@ -414,6 +405,32 @@ select.form-control:not([size]):not([multiple])
 //       CART AND CATALOGUE         //
 //                                  //
 //////////////////////////////////////
+
+.product-gallery
+	padding: 0
+	border: 0
+	.product-carousel .owl-stage-outer .owl-stage .owl-item img
+		width: 100% 
+
+.product-gallery .gallery-item 
+	z-index: 50
+	position: absolute
+	top: 8px
+	right: 9px
+	margin-bottom: 0
+	background: #fff
+	border-radius: 50%
+	
+.product-show
+	.products-details
+		h2
+			padding-top: 0
+
+.grid-item .product-card .footer .product-buttons
+	width: 50%
+
+.toolbar .cart>.toolbar-dropdown
+	top: 36px
 
 // Index List
 .product-card
@@ -498,6 +515,14 @@ select.form-control:not([size]):not([multiple])
 		text-decoration: none
 		font-size: 1rem
 
+@media (max-width: 991px)
+	.checkout-container
+		aside
+			border: 1px solid #e1e7ec
+			padding: 10px
+	.back-to-store
+		display: none
+
 //////////////////////////////////////
 //                                  //
 //            CHECKOUT              //
@@ -567,6 +592,9 @@ select.form-control:not([size]):not([multiple])
 
 .dont-break
 	white-space: nowrap
+.dont-wrap
+	display: flex
+	flex-wrap: nowrap
 	
 .marg-top-25
 	margin-top: 25px
@@ -590,3 +618,7 @@ select.form-control:not([size]):not([multiple])
 			display: inline-block
 			list-style: none
 
+.flex-h-100
+	display: flex
+	.flex-h-inner
+		width: 100%

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Catalog;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Coupon;
+use App\CatalogCoupon;
 
 
 class CouponController extends Controller
@@ -22,18 +22,14 @@ class CouponController extends Controller
         
         if($request->input('show') != null)
         {
-            $items = Coupon::orderBy('id','ASC')->where('status', $request->input('show'))->paginate(15);    
-            return view('vadmin.catalog.coupons.index')->with('items', $items);
-        }
-        
-        if(isset($code))
+            $items = CatalogCoupon::orderBy('id','ASC')->where('status', $request->input('show'))->paginate(15);
+        } else if (isset($code))
         {
-            $items = Coupon::searchcode($code)->orderBy('id', 'ASC')->paginate(15); 
-            return view('vadmin.catalog.coupons.index')->with('items', $items);
+            $items = CatalogCoupon::searchcode($code)->orderBy('id', 'ASC')->paginate(15); 
+        } else {
+            $items = CatalogCoupon::orderBy('id','ASC')->paginate(15);
         }
 
-        
-        $items = Coupon::orderBy('id','ASC')->paginate(15);
         return view('vadmin.catalog.coupons.index')->with('items', $items);
     }
 
@@ -97,7 +93,7 @@ class CouponController extends Controller
         if($couponExists == true)
             return back()->with('message', 'El código de cupón ya existe');
 
-        $item = new Coupon($request->all());
+        $item = new CatalogCoupon($request->all());
         $item->save();
         
         return redirect()->route('coupons.index')->with('message','Cupón creado !');
@@ -106,7 +102,7 @@ class CouponController extends Controller
         
     public function checkCatalogCoupon($couponCode)
     {
-        $coupons = Coupon::where('code', '=', $couponCode)->first();
+        $coupons = CatalogCoupon::where('code', '=', $couponCode)->first();
         if($coupons != null)
             return true;
         return false;
@@ -120,7 +116,7 @@ class CouponController extends Controller
 
     public function edit($id)
     {
-        $item = Coupon::findOrFail($id);
+        $item = CatalogCoupon::findOrFail($id);
         return view('vadmin.catalog.coupons.edit', compact('item'));
     }
 
@@ -133,7 +129,7 @@ class CouponController extends Controller
             return back()->with('message','La fecha de expiración es anterior a la fecha de inicio');
         }
 
-        $item = Coupon::find($id);
+        $item = CatalogCoupon::find($id);
         $this->validate($request,[
             'code'                 => 'required|min:4|max:10|unique:catalog_coupons,code,'.$item->id,
             'init_date'            => 'required|date|after:yesterday',
@@ -164,7 +160,7 @@ class CouponController extends Controller
     
         try {
             foreach ($ids as $id) {
-                $item = Coupon::find($id);
+                $item = CatalogCoupon::find($id);
                 $item->delete();
             }
             return response()->json([

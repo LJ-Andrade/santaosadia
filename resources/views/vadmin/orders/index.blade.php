@@ -15,22 +15,22 @@
 			{{-- Actions --}}
 			<div class="list-actions">
 				{{-- <a href="{{ route('payments.create') }}" class="btn btnBlue"><i class="icon-plus-round"></i>  Nuevo </a> --}}
-				{{-- <button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button> --}}
+				<button id="SearchFiltersBtn" class="btn btnBlue"><i class="icon-ios-search-strong"></i></button>
 				
 				{{-- Delete --}}
 				{{--  THIS VALUE MUST BE THE NAME OF THE SECTION CONTROLLER  --}}
-				<input id="ModelName" type="hidden" value="carts">
+				<input id="ModelName" type="hidden" value="orders">
 				<button class="DeleteBtn btn btnRed Hidden"><i class="icon-bin2"></i> Eliminar</button>
 				<input id="RowsToDeletion" type="hidden" name="rowstodeletion[]" value="">
 				{{-- If Search --}}
-				{{-- @if(isset($_GET['name']))
-				<a href="{{ url('vadmin/payments') }}"><button type="button" class="btn btnGrey">Mostrar Todos</button></a>
-				@endif --}}
-				
+				@if(isset($_GET['id']) || isset($_GET['status']) || isset($_GET['customer']))
+					<a href="{{ route('orders.index', ['status' => 'Process']) }}"><button type="button" class="btn btnGrey">Nuevos</button></a>
+					<a href="{{ route('orders.index', ['status' => 'All']) }}"><button type="button" class="btn btnGrey">Todos</button></a>
+				@endif
 			</div>
 		@endslot
 		@slot('searcher')
-			{{-- @include('vadmin.catalog.payments.searcher') --}}
+			@include('vadmin.orders.searcher')
 		@endslot
 	@endcomponent
 @endsection
@@ -55,7 +55,7 @@
 				@slot('title', 'Pedidos')
 					@if($items->count() == '0')
 						@slot('tableTitles')
-						<th>No se han realizado pedidos</th>
+						<th>No se han encontrado pedidos</th>
 						@slot('tableContent', '')
 					@else
 					@slot('tableTitles')
@@ -111,12 +111,12 @@
 											</span>
 										</span>
 										{!! Form::select('group', 
-										[ 'Active' => 'Iniciado', 'Process' => 'En proceso', 'Approved' => 'Aprobado', 'Canceled' => 'Cancelado', 'Finished' => 'Finalizado'], 
+										[ 'Active' => 'Activo', 'Process' => 'Esperando Acción', 'Approved' => 'Aprobado', 'Canceled' => 'Cancelado', 'Finished' => 'Finalizado'], 
 										$item->status, ['class' => 'form-control custom-select minWidth150', 'onChange' => 'updateCartStatus(this, this.dataset.id)', 'data-id' => $item->id]) !!}
 									</div>
 								</td>
 								<td class="w-200">{{ transDateT($item->created_at) }}</td>
-								<td class="w-50"><a href="{{ url('vadmin/carts/'.$item->id) }}" class="btn btnSm btnGreen"><i class="icon-eye6"></i></a></td>
+								<td class="w-50"><a href="{{ url('vadmin/orders/'.$item->id) }}" class="btn btnSm btnGreen"><i class="icon-eye6"></i></a></td>
 							</tr>						
 						@endforeach
 					@endif

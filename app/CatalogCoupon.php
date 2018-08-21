@@ -8,11 +8,6 @@ class CatalogCoupon extends Model
 {
     protected $table = 'catalog_coupons';
 
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
 
     protected $fillable = ['code', 'init_date', 'expire_date', 'status', 'reseller', 'percent'];

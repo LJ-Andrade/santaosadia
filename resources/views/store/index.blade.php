@@ -11,7 +11,7 @@
 	<div class="container padding-bottom-3x mb-1">
 		<div class="row">
 			<!-- Products-->
-			<div class="col-xl-9 col-lg-8 push-xl-3 push-lg-4">
+			<div class="col-sm-10 push-sm-2">
 				<!-- Products Grid-->
 				@if(count($_GET) > 0)
 					<div class="top-info">
@@ -105,7 +105,9 @@
 				<!-- Pagination-->
 				{!! $articles->render() !!}
 			</div>
-			@include('store.components.sidebar')
+			<div class="col-sm-2 pull-sm-10">
+				@include('store.components.sidebar')
+			</div>
 		</div>
 	</div>
 	<div id="Error"></div>

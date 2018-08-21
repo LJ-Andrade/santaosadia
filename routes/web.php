@@ -216,10 +216,10 @@ Route::group(['prefix' => 'vadmin', 'middleware' => 'admin'], function(){
     // Coupons
     Route::resource('coupons', 'Catalog\CouponController');
     Route::post('generateCatalogCoupon', 'Catalog\CouponController@generateCatalogCoupon');
-    // Carts (Orders) Management
-    Route::resource('carts', 'Store\CartsController');
     Route::post('updateCartStatus', 'Store\CartsController@updateStatus');
-
+    
+    // Carts (Orders) Management
+    Route::resource('orders', 'Store\OrdersController');
 });
 
 /*

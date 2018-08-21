@@ -1,8 +1,8 @@
 <aside class="sidebar">
     {{-- {{dd($activeCart)}} --}}
-    <div class="padding-top-2x hidden-lg-up"></div>
+    <div class="hidden-lg-up"></div>
     <!-- Order Summary Widget-->
-    <section class="widget widget-order-summary">
+    <section class="widget-order-summary">
         <h3 class="widget-title">Resumen de Pedido</h3>
         {{-- {{ dd($activeCart['shippingPrice']) }} --}}
         {!! Form::open(['route' => 'store.processCheckout', 'method' => 'POST']) !!}	

@@ -15,6 +15,7 @@ class Cart extends Model
     	return $this->hasMany('App\CartItem');
     }
 
+    
     public function shipping()
     {
         return $this->belongsTo('App\Shipping');
@@ -24,10 +25,21 @@ class Cart extends Model
     {
         return $this->belongsTo('App\Payment', 'payment_method_id');
     }
-
+    
     public function customer()
     {
         return $this->belongsTo('App\Customer');
+    }
+    
+    // Search Scopes 
+    public function scopeSearchId($query, $id)
+    {
+        $query->where('id', '=', $id);
+    }
+
+    public function scopeSearchStatus($query, $status)
+    {
+        $query->where('status', '=', $status);
     }
 
 }

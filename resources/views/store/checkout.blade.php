@@ -2,7 +2,7 @@
 
 @section('content')
 	<input id="CartId" class="form-control" type="hidden" name="cart_id" value="{{ $activeCart['rawdata']->id }}">
-  	<div class="container padding-bottom-3x mb-2 marg-top-25">
+  	<div class="container checkout-container padding-bottom-3x mb-2 marg-top-25">
    		<div class="row">
 			<div class="col-xl-9 col-lg-8">
 				<h3>Carro de Compras | Checkout</h3> 
@@ -88,7 +88,7 @@
 												@endif
 												<td>{{ $item->quantity }}</td>
 												<td class="text-center">
-													<a class="RemoveArticleFromCart btn btn-outline-primary btn-sm" data-detailid="{{ $item->id }}">x</a>
+													<a class="RemoveArticleFromCart btn btn-outline-primary btn-sm" data-itemid="{{ $item->id }}">x</a>
 												</td>
 											</tr>
 											@endforeach
@@ -101,8 +101,8 @@
 					<div class="anchor" id="pago-y-envio"></div>					
 					<div class="row">
 					{{-- Choose Payment and Shipping --}}
-						<div class="col-md-6">
-							<div class="card">
+						<div class="col-md-6 flex-h-100">
+							<div class="card flex-h-inner">
 								<div class="card-header">
 									<h6>Forma de Pago y de Envío</h6>
 								</div>
@@ -136,8 +136,8 @@
 							</div>
 						</div>
 						{{-- Discount Coupon --}}
-						<div class="col-md-6">
-							<div class="card">
+						<div class="col-md-6 flex-h-100">
+							<div class="card flex-h-inner">
 								<div class="card-header" role="tab">
 									<h6>Cupón de descuento</h6>
 								</div>
@@ -205,6 +205,7 @@
 			</div>
 		</div>
 	</div>
+	<div id="Error"></div>
 @endsection
 
 @section('scripts')

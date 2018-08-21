@@ -27,8 +27,8 @@
                                 <td>{{ transDateAndTime($cart->created_at) }}</td>
                                 <td><span class="text-danger">{{ orderStatusTrd($cart->status) }}</span></td>
                                 <td class="text-center">
-                                    <a href="{{ url('tienda/descargar-comprobante', [$cart->id, 'download']) }}" target="_blank"><i class="icon-download"></i></a>
-                                    <a href="{{ url('tienda/descargar-comprobante', [$cart->id, 'stream']) }}" target="_blank"><i class="icon-eye"></i></a>
+                                    <a href="{{ url('tienda/descargar-comprobante', [$cart->id, 'download']) }}" target="_blank"><span class="btnIcon"><i class="icon-download"></i></span></a>
+                                    <a href="{{ url('tienda/descargar-comprobante', [$cart->id, 'stream']) }}" target="_blank"><span class="btnIcon"><i class="icon-eye"></i></span></a>
                                 </td>
                                 @if($cart->status == 'Active')
                                     <td><a href="{{ route('store.checkout') }}">Ver Detalle</a></td>                                    
@@ -53,11 +53,10 @@
                 <div class="column"><a class="btn btn-sm btn-block btn-secondary" href="{{ route('store.checkout') }}">Ver carro de compras activo</a></div>
             @endif
             </div>
-            
 		</div>
 		<div id="Error"></div>
     </div>
-
+    <i class="fas fa-file-pdf"></i>
 @endsection
 
 @section('custom_js')

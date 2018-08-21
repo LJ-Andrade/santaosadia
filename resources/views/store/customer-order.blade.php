@@ -53,20 +53,20 @@
                             @if($cart['orderDiscount'] > 0)
                             <tr>
                                 <td></td><td></td>
-                                <td><b>Descuento</b> (% {{$cart['orderDiscount']}}):</td>
+                                <td><b>Descuento: </b> <span class="dont-break">% {{$cart['orderDiscount']}}</span></td>
                                 <td>$ - {{ $cart['discountValue'] }}</td>
                                 <td></td>
                             </tr>
                             @endif
                             <tr>
                                 <td></td><td></td>
-                                <td><b>Método de pago:</b> {{ $cart['rawdata']->payment->name }} % ( {{$cart['rawdata']->payment->percent }} )</td>
+                                <td><b>Método de pago:</b> {{ $cart['rawdata']->payment->name }} <span class="dont-break">(% {{$cart['rawdata']->payment->percent }})</span></td>
                                 <td>$ {{ $cart['paymentCost'] }}</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td></td><td></td>
-                                <td><b>Envío:</b></td>
+                                <td><b>Envío: </b>{{ $cart['rawdata']->shipping->name }} <span class="dont-break">($ {{$cart['rawdata']->shipping->price }})</span></td>
                                 <td>$ {{ $cart['shippingCost'] }}</td>
                                 <td></td>
                             </tr>
@@ -84,7 +84,8 @@
                         <a class="btn btn-outline-secondary" href="{{ route('store') }}"><i class="icon-arrow-left"></i>&nbsp;Volver a la tienda</a>
                     </div>
                     <div class="column">
-                        <a class="btn btn-outline-primary" href="{{ url('tienda/descargar-comprobante', [$cart['rawdata']->id]) }}" target="_blank">Descargar Comprobante</a>
+                        <a class="btn btn-outline-primary" href="{{ url('tienda/descargar-comprobante', [$cart['rawdata']->id, 'download']) }}" target="_blank"><i class="icon-download"></i> Descargar Comprobante</a>
+                        <a class="btn btn-outline-primary" href="{{ url('tienda/descargar-comprobante', [$cart['rawdata']->id, 'stream']) }}" target="_blank"><i class="icon-eye"></i> Ver Comprobante</a>
                     </div>
                 </div>
             </div>

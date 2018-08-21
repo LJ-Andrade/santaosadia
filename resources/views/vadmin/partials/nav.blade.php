@@ -191,20 +191,23 @@
 		<li class="navigation-header"><span data-i18n="nav.category.support">Administración</span>
 			<i data-toggle="tooltip" data-placement="right" data-original-title="Support" class="icon-ellipsis icon-ellipsis"></i>
 		</li>
-		<li class="has-sub is-shown {{ Menu::activeMenu('carts') }}">
+		<li class="has-sub is-shown {{ Menu::activeMenu('orders') }}">
 			<a href="#" data-i18n="nav.menu_levels.second_level_child.main" class="menu-item">
 				<i class="icon-download"></i> Pedidos 
 				@if($newOrders > 0) <span class="green">&bull;</span> @endif
 				@if($activeOrders > 0) <span class="blue">&bull;</span> @endif
 			</a>
 			<ul class="menu-content">
-				<li class="is-shown {{ Menu::activeMenu('carts') }}"><a href="{{ route('carts.index', ['show' => 'Orders']) }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> 
+				<li class="is-shown {{ Menu::activeMenu('orders') }}"><a href="{{ route('orders.index', ['status' => 'All']) }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> 
+				Todos
+				</a></li>
+				<li class="is-shown {{ Menu::activeMenu('orders') }}"><a href="{{ route('orders.index', ['status' => 'Process']) }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> 
 				Nuevos
 				@if($newOrders > 0)
 					<span class="green">&bull;</span>
 				@endif
 				</a></li>
-				<li class="is-shown {{ Menu::activeMenu('active-carts') }}"><a href="{{ route('carts.index', ['show' => 'Active']) }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> 
+				<li class="is-shown {{ Menu::activeMenu('active-carts') }}"><a href="{{ route('orders.index', ['status' => 'Active']) }}" data-i18n="nav.menu_levels.second_level_child.third_level" class="menu-item"><i class="icon-list"></i> 
 				Comprando
 				@if($activeOrders > 0)
 					<span class="blue">&bull;</span>

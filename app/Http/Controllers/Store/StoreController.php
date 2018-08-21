@@ -19,6 +19,7 @@ use App\GeoProv;
 use App\Cart;
 use App\CartItem;
 use App\CatalogCoupon;
+use Carbon\Carbon;
 use PDF;
 use MP;
 use App\Traits\CartTrait;
@@ -97,7 +98,6 @@ class StoreController extends Controller
 
     public function checkout(Request $request)
     {
-        
         $activeCart = Cart::where('customer_id', auth()->guard('customer')->user()->id)->where('status', 'active')->get();
         
         if(count($activeCart) == 0)
@@ -119,27 +119,46 @@ class StoreController extends Controller
     public function validateAndSetCoupon(Request $request)
     {
         $coupon = CatalogCoupon::where('code', $request->code)->first();
+        
+        // Expired Coupon
+        $coupon_expire = $coupon->expire_date;
+        $coupon_expire = Carbon::parse($coupon_expire, 'America/Araguaina');
+        $actual_date = Carbon::now()->format('Y-m-d');
+        $actual_date = Carbon::parse($actual_date, 'America/Araguaina');
+        if($coupon_expire->lt($actual_date))
+        {
+            return response()->json(['response' => null, 'message' => "El cupón ingresado ha expirado :("]);
+        } 
+        
+        // Group User Not Included in promo
+        if($coupon->reseller == '0')
+        {
+            if(auth()->guard('customer')->user()->group != '2')
+            {
+                return response()->json(['response' => null, 'message' => "El cupón ingresado es válido solo para clientes minorístas"]);
+            }
+        }
 
+        // Not existing coupon
         if($coupon == null)
         {
             return response()->json(['response' => null, 'message' => "El cupón no existe"]);
         }
         
-        try {
-            $cart = Cart::find($request->cartid);
-            $cart->order_discount = $coupon->percent;
-            $cart->save();
-        } catch (\Exception $e) {
-            return response()->json(['response' => false, 'message' => $e->getMessage()]);
-        }
-
-
+        $cart = Cart::find($request->cartid);
+        // Cart Not exist
         if($cart == null)
         {
             return response()->json(['response' => null, 'message' => "Error. El carro de compras no existe"]);
         }
-
-        return response()->json(['response' => true, 'message' => $coupon->percent]);
+        
+        try {
+            $cart->order_discount = $coupon->percent;
+            $cart->save();
+            return response()->json(['response' => true, 'message' => $coupon->percent]);
+        } catch (\Exception $e) {
+            return response()->json(['response' => false, 'message' => $e->getMessage()]);
+        }
 
     }
 

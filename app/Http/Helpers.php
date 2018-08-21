@@ -130,7 +130,7 @@ function orderStatusTrd($status)
 {
     switch ($status) {
         case 'Active':
-            echo '<span class="text-info">Iniciado</span>';
+            echo '<span class="text-info">Activo</span>';
             break;
         case 'Process':
             echo '<span class="text-warning">Pendiente</span>';
